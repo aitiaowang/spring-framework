@@ -507,49 +507,68 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Return the list of statically specified ApplicationListeners.
+	 * 返回静态指定的ApplicationListeners列表
 	 */
 	public Collection<ApplicationListener<?>> getApplicationListeners() {
 		return this.applicationListeners;
 	}
 
+	/**
+	 * 加载或者刷新，持久化配置
+	 * 由于这是一个启动方法，如果失败，它应该销毁已经创建的单例，以避免悬空资源。换句话说，在调用这个方法之后，应该实例化所有的单例，或者根本不实例化单例
+	 *
+	 * @date 2020/10/13 11:26
+	 */
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
+			// 准备此上下文以进行刷新
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			// 告诉子类刷新内部bean工厂。
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
+			//准备在此上下文中使用的bean工厂。
 			prepareBeanFactory(beanFactory);
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+				//允许在上下文子类中对bean工厂进行后处理。
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
+				//调用在上下文中注册为bean的工厂处理器。
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				//注册拦截Bean创建的Bean处理器。
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
+				//为此上下文初始化消息源。
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
+				//为此上下文初始化事件多播器。
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				//在特定上下文子类中初始化其他特殊bean
 				onRefresh();
 
 				// Check for listener beans and register them.
+				//检查侦听器bean并注册它们。
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+				//实例化所有剩余的（非延迟初始化）单例。
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
+				//最后一步：发布相应的事件
 				finishRefresh();
 			}
 
@@ -560,18 +579,22 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				}
 
 				// Destroy already created singletons to avoid dangling resources.
+				//销毁已创建的单例以避免资源悬空浪费
 				destroyBeans();
 
 				// Reset 'active' flag.
+				//重置“活动”标志。
 				cancelRefresh(ex);
 
 				// Propagate exception to caller.
+				//将异常传播给呼叫者。
 				throw ex;
 			}
 
 			finally {
 				// Reset common introspection caches in Spring's core, since we
 				// might not ever need metadata for singleton beans anymore...
+				//在Spring的核心中重置常见的自省缓存，因为我们可能不再需要单例bean的元数据...
 				resetCommonCaches();
 			}
 		}
@@ -580,9 +603,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Prepare this context for refreshing, setting its startup date and
 	 * active flag as well as performing any initialization of property sources.
+	 * 准备此上下文以进行刷新，设置其启动日期和活动标记以及执行属性源的任何初始化。
 	 */
 	protected void prepareRefresh() {
 		// Switch to active.
+		// 切换到活动状态。
 		this.startupDate = System.currentTimeMillis();
 		this.closed.set(false);
 		this.active.set(true);
@@ -819,21 +844,26 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Add beans that implement ApplicationListener as listeners.
 	 * Doesn't affect other listeners, which can be added without being beans.
+	 * 添加将ApplicationListener实现为侦听器的bean。
+	 * 不会影响其他侦听器，可以将它们添加为非bean。
 	 */
 	protected void registerListeners() {
 		// Register statically specified listeners first.
+		// 首先注册静态指定的侦听器。
 		for (ApplicationListener<?> listener : getApplicationListeners()) {
 			getApplicationEventMulticaster().addApplicationListener(listener);
 		}
 
 		// Do not initialize FactoryBeans here: We need to leave all regular beans
 		// uninitialized to let post-processors apply to them!
+		//不要在这里初始化FactoryBeans：我们需要保留所有未初始化的常规bean，以便后处理器对其应用！
 		String[] listenerBeanNames = getBeanNamesForType(ApplicationListener.class, true, false);
 		for (String listenerBeanName : listenerBeanNames) {
 			getApplicationEventMulticaster().addApplicationListenerBean(listenerBeanName);
 		}
 
 		// Publish early application events now that we finally have a multicaster...
+		//发布早期的应用事件，现在我们终于有了一个多播器…
 		Set<ApplicationEvent> earlyEventsToProcess = this.earlyApplicationEvents;
 		this.earlyApplicationEvents = null;
 		if (!CollectionUtils.isEmpty(earlyEventsToProcess)) {

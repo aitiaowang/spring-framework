@@ -25,14 +25,16 @@ import org.springframework.lang.Nullable;
 /**
  * Set of method overrides, determining which, if any, methods on a
  * managed object the Spring IoC container will override at runtime.
+ * 方法重写集，确定Spring IoC容器在运行时将重写管理对象上的哪些方法（如果有）
  *
  * <p>The currently supported {@link MethodOverride} variants are
  * {@link LookupOverride} and {@link ReplaceOverride}.
+ * 当前支持的{@link MethodOverride}变体是{@link LookupOverride}和{@link ReplaceOverride}。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
- * @since 1.1
  * @see MethodOverride
+ * @since 1.1
  */
 public class MethodOverrides {
 
@@ -41,12 +43,14 @@ public class MethodOverrides {
 
 	/**
 	 * Create new MethodOverrides.
+	 * 创建新的MethodOverrides。
 	 */
 	public MethodOverrides() {
 	}
 
 	/**
 	 * Deep copy constructor.
+	 * 深拷贝构造函数。
 	 */
 	public MethodOverrides(MethodOverrides other) {
 		addOverrides(other);
@@ -55,6 +59,7 @@ public class MethodOverrides {
 
 	/**
 	 * Copy all given method overrides into this object.
+	 * 将所有给定的方法重写复制到该对象中。
 	 */
 	public void addOverrides(@Nullable MethodOverrides other) {
 		if (other != null) {
@@ -64,6 +69,7 @@ public class MethodOverrides {
 
 	/**
 	 * Add the given method override.
+	 * 添加给定的方法覆盖。
 	 */
 	public void addOverride(MethodOverride override) {
 		this.overrides.add(override);
@@ -71,7 +77,9 @@ public class MethodOverrides {
 
 	/**
 	 * Return all method overrides contained by this object.
-	 * @return a Set of MethodOverride objects
+	 * 添加给定的方法覆盖。
+	 *
+	 * @return a Set of MethodOverride objects 一组MethodOverride对象
 	 * @see MethodOverride
 	 */
 	public Set<MethodOverride> getOverrides() {
@@ -80,6 +88,7 @@ public class MethodOverrides {
 
 	/**
 	 * Return whether the set of method overrides is empty.
+	 * 返回重写的方法集是否为空。
 	 */
 	public boolean isEmpty() {
 		return this.overrides.isEmpty();
@@ -87,8 +96,10 @@ public class MethodOverrides {
 
 	/**
 	 * Return the override for the given method, if any.
-	 * @param method method to check for overrides for
-	 * @return the method override, or {@code null} if none
+	 * 返回给定方法的覆盖（如果有）。
+	 *
+	 * @param method method to check for overrides for 检查替代的方法
+	 * @return the method override, or {@code null} if none 方法重写，如果没有，则为{@code null}
 	 */
 	@Nullable
 	public MethodOverride getOverride(Method method) {

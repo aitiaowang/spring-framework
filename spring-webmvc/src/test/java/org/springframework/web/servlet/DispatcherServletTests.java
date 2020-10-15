@@ -64,13 +64,15 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
+ * 分派器Servlet测试
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Rob Harrop
  * @author Sam Brannen
  */
 public class DispatcherServletTests {
-
+	//唯一已知的网址
 	private static final String URL_KNOWN_ONLY_PARENT = "/knownOnlyToParent.do";
 
 	private final MockServletConfig servletConfig = new MockServletConfig(new MockServletContext(), "simple");
@@ -79,7 +81,11 @@ public class DispatcherServletTests {
 
 	private DispatcherServlet complexDispatcherServlet;
 
-
+	/**
+	 * 初始化Servlet
+	 *
+	 * @date 2020/10/13 10:20
+	 */
 	@Before
 	public void setUp() throws ServletException {
 		MockServletConfig complexConfig = new MockServletConfig(getServletContext(), "complex");
@@ -88,6 +94,7 @@ public class DispatcherServletTests {
 		complexConfig.addInitParameter("unknownParam", "someValue");
 
 		simpleDispatcherServlet = new DispatcherServlet();
+		//设置上下文类
 		simpleDispatcherServlet.setContextClass(SimpleWebApplicationContext.class);
 		simpleDispatcherServlet.init(servletConfig);
 
@@ -98,6 +105,11 @@ public class DispatcherServletTests {
 		complexDispatcherServlet.init(complexConfig);
 	}
 
+	/**
+	 * 获取Servlet上下文
+	 *
+	 * @date 2020/10/13 9:18
+	 */
 	private ServletContext getServletContext() {
 		return servletConfig.getServletContext();
 	}
@@ -121,6 +133,11 @@ public class DispatcherServletTests {
 		complexDispatcherServlet.destroy();
 	}
 
+	/**
+	 * 无效请求
+	 *
+	 * @date 2020/10/13 9:21
+	 */
 	@Test
 	public void invalidRequest() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/invalid.do");
@@ -130,6 +147,11 @@ public class DispatcherServletTests {
 		assertTrue("correct error code", response.getStatus() == HttpServletResponse.SC_NOT_FOUND);
 	}
 
+	/**
+	 * 请求处理事件
+	 *
+	 * @date 2020/10/13 9:22
+	 */
 	@Test
 	public void requestHandledEvent() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do");
@@ -141,6 +163,11 @@ public class DispatcherServletTests {
 		assertEquals(1, listener.counter);
 	}
 
+	/**
+	 * 关闭发布活动
+	 *
+	 * @date 2020/10/13 9:22
+	 */
 	@Test
 	public void publishEventsOff() throws Exception {
 		complexDispatcherServlet.setPublishEvents(false);
@@ -153,6 +180,11 @@ public class DispatcherServletTests {
 		assertEquals(0, listener.counter);
 	}
 
+	/**
+	 * 可参数化的View Controller
+	 *
+	 * @date 2020/10/13 9:23
+	 */
 	@Test
 	public void parameterizableViewController() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/view.do");
@@ -162,6 +194,11 @@ public class DispatcherServletTests {
 		assertTrue("forwarded to form", "myform.jsp".equals(response.getForwardedUrl()));
 	}
 
+	/**
+	 * 处理程序拦截器抑制视图
+	 *
+	 * @date 2020/10/13 9:23
+	 */
 	@Test
 	public void handlerInterceptorSuppressesView() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/view.do");
@@ -172,6 +209,11 @@ public class DispatcherServletTests {
 		assertTrue("Not forwarded", response.getForwardedUrl() == null);
 	}
 
+	/**
+	 * 区域请求
+	 *
+	 * @date 2020/10/13 9:24
+	 */
 	@Test
 	public void localeRequest() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do");
@@ -182,6 +224,11 @@ public class DispatcherServletTests {
 		assertEquals("Wed, 01 Apr 2015 00:00:00 GMT", response.getHeader("Last-Modified"));
 	}
 
+	/**
+	 * 未知请求
+	 *
+	 * @date 2020/10/13 9:24
+	 */
 	@Test
 	public void unknownRequest() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/unknown.do");
@@ -191,6 +238,11 @@ public class DispatcherServletTests {
 		assertTrue("Exception exposed", request.getAttribute("exception").getClass().equals(ServletException.class));
 	}
 
+	/**
+	 * 另一个语言环境请求
+	 *
+	 * @date 2020/10/13 9:24
+	 */
 	@Test
 	public void anotherLocaleRequest() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do;abc=def");
@@ -212,6 +264,11 @@ public class DispatcherServletTests {
 		assertEquals("Wed, 01 Apr 2015 00:00:01 GMT", response.getHeader("Last-Modified"));
 	}
 
+	/**
+	 * 现有的分段请求
+	 *
+	 * @date 2020/10/13 9:25
+	 */
 	@Test
 	public void existingMultipartRequest() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do;abc=def");
@@ -228,6 +285,11 @@ public class DispatcherServletTests {
 		assertNotNull(request.getAttribute("cleanedUp"));
 	}
 
+	/**
+	 * 现有的多部分请求但被包装
+	 *
+	 * @date 2020/10/13 9:25
+	 */
 	@Test
 	public void existingMultipartRequestButWrapped() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do;abc=def");
@@ -244,6 +306,11 @@ public class DispatcherServletTests {
 		assertNotNull(request.getAttribute("cleanedUp"));
 	}
 
+	/**
+	 * 多部分解析失败
+	 *
+	 * @date 2020/10/13 9:25
+	 */
 	@Test
 	public void multipartResolutionFailed() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do;abc=def");
@@ -258,6 +325,11 @@ public class DispatcherServletTests {
 				SimpleMappingExceptionResolver.DEFAULT_EXCEPTION_ATTRIBUTE) instanceof MaxUploadSizeExceededException);
 	}
 
+	/**
+	 * 交易拦截器流产
+	 *
+	 * @date 2020/10/13 9:26
+	 */
 	@Test
 	public void handlerInterceptorAbort() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do");
@@ -275,6 +347,11 @@ public class DispatcherServletTests {
 		assertTrue(request.getAttribute("test2y") == null);
 	}
 
+	/**
+	 * 模型和视图定义异常
+	 *
+	 * @date 2020/10/13 9:26
+	 */
 	@Test
 	public void modelAndViewDefiningException() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do");
@@ -286,12 +363,16 @@ public class DispatcherServletTests {
 			complexDispatcherServlet.service(request, response);
 			assertEquals(200, response.getStatus());
 			assertTrue("forwarded to failed", "failed1.jsp".equals(response.getForwardedUrl()));
-		}
-		catch (ServletException ex) {
+		} catch (ServletException ex) {
 			fail("Should not have thrown ServletException: " + ex.getMessage());
 		}
 	}
 
+	/**
+	 * 具有特定处理程序1的简单映射异常解析器
+	 *
+	 * @date 2020/10/13 9:27
+	 */
 	@Test
 	public void simpleMappingExceptionResolverWithSpecificHandler1() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do");
@@ -305,6 +386,11 @@ public class DispatcherServletTests {
 		assertTrue("Exception exposed", request.getAttribute("exception") instanceof IllegalAccessException);
 	}
 
+	/**
+	 * 具有特定处理程序2的简单映射异常解析器
+	 *
+	 * @date 2020/10/13 9:27
+	 */
 	@Test
 	public void simpleMappingExceptionResolverWithSpecificHandler2() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do");
@@ -318,6 +404,11 @@ public class DispatcherServletTests {
 		assertTrue("Exception exposed", request.getAttribute("exception") instanceof ServletException);
 	}
 
+	/**
+	 * 具有所有处理程序的简单映射异常解析器1
+	 *
+	 * @date 2020/10/13 9:27
+	 */
 	@Test
 	public void simpleMappingExceptionResolverWithAllHandlers1() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/loc.do");
@@ -331,6 +422,11 @@ public class DispatcherServletTests {
 		assertTrue("Exception exposed", request.getAttribute("exception") instanceof IllegalAccessException);
 	}
 
+	/**
+	 * 具有所有处理程序的简单映射异常解析器2
+	 *
+	 * @date 2020/10/13 9:28
+	 */
 	@Test
 	public void simpleMappingExceptionResolverWithAllHandlers2() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/loc.do");
@@ -344,6 +440,11 @@ public class DispatcherServletTests {
 		assertTrue("Exception exposed", request.getAttribute("exception") instanceof ServletException);
 	}
 
+	/**
+	 * 具有默认错误视图的简单映射异常解析器
+	 *
+	 * @date 2020/10/13 9:28
+	 */
 	@Test
 	public void simpleMappingExceptionResolverWithDefaultErrorView() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do");
@@ -357,6 +458,11 @@ public class DispatcherServletTests {
 		assertTrue("Exception exposed", request.getAttribute("exception").getClass().equals(RuntimeException.class));
 	}
 
+	/**
+	 * 语言环境更改拦截器1
+	 *
+	 * @date 2020/10/13 9:28
+	 */
 	@Test
 	public void localeChangeInterceptor1() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do");
@@ -370,6 +476,11 @@ public class DispatcherServletTests {
 		assertTrue("Exception exposed", request.getAttribute("exception").getClass().equals(ServletException.class));
 	}
 
+	/**
+	 * 语言环境更改拦截器2
+	 *
+	 * @date 2020/10/13 9:29
+	 */
 	@Test
 	public void localeChangeInterceptor2() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do");
@@ -382,6 +493,11 @@ public class DispatcherServletTests {
 		assertTrue("Not forwarded", response.getForwardedUrl() == null);
 	}
 
+	/**
+	 * 主题变更拦截器1
+	 *
+	 * @date 2020/10/13 9:29
+	 */
 	@Test
 	public void themeChangeInterceptor1() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do");
@@ -395,6 +511,11 @@ public class DispatcherServletTests {
 		assertTrue("Exception exposed", request.getAttribute("exception").getClass().equals(ServletException.class));
 	}
 
+	/**
+	 * 主题更改拦截器2
+	 *
+	 * @date 2020/10/13 9:29
+	 */
 	@Test
 	public void themeChangeInterceptor2() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do");
@@ -406,12 +527,16 @@ public class DispatcherServletTests {
 		try {
 			complexDispatcherServlet.service(request, response);
 			assertTrue("Not forwarded", response.getForwardedUrl() == null);
-		}
-		catch (ServletException ex) {
+		} catch (ServletException ex) {
 			fail("Should not have thrown ServletException: " + ex.getMessage());
 		}
 	}
 
+	/**
+	 * 未经授权
+	 *
+	 * @date 2020/10/13 9:29
+	 */
 	@Test
 	public void notAuthorized() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/locale.do");
@@ -420,12 +545,16 @@ public class DispatcherServletTests {
 		try {
 			complexDispatcherServlet.service(request, response);
 			assertTrue("Correct response", response.getStatus() == HttpServletResponse.SC_FORBIDDEN);
-		}
-		catch (ServletException ex) {
+		} catch (ServletException ex) {
 			fail("Should not have thrown ServletException: " + ex.getMessage());
 		}
 	}
 
+	/**
+	 * 显式处理的head方法
+	 *
+	 * @date 2020/10/13 9:30
+	 */
 	@Test
 	public void headMethodWithExplicitHandling() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "HEAD", "/head.do");
@@ -439,6 +568,11 @@ public class DispatcherServletTests {
 		assertEquals("", response.getContentAsString());
 	}
 
+	/**
+	 * 没有实体响应的头部方法
+	 *
+	 * @date 2020/10/13 9:31
+	 */
 	@Test
 	public void headMethodWithNoBodyResponse() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "HEAD", "/body.do");
@@ -452,6 +586,11 @@ public class DispatcherServletTests {
 		assertEquals("body", response.getContentAsString());
 	}
 
+	/**
+	 * 未检测到所有处理程序映射
+	 *
+	 * @date 2020/10/13 9:32
+	 */
 	@Test
 	public void notDetectAllHandlerMappings() throws ServletException, IOException {
 		DispatcherServlet complexDispatcherServlet = new DispatcherServlet();
@@ -466,6 +605,11 @@ public class DispatcherServletTests {
 		assertTrue(response.getStatus() == HttpServletResponse.SC_NOT_FOUND);
 	}
 
+	/**
+	 * 处理程序未映射为自动检测
+	 *
+	 * @date 2020/10/13 9:32
+	 */
 	@Test
 	public void handlerNotMappedWithAutodetect() throws ServletException, IOException {
 		DispatcherServlet complexDispatcherServlet = new DispatcherServlet();
@@ -480,6 +624,11 @@ public class DispatcherServletTests {
 		assertEquals(HttpServletResponse.SC_NOT_FOUND, response.getStatus());
 	}
 
+	/**
+	 * 从父级检测处理程序映射
+	 *
+	 * @date 2020/10/13 9:32
+	 */
 	@Test
 	public void detectHandlerMappingFromParent() throws ServletException, IOException {
 		// create a parent context that includes a mapping
@@ -510,6 +659,11 @@ public class DispatcherServletTests {
 				response.getStatus() == HttpServletResponse.SC_NOT_FOUND);
 	}
 
+	/**
+	 * 检测所有处理程序适配器
+	 *
+	 * @date 2020/10/13 9:32
+	 */
 	@Test
 	public void detectAllHandlerAdapters() throws ServletException, IOException {
 		DispatcherServlet complexDispatcherServlet = new DispatcherServlet();
@@ -527,6 +681,11 @@ public class DispatcherServletTests {
 		complexDispatcherServlet.service(request, response);
 	}
 
+	/**
+	 * 未检测到所有处理程序适配器
+	 *
+	 * @date 2020/10/13 9:33
+	 */
 	@Test
 	public void notDetectAllHandlerAdapters() throws ServletException, IOException {
 		DispatcherServlet complexDispatcherServlet = new DispatcherServlet();
@@ -549,6 +708,11 @@ public class DispatcherServletTests {
 		assertTrue("Exception exposed", request.getAttribute("exception").getClass().equals(ServletException.class));
 	}
 
+	/**
+	 * 不检测所有处理程序异常解析器
+	 *
+	 * @date 2020/10/13 9:33
+	 */
 	@Test
 	public void notDetectAllHandlerExceptionResolvers() throws ServletException, IOException {
 		DispatcherServlet complexDispatcherServlet = new DispatcherServlet();
@@ -562,13 +726,17 @@ public class DispatcherServletTests {
 		try {
 			complexDispatcherServlet.service(request, response);
 			fail("Should have thrown ServletException");
-		}
-		catch (ServletException ex) {
+		} catch (ServletException ex) {
 			// expected
 			assertTrue(ex.getMessage().contains("No adapter for handler"));
 		}
 	}
 
+	/**
+	 * 不能检测所有视图解析器
+	 *
+	 * @date 2020/10/13 9:33
+	 */
 	@Test
 	public void notDetectAllViewResolvers() throws ServletException, IOException {
 		DispatcherServlet complexDispatcherServlet = new DispatcherServlet();
@@ -582,13 +750,17 @@ public class DispatcherServletTests {
 		try {
 			complexDispatcherServlet.service(request, response);
 			fail("Should have thrown ServletException");
-		}
-		catch (ServletException ex) {
+		} catch (ServletException ex) {
 			// expected
 			assertTrue(ex.getMessage().contains("failed0"));
 		}
 	}
 
+	/**
+	 * 如果找不到处理程序，则引发异常
+	 *
+	 * @date 2020/10/13 9:33
+	 */
 	@Test
 	public void throwExceptionIfNoHandlerFound() throws ServletException, IOException {
 		DispatcherServlet complexDispatcherServlet = new DispatcherServlet();
@@ -605,7 +777,11 @@ public class DispatcherServletTests {
 	}
 
 	// SPR-12984
-
+	/**
+	 * 找不到处理程序异常消息
+	 *
+	 * @date 2020/10/13 9:34
+	 */
 	@Test
 	public void noHandlerFoundExceptionMessage() {
 		HttpHeaders headers = new HttpHeaders();
@@ -615,6 +791,11 @@ public class DispatcherServletTests {
 		assertTrue(!ex.toString().contains("bar"));
 	}
 
+	/**
+	 * 包含删除后的清理
+	 *
+	 * @date 2020/10/13 9:34
+	 */
 	@Test
 	public void cleanupAfterIncludeWithRemove() throws ServletException, IOException {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/main.do");
@@ -635,6 +816,11 @@ public class DispatcherServletTests {
 		assertNull(request.getAttribute("command"));
 	}
 
+	/**
+	 * 包括还原后进行清理
+	 *
+	 * @date 2020/10/13 9:34
+	 */
 	@Test
 	public void cleanupAfterIncludeWithRestore() throws ServletException, IOException {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/main.do");
@@ -655,6 +841,11 @@ public class DispatcherServletTests {
 		assertSame(wac, request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE));
 	}
 
+	/**
+	 * 包含后不清除
+	 *
+	 * @date 2020/10/13 9:34
+	 */
 	@Test
 	public void noCleanupAfterInclude() throws ServletException, IOException {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/main.do");
@@ -676,6 +867,11 @@ public class DispatcherServletTests {
 		assertSame(wac, request.getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE));
 	}
 
+	/**
+	 * Servlet处理程序适配器
+	 *
+	 * @date 2020/10/13 9:35
+	 */
 	@Test
 	public void servletHandlerAdapter() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "GET", "/servlet.do");
@@ -690,6 +886,11 @@ public class DispatcherServletTests {
 		assertNull(myServlet.getServletConfig());
 	}
 
+	/**
+	 * 没有视图
+	 *
+	 * @date 2020/10/13 9:35
+	 */
 	@Test
 	public void withNoView() throws Exception {
 		MockServletContext servletContext = new MockServletContext();
@@ -700,6 +901,11 @@ public class DispatcherServletTests {
 		assertEquals("noview.jsp", response.getForwardedUrl());
 	}
 
+	/**
+	 * 没有嵌套视图
+	 *
+	 * @date 2020/10/13 9:36
+	 */
 	@Test
 	public void withNoViewNested() throws Exception {
 		MockServletContext servletContext = new MockServletContext();
@@ -710,6 +916,11 @@ public class DispatcherServletTests {
 		assertEquals("noview/simple.jsp", response.getForwardedUrl());
 	}
 
+	/**
+	 * 没有视图和相同的路径
+	 *
+	 * @date 2020/10/13 9:36
+	 */
 	@Test
 	public void withNoViewAndSamePath() throws Exception {
 		InternalResourceViewResolver vr = (InternalResourceViewResolver) complexDispatcherServlet
@@ -723,12 +934,16 @@ public class DispatcherServletTests {
 		try {
 			complexDispatcherServlet.service(request, response);
 			fail("Should have thrown ServletException");
-		}
-		catch (ServletException ex) {
+		} catch (ServletException ex) {
 			ex.printStackTrace();
 		}
 	}
 
+	/**
+	 * 调度程序Servlet刷新
+	 *
+	 * @date 2020/10/13 9:36
+	 */
 	@Test
 	public void dispatcherServletRefresh() throws ServletException {
 		MockServletContext servletContext = new MockServletContext("org/springframework/web/context");
@@ -760,6 +975,11 @@ public class DispatcherServletTests {
 		servlet.destroy();
 	}
 
+	/**
+	 * 调度程序Servlet上下文刷新
+	 *
+	 * @date 2020/10/13 9:36
+	 */
 	@Test
 	public void dispatcherServletContextRefresh() throws ServletException {
 		MockServletContext servletContext = new MockServletContext("org/springframework/web/context");
@@ -791,6 +1011,11 @@ public class DispatcherServletTests {
 		servlet.destroy();
 	}
 
+	/**
+	 * 环境运营
+	 *
+	 * @date 2020/10/13 9:36
+	 */
 	@Test
 	public void environmentOperations() {
 		DispatcherServlet servlet = new DispatcherServlet();
@@ -802,10 +1027,10 @@ public class DispatcherServletTests {
 		try {
 			servlet.setEnvironment(new DummyEnvironment());
 			fail("expected IllegalArgumentException for non-configurable Environment");
+		} catch (IllegalArgumentException ex) {
 		}
-		catch (IllegalArgumentException ex) {
+		class CustomServletEnvironment extends StandardServletEnvironment {
 		}
-		class CustomServletEnvironment extends StandardServletEnvironment { }
 		@SuppressWarnings("serial")
 		DispatcherServlet custom = new DispatcherServlet() {
 			@Override
@@ -816,6 +1041,11 @@ public class DispatcherServletTests {
 		assertThat(custom.getEnvironment(), instanceOf(CustomServletEnvironment.class));
 	}
 
+	/**
+	 * 允许的选项包括补丁方法
+	 *
+	 * @date 2020/10/13 9:37
+	 */
 	@Test
 	public void allowedOptionsIncludesPatchMethod() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest(getServletContext(), "OPTIONS", "/foo");
@@ -827,6 +1057,11 @@ public class DispatcherServletTests {
 		assertThat(response.getHeader("Allow"), equalTo("GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH"));
 	}
 
+	/**
+	 * 上下文初始化器
+	 *
+	 * @date 2020/10/13 9:37
+	 */
 	@Test
 	public void contextInitializers() throws Exception {
 		DispatcherServlet servlet = new DispatcherServlet();
@@ -837,6 +1072,11 @@ public class DispatcherServletTests {
 		assertEquals("true", getServletContext().getAttribute("otherInitialized"));
 	}
 
+	/**
+	 * 上下文初始化器类
+	 *
+	 * @date 2020/10/13 9:37
+	 */
 	@Test
 	public void contextInitializerClasses() throws Exception {
 		DispatcherServlet servlet = new DispatcherServlet();
@@ -848,6 +1088,11 @@ public class DispatcherServletTests {
 		assertEquals("true", getServletContext().getAttribute("otherInitialized"));
 	}
 
+	/**
+	 * 全局初始化器类
+	 *
+	 * @date 2020/10/13 9:37
+	 */
 	@Test
 	public void globalInitializerClasses() throws Exception {
 		DispatcherServlet servlet = new DispatcherServlet();
@@ -859,6 +1104,11 @@ public class DispatcherServletTests {
 		assertEquals("true", getServletContext().getAttribute("otherInitialized"));
 	}
 
+	/**
+	 * 混合初始化器类
+	 *
+	 * @date 2020/10/13 9:38
+	 */
 	@Test
 	public void mixedInitializerClasses() throws Exception {
 		DispatcherServlet servlet = new DispatcherServlet();
@@ -881,6 +1131,11 @@ public class DispatcherServletTests {
 	}
 
 
+	/**
+	 * 测试Web上下文初始化器
+	 *
+	 * @date 2020/10/13 9:39
+	 */
 	private static class TestWebContextInitializer
 			implements ApplicationContextInitializer<ConfigurableWebApplicationContext> {
 
@@ -890,7 +1145,11 @@ public class DispatcherServletTests {
 		}
 	}
 
-
+	/**
+	 * 其他Web上下文初始化器
+	 *
+	 * @date 2020/10/13 9:39
+	 */
 	private static class OtherWebContextInitializer
 			implements ApplicationContextInitializer<ConfigurableWebApplicationContext> {
 

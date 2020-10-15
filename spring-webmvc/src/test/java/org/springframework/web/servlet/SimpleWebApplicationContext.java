@@ -41,6 +41,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.XmlViewResolver;
 
 /**
+ * 简单的Web应用程序上下文
+ *
  * @author Juergen Hoeller
  * @since 21.05.2003
  */
@@ -67,9 +69,18 @@ public class SimpleWebApplicationContext extends StaticWebApplicationContext {
 		super.refresh();
 	}
 
-
+	/**
+	 * 语言环境检查器
+	 *
+	 * @date 2020/10/13 11:01
+	 */
 	public static class LocaleChecker implements Controller, LastModified {
 
+		/**
+		 * 处理请求
+		 *
+		 * @date 2020/10/13 11:01
+		 */
 		@Override
 		public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
 				throws ServletException, IOException {
@@ -86,13 +97,22 @@ public class SimpleWebApplicationContext extends StaticWebApplicationContext {
 			return null;
 		}
 
+		/**
+		 * 获取上次修改时间
+		 *
+		 * @date 2020/10/13 11:01
+		 */
 		@Override
 		public long getLastModified(HttpServletRequest request) {
 			return 1427846400000L;
 		}
 	}
 
-
+	/**
+	 * 虚拟主题源
+	 *
+	 * @date 2020/10/13 11:01
+	 */
 	public static class DummyThemeSource implements ThemeSource {
 
 		private StaticMessageSource messageSource;
@@ -107,8 +127,7 @@ public class SimpleWebApplicationContext extends StaticWebApplicationContext {
 		public Theme getTheme(String themeName) {
 			if (AbstractThemeResolver.ORIGINAL_DEFAULT_THEME_NAME.equals(themeName)) {
 				return new SimpleTheme(AbstractThemeResolver.ORIGINAL_DEFAULT_THEME_NAME, this.messageSource);
-			}
-			else {
+			} else {
 				return null;
 			}
 		}
