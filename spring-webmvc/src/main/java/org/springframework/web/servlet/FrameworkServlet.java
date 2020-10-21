@@ -73,20 +73,30 @@ import org.springframework.web.util.WebUtils;
 /**
  * Base servlet for Spring's web framework. Provides integration with
  * a Spring application context, in a JavaBean-based overall solution.
+ * <p>
+ * Spring Web框架的基础servlet。在基于JavaBean的整体解决方案中提供与Spring应用程序上下文的集成。
  *
  * <p>This class offers the following functionality:
+ * 此类提供以下功能：
  * <ul>
  * <li>Manages a {@link org.springframework.web.context.WebApplicationContext
  * WebApplicationContext} instance per servlet. The servlet's configuration is determined
  * by beans in the servlet's namespace.
+ * 每个servlet管理一个{@link org.springframework.web.context.WebApplicationContext}实例。
+ * servlet的配置由servlet名称空间中的bean确定。
+ *
  * <li>Publishes events on request processing, whether or not a request is
  * successfully handled.
+ * 发布有关请求处理的事件，无论是否成功处理了请求。
  * </ul>
  *
  * <p>Subclasses must implement {@link #doService} to handle requests. Because this extends
  * {@link HttpServletBean} rather than HttpServlet directly, bean properties are
  * automatically mapped onto it. Subclasses can override {@link #initFrameworkServlet()}
  * for custom initialization.
+ * <p>
+ * 子类必须实现{@link #doService}才能处理请求。因为它扩展了{@link HttpServletBean}而不是直接扩展HttpServlet，
+ * 所以bean属性会自动映射到它。子类可以重写{@link #initFrameworkServlet()} 以进行自定义初始化。
  *
  * <p>Detects a "contextClass" parameter at the servlet init-param level,
  * falling back to the default context class,
@@ -95,6 +105,10 @@ import org.springframework.web.util.WebUtils;
  * {@code FrameworkServlet}, a custom context class needs to implement the
  * {@link org.springframework.web.context.ConfigurableWebApplicationContext
  * ConfigurableWebApplicationContext} SPI.
+ * <p>
+ * 如果未找到，则在servlet初始化参数级别检测“contextClass”参数，返回默认上下文类，
+ * {@link org.springframework.web.context.support.XmlWebApplicationContext}。
+ * 请注意，使用默认的{@code FrameworkServlet}，自定义上下文类需要实现{@link org.springframework.web.context.ConfigurableWebApplicationContext} SPI。
  *
  * <p>Accepts an optional "contextInitializerClasses" servlet init-param that
  * specifies one or more {@link org.springframework.context.ApplicationContextInitializer
@@ -105,27 +119,49 @@ import org.springframework.web.util.WebUtils;
  * environment}. See also {@link org.springframework.web.context.ContextLoader} which
  * supports a "contextInitializerClasses" context-param with identical semantics for
  * the "root" web application context.
+ * <p>
+ * 接受一个可选的“contextInitializerClasses” servlet初始化参数，
+ * 该参数指定一个或多个{@link org.springframework.context.ApplicationContextInitializer}类。
+ * 托管的Web应用程序上下文将*委派给这些初始化程序，从而允许进行其他编程配置，
+ * 例如针对{@linkplain org.springframework.context.ConfigurableApplicationContext#getEnvironmen()上下文的环境}
+ * 添加属性源或激活配置文件。另请参见{@link org.springframework.web.context.ContextLoader}，
+ * 其中支持具有“root” Web应用程序上下文相同语义的“contextInitializerClasses”上下文参数。
  *
  * <p>Passes a "contextConfigLocation" servlet init-param to the context instance,
  * parsing it into potentially multiple file paths which can be separated by any
  * number of commas and spaces, like "test-servlet.xml, myServlet.xml".
  * If not explicitly specified, the context implementation is supposed to build a
  * default location from the namespace of the servlet.
+ * <p>
+ * 将“contextConfigLocation” servlet的init-param传递给上下文实例，将其解析为潜在的多个文件路径，
+ * 这些路径可以由任意数量的逗号和空格分隔，例如“test-servlet.xml，myServlet.xml”。
+ * 如果未明确指定，则上下文实现应从servlet的名称空间构建默认位置。
  *
  * <p>Note: In case of multiple config locations, later bean definitions will
  * override ones defined in earlier loaded files, at least when using Spring's
  * default ApplicationContext implementation. This can be leveraged to
  * deliberately override certain bean definitions via an extra XML file.
+ * <p>
+ * 注意：如果有多个配置位置，则至少在使用Spring的默认ApplicationContext实现时，以后的Bean定义将覆盖在较早加载的文件中定义的定义。
+ * 可以利用它来通过一个额外的XML文件故意覆盖某些bean定义。
  *
  * <p>The default namespace is "'servlet-name'-servlet", e.g. "test-servlet" for a
  * servlet-name "test" (leading to a "/WEB-INF/test-servlet.xml" default location
  * with XmlWebApplicationContext). The namespace can also be set explicitly via
  * the "namespace" servlet init-param.
+ * <p>
+ * 默认名称空间是“'servlet-name'-servlet”，例如servlet名称为“test”的“test-servlet”
+ * （使用XmlWebApplicationContext指向“ /WEB-INF/test-servlet.xml”的默认位置）。
+ * 命名空间也可以通过“命名空间” servlet init-param进行显式设置。
  *
  * <p>As of Spring 3.1, {@code FrameworkServlet} may now be injected with a web
  * application context, rather than creating its own internally. This is useful in Servlet
  * 3.0+ environments, which support programmatic registration of servlet instances. See
  * {@link #FrameworkServlet(WebApplicationContext)} Javadoc for details.
+ * <p>
+ * 从Spring 3.1开始，{@code FrameworkServlet}现在可以注入一个Web 应用程序上下文，
+ * 而不是在内部创建自己的上下文。这在Servlet * 3.0+环境中非常有用，该环境支持以编程方式注册Servlet实例。
+ * 有关详细信息，请参见{@link #FrameworkServlet（WebApplicationContext）} Javadoc。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -182,6 +218,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 	/**
 	 * WebApplicationContext id to assign.
+	 * 要分配的WebApplicationContext ID。
 	 */
 	@Nullable
 	private String contextId;
@@ -245,6 +282,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 	/**
 	 * WebApplicationContext for this servlet.
+	 * 此Servlet的WebApplicationContext。
 	 */
 	@Nullable
 	private WebApplicationContext webApplicationContext;
@@ -400,6 +438,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	/**
 	 * Return the namespace for this servlet, falling back to default scheme if
 	 * no custom namespace was set: e.g. "test-servlet" for a servlet named "test".
+	 * 返回此Servlet的名称空间，如果没有设置自定义名称空间，则返回默认方案：“test-servlet”用于名为“test”的servlet。
 	 */
 	public String getNamespace() {
 		return (this.namespace != null ? this.namespace : getServletName() + DEFAULT_NAMESPACE_SUFFIX);
@@ -489,18 +528,30 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	/**
 	 * Set whether this servlet should dispatch an HTTP OPTIONS request to
 	 * the {@link #doService} method.
+	 * <p>
+	 * 设置此Servlet是否应将HTTP OPTIONS请求分派给{@link #doService}方法。
+	 *
 	 * <p>Default in the {@code FrameworkServlet} is "false", applying
 	 * {@link javax.servlet.http.HttpServlet}'s default behavior (i.e.enumerating
 	 * all standard HTTP request methods as a response to the OPTIONS request).
 	 * Note however that as of 4.3 the {@code DispatcherServlet} sets this
 	 * property to "true" by default due to its built-in support for OPTIONS.
+	 * <p>
+	 * {@code FrameworkServlet}中的默认值为“false”，
+	 * 应用{@link javax.servlet.http.HttpServlet}的默认行为（即，枚举所有标准HTTP请求方法作为对OPTIONS请求的响应）。
+	 * 但是请注意，由于其内置的对OPTIONS的支持，从4.3版本开始，{@code DispatcherServlet}将此属性默认设置为“true”。
+	 *
 	 * <p>Turn this flag on if you prefer OPTIONS requests to go through the
 	 * regular dispatching chain, just like other HTTP requests. This usually
 	 * means that your controllers will receive those requests; make sure
 	 * that those endpoints are actually able to handle an OPTIONS request.
+	 * 如果您希望OPTIONS请求像其他HTTP请求一样通过常规调度链，请打开此标志。
+	 * 这通常表示您的控制器将收到这些请求；确保那些端点实际上能够处理OPTIONS请求。
+	 *
 	 * <p>Note that HttpServlet's default OPTIONS processing will be applied
 	 * in any case if your controllers happen to not set the 'Allow' header
 	 * (as required for an OPTIONS response).
+	 * 注意，在任何情况下，如果您的控制器碰巧未设置“Allow”标头，则将应用HttpServlet的默认OPTIONS处理（这是OPTIONS响应所必需的）。
 	 */
 	public void setDispatchOptionsRequest(boolean dispatchOptionsRequest) {
 		this.dispatchOptionsRequest = dispatchOptionsRequest;
@@ -567,6 +618,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	/**
 	 * Overridden method of {@link HttpServletBean}, invoked after any bean properties
 	 * have been set. Creates this servlet's WebApplicationContext.
+	 * {@link HttpServletBean}的重写方法，在设置任何bean属性后调用。创建此Servlet的WebApplicationContext。
 	 */
 	@Override
 	protected final void initServletBean() throws ServletException {
@@ -599,8 +651,11 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 	/**
 	 * Initialize and publish the WebApplicationContext for this servlet.
+	 * 初始化并发布此Servlet的WebApplicationContext。
+	 *
 	 * <p>Delegates to {@link #createWebApplicationContext} for actual creation
 	 * of the context. Can be overridden in subclasses.
+	 * 委托给{@link #createWebApplicationContext}进行上下文的实际创建。可以在子类中覆盖
 	 *
 	 * @return the WebApplicationContext instance
 	 * @see #FrameworkServlet(WebApplicationContext)
@@ -608,21 +663,24 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * @see #setContextConfigLocation
 	 */
 	protected WebApplicationContext initWebApplicationContext() {
+		//应用程序根上下文
 		WebApplicationContext rootContext =
 				WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 		WebApplicationContext wac = null;
-
 		if (this.webApplicationContext != null) {
 			// A context instance was injected at construction time -> use it
+			//在构造时注入了一个上下文实例->使用它
 			wac = this.webApplicationContext;
 			if (wac instanceof ConfigurableWebApplicationContext) {
 				ConfigurableWebApplicationContext cwac = (ConfigurableWebApplicationContext) wac;
 				if (!cwac.isActive()) {
 					// The context has not yet been refreshed -> provide services such as
 					// setting the parent context, setting the application context id, etc
+					//上下文还没有被刷新——>提供了诸如设置父上下文、设置应用程序上下文id等服务
 					if (cwac.getParent() == null) {
 						// The context instance was injected without an explicit parent -> set
 						// the root application context (if any; may be null) as the parent
+						//上下文实例在没有显式父级的情况下被注入->将根应用程序上下文（如果有的话；可以为null）设置为父级
 						cwac.setParent(rootContext);
 					}
 					configureAndRefreshWebApplicationContext(cwac);
@@ -722,21 +780,35 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		return wac;
 	}
 
+	/**
+	 * 配置和刷新Web应用程序上下文
+	 *
+	 * @param wac 程序上下文
+	 * @return
+	 * @date 2020/10/21 17:20
+	 */
 	protected void configureAndRefreshWebApplicationContext(ConfigurableWebApplicationContext wac) {
+		String string = ObjectUtils.identityToString(wac);
+		System.out.println("ObjectUtils.identityToString(wac)=======================》" + string);
+		System.out.println(ObjectUtils.identityToString(wac));
 		if (ObjectUtils.identityToString(wac).equals(wac.getId())) {
 			// The application context id is still set to its original default value
 			// -> assign a more useful id based on available information
+			//应用程序上下文id仍然设置为其原始默认值->根据可用信息分配更有用的id
 			if (this.contextId != null) {
 				wac.setId(this.contextId);
 			} else {
 				// Generate default id...
+				//生成默认id…
 				wac.setId(ConfigurableWebApplicationContext.APPLICATION_CONTEXT_ID_PREFIX +
 						ObjectUtils.getDisplayString(getServletContext().getContextPath()) + '/' + getServletName());
 			}
 		}
-
+		//设置上下文
 		wac.setServletContext(getServletContext());
+		//设置上下文配置
 		wac.setServletConfig(getServletConfig());
+		//设置命名空间
 		wac.setNamespace(getNamespace());
 		wac.addApplicationListener(new SourceFilteringListener(wac, new ContextRefreshListener()));
 

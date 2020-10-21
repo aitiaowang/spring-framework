@@ -406,15 +406,30 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * init-params. Typically used in Servlet 2.5 or earlier environments, where the only
 	 * option for servlet registration is through {@code web.xml} which requires the use
 	 * of a no-arg constructor.
+	 *
+	 * 创建一个新的{@code DispatcherServlet}，它将根据servlet init参数提供的默认值和值创建自己的内部web应用程序上下文。
+	 * 通常用在Servlet 2.5或更早的环境中，其中Servlet注册的唯一选项是通过{@code web.xml}进行的，这需要使用无参数的构造函数。
+	 *
 	 * <p>Calling {@link #setContextConfigLocation} (init-param 'contextConfigLocation')
 	 * will dictate which XML files will be loaded by the
 	 * {@linkplain #DEFAULT_CONTEXT_CLASS default XmlWebApplicationContext}
+	 *
+	 * 调用{@link #setContextConfigLocation}（init-param'contextConfigLocation'）将指示
+	 * {@linkplain #DEFAULT_CONTEXT_CLASS default XmlWebApplicationContext}将加载哪些XML文件。
+	 *
 	 * <p>Calling {@link #setContextClass} (init-param 'contextClass') overrides the
 	 * default {@code XmlWebApplicationContext} and allows for specifying an alternative class,
 	 * such as {@code AnnotationConfigWebApplicationContext}.
+	 *
+	 * 调用{@link #setContextClass}（init-param'contextClass'）将覆盖默认的{@code XmlWebApplicationContext}并允许指定替代类，
+	 * 例如{@code AnnotationConfigWebApplicationContext}。
+	 *
 	 * <p>Calling {@link #setContextInitializerClasses} (init-param 'contextInitializerClasses')
 	 * indicates which {@code ApplicationContextInitializer} classes should be used to
 	 * further configure the internal application context prior to refresh().
+	 *
+	 * 调用{@link #setContextInitializerClasses（init-param'contextInitializerClasses'）指示应使用哪个
+	 * {@code ApplicationContextInitializer}类来在refresh（）之前进一步配置内部应用程序上下文。
 	 *
 	 * @see #DispatcherServlet(WebApplicationContext)
 	 */

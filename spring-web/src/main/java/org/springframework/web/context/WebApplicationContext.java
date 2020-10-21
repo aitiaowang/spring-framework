@@ -39,16 +39,20 @@ import org.springframework.lang.Nullable;
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
- * @since January 19, 2001
  * @see ServletContextAware#setServletContext
+ * @since January 19, 2001
  */
 public interface WebApplicationContext extends ApplicationContext {
 
 	/**
 	 * Context attribute to bind root WebApplicationContext to on successful startup.
+	 * 成功启动时将根WebApplicationContext绑定到的Context属性。
+	 *
 	 * <p>Note: If the startup of the root context fails, this attribute can contain
 	 * an exception or error as value. Use WebApplicationContextUtils for convenient
 	 * lookup of the root WebApplicationContext.
+	 * 注意：如果根上下文的启动失败，则此属性可以包含异常或错误作为值。使用WebApplicationContextUtils方便查找​​根WebApplicationContext。
+	 *
 	 * @see org.springframework.web.context.support.WebApplicationContextUtils#getWebApplicationContext
 	 * @see org.springframework.web.context.support.WebApplicationContextUtils#getRequiredWebApplicationContext
 	 */
@@ -74,6 +78,7 @@ public interface WebApplicationContext extends ApplicationContext {
 
 	/**
 	 * Name of the ServletContext environment bean in the factory.
+	 *
 	 * @see javax.servlet.ServletContext
 	 */
 	String SERVLET_CONTEXT_BEAN_NAME = "servletContext";
@@ -82,6 +87,7 @@ public interface WebApplicationContext extends ApplicationContext {
 	 * Name of the ServletContext init-params environment bean in the factory.
 	 * <p>Note: Possibly merged with ServletConfig parameters.
 	 * ServletConfig parameters override ServletContext parameters of the same name.
+	 *
 	 * @see javax.servlet.ServletContext#getInitParameterNames()
 	 * @see javax.servlet.ServletContext#getInitParameter(String)
 	 * @see javax.servlet.ServletConfig#getInitParameterNames()
@@ -91,6 +97,7 @@ public interface WebApplicationContext extends ApplicationContext {
 
 	/**
 	 * Name of the ServletContext attributes environment bean in the factory.
+	 *
 	 * @see javax.servlet.ServletContext#getAttributeNames()
 	 * @see javax.servlet.ServletContext#getAttribute(String)
 	 */

@@ -23,11 +23,11 @@ import org.springframework.lang.Nullable;
  * that of a parent object.
  *
  * @author Rob Harrop
- * @since 2.0
  * @see org.springframework.beans.factory.support.ManagedSet
  * @see org.springframework.beans.factory.support.ManagedList
  * @see org.springframework.beans.factory.support.ManagedMap
  * @see org.springframework.beans.factory.support.ManagedProperties
+ * @since 2.0
  */
 public interface Mergeable {
 
@@ -38,13 +38,18 @@ public interface Mergeable {
 
 	/**
 	 * Merge the current value set with that of the supplied object.
+	 * 将当前设置的值与提供的对象的设置合并。
+	 *
 	 * <p>The supplied object is considered the parent, and values in
 	 * the callee's value set must override those of the supplied object.
-	 * @param parent the object to merge with
-	 * @return the result of the merge operation
-	 * @throws IllegalArgumentException if the supplied parent is {@code null}
-	 * @throws IllegalStateException if merging is not enabled for this instance
-	 * (i.e. {@code mergeEnabled} equals {@code false}).
+	 * 提供的对象被视为父对象，并且被调用者的值集中的值必须覆盖提供的对象的值。
+	 *
+	 * @param parent the object to merge with   要合并的对象
+	 * @return the result of the merge operation  合并操作的结果
+	 * @throws IllegalArgumentException if the supplied parent is {@code null}  如果提供的父母是{@code null}
+	 * @throws IllegalStateException    if merging is not enabled for this instance
+	 *                                  (i.e. {@code mergeEnabled} equals {@code false}).
+	 *                                  如果未为此实例启用合并（即{@code mergeEnabled}等于{@code false}）。
 	 */
 	Object merge(@Nullable Object parent);
 

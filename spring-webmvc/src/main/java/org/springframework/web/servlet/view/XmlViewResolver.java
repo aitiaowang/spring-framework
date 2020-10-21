@@ -38,27 +38,40 @@ import org.springframework.web.servlet.View;
  * bean definitions in a dedicated XML file for view definitions, specified by
  * resource location. The file will typically be located in the WEB-INF directory;
  * the default is "/WEB-INF/views.xml".
+ * <p>
+ * 一个{@link org.springframework.web.servlet.ViewResolver}实现，
+ * 该实现使用专用XML文件中的bean定义作为资源位置指定的视图定义。
+ * 该文件通常位于WEB-INF目录中。 默认值为“/WEB-INF/views.xml”。
  *
  * <p>This {@code ViewResolver} does not support internationalization at the level
  * of its definition resources. Consider {@link ResourceBundleViewResolver} if you
  * need to apply different view resources per locale.
+ * {@code ViewResolver}在其定义资源的级别上不支持国际化。如果需要在每个语言环境中应用不同的视图资源，
+ * 请考虑使用{@link ResourceBundleViewResolver}。
  *
  * <p>Note: This {@code ViewResolver} implements the {@link Ordered} interface
  * in order to allow for flexible participation in {@code ViewResolver} chaining.
  * For example, some special views could be defined via this {@code ViewResolver}
  * (giving it 0 as "order" value), while all remaining views could be resolved by
  * a {@link UrlBasedViewResolver}.
+ * <p>
+ * 注意：此{@code ViewResolver}实现了{@link Ordered}接口，以便灵活地参与{@code ViewResolver}链接。
+ * 例如，可以通过此{@code ViewResolver} 定义一些特殊的视图（将其0表示为“order”值），
+ * 而所有其余的视图都可以由{@link UrlBasedViewResolver}解析。
  *
  * @author Juergen Hoeller
- * @since 18.06.2003
  * @see org.springframework.context.ApplicationContext#getResource
  * @see ResourceBundleViewResolver
  * @see UrlBasedViewResolver
+ * @since 18.06.2003
  */
 public class XmlViewResolver extends AbstractCachingViewResolver
 		implements Ordered, InitializingBean, DisposableBean {
 
-	/** Default if no other location is supplied. */
+	/**
+	 * Default if no other location is supplied.
+	 * 如果未提供其他位置，则为默认值。
+	 */
 	public static final String DEFAULT_LOCATION = "/WEB-INF/views.xml";
 
 
@@ -74,6 +87,7 @@ public class XmlViewResolver extends AbstractCachingViewResolver
 	/**
 	 * Set the location of the XML file that defines the view beans.
 	 * <p>The default is "/WEB-INF/views.xml".
+	 *
 	 * @param location the location of the XML file.
 	 */
 	public void setLocation(Resource location) {
@@ -83,6 +97,7 @@ public class XmlViewResolver extends AbstractCachingViewResolver
 	/**
 	 * Specify the order value for this ViewResolver bean.
 	 * <p>The default value is {@code Ordered.LOWEST_PRECEDENCE}, meaning non-ordered.
+	 *
 	 * @see org.springframework.core.Ordered#getOrder()
 	 */
 	public void setOrder(int order) {
@@ -120,8 +135,7 @@ public class XmlViewResolver extends AbstractCachingViewResolver
 		BeanFactory factory = initFactory();
 		try {
 			return factory.getBean(viewName, View.class);
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			// Allow for ViewResolver chaining...
 			return null;
 		}
@@ -130,6 +144,7 @@ public class XmlViewResolver extends AbstractCachingViewResolver
 	/**
 	 * Initialize the view bean factory from the XML file.
 	 * Synchronized because of access by parallel threads.
+	 *
 	 * @throws BeansException in case of initialization errors
 	 */
 	protected synchronized BeanFactory initFactory() throws BeansException {

@@ -55,12 +55,17 @@ import org.springframework.web.context.support.ServletContextResourcePatternReso
 
 /**
  * A stub WebApplicationContext that accepts registrations of object instances.
+ * 存根WebApplicationContext，它接受对象实例的注册。
  *
  * <p>As registered object instances are instantiated and initialized externally,
  * there is no wiring, bean initialization, lifecycle events, as well as no
  * pre-processing and post-processing hooks typically associated with beans
  * managed by an {@link ApplicationContext}. Just a simple lookup into a
  * {@link StaticListableBeanFactory}.
+ * <p>
+ * 当注册对象实例在外部被实例化和初始化时，没有连接、bean初始化、生命周期事件，
+ * 也没有通常与由{@link ApplicationContext}管理的bean相关联的预处理和后处理钩子。对a进行简单的查找
+ * {@link StaticListableBeanFactory}。
  *
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller
@@ -136,7 +141,7 @@ class StubWebApplicationContext implements WebApplicationContext {
 
 	@Override
 	public Environment getEnvironment() {
-		return this.environment ;
+		return this.environment;
 	}
 
 	public void addBean(String name, Object bean) {
@@ -289,7 +294,7 @@ class StubWebApplicationContext implements WebApplicationContext {
 	@Override
 	@Nullable
 	public <A extends Annotation> A findAnnotationOnBean(String beanName, Class<A> annotationType)
-			throws NoSuchBeanDefinitionException{
+			throws NoSuchBeanDefinitionException {
 
 		return this.beanFactory.findAnnotationOnBean(beanName, annotationType);
 	}
@@ -426,7 +431,7 @@ class StubWebApplicationContext implements WebApplicationContext {
 		@Override
 		@Nullable
 		public Object resolveDependency(DependencyDescriptor descriptor, @Nullable String requestingBeanName,
-				@Nullable Set<String> autowiredBeanNames, @Nullable TypeConverter typeConverter) {
+										@Nullable Set<String> autowiredBeanNames, @Nullable TypeConverter typeConverter) {
 			throw new UnsupportedOperationException("Dependency resolution not supported");
 		}
 

@@ -35,9 +35,9 @@ import org.springframework.util.ObjectUtils;
  * @author Rod Johnson
  * @author Rob Harrop
  * @author Juergen Hoeller
- * @since 13 May 2001
  * @see PropertyValues
  * @see BeanWrapper
+ * @since 13 May 2001
  */
 @SuppressWarnings("serial")
 public class PropertyValue extends BeanMetadataAttributeAccessor implements Serializable {
@@ -54,19 +54,25 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 	@Nullable
 	private Object convertedValue;
 
-	/** Package-visible field that indicates whether conversion is necessary. */
+	/**
+	 * Package-visible field that indicates whether conversion is necessary.
+	 */
 	@Nullable
 	volatile Boolean conversionNecessary;
 
-	/** Package-visible field for caching the resolved property path tokens. */
+	/**
+	 * Package-visible field for caching the resolved property path tokens.
+	 */
 	@Nullable
 	transient volatile Object resolvedTokens;
 
 
 	/**
 	 * Create a new PropertyValue instance.
-	 * @param name the name of the property (never {@code null})
-	 * @param value the value of the property (possibly before type conversion)
+	 * 创建一个新的PropertyValue实例。
+	 *
+	 * @param name  the name of the property (never {@code null}) 属性的名称（不要{@code null}）
+	 * @param value the value of the property (possibly before type conversion)  属性的值（可能在类型转换之前）
 	 */
 	public PropertyValue(String name, @Nullable Object value) {
 		Assert.notNull(name, "Name must not be null");
@@ -76,6 +82,7 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 
 	/**
 	 * Copy constructor.
+	 *
 	 * @param original the PropertyValue to copy (never {@code null})
 	 */
 	public PropertyValue(PropertyValue original) {
@@ -94,6 +101,7 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 	/**
 	 * Constructor that exposes a new value for an original value holder.
 	 * The original holder will be exposed as source of the new holder.
+	 *
 	 * @param original the PropertyValue to link to (never {@code null})
 	 * @param newValue the new value to apply
 	 */
@@ -129,6 +137,7 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 
 	/**
 	 * Return the original PropertyValue instance for this value holder.
+	 *
 	 * @return the original PropertyValue (either a source of this
 	 * value holder or this value holder itself).
 	 */
@@ -145,6 +154,7 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 	/**
 	 * Set whether this is an optional value, that is, to be ignored
 	 * when no corresponding property exists on the target class.
+	 *
 	 * @since 3.0
 	 */
 	public void setOptional(boolean optional) {
@@ -154,6 +164,7 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 	/**
 	 * Return whether this is an optional value, that is, to be ignored
 	 * when no corresponding property exists on the target class.
+	 *
 	 * @since 3.0
 	 */
 	public boolean isOptional() {
