@@ -21,9 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.lang.Nullable;
 
 /**
+ * 请求转换视图名称转换器
+ *
  * Strategy interface for translating an incoming
  * {@link javax.servlet.http.HttpServletRequest} into a
  * logical view name when no view name is explicitly supplied.
+ *
+ * 当未明确提供视图名称时，用于将传入的{@link javax.servlet.http.HttpServletRequest}转换为逻辑视图名称的策略接口。
  *
  * @author Rob Harrop
  * @author Juergen Hoeller

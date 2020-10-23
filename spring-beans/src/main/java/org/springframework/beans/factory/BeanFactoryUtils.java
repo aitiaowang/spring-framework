@@ -308,11 +308,19 @@ public abstract class BeanFactoryUtils {
 	 * Return all beans of the given type or subtypes, also picking up beans defined in
 	 * ancestor bean factories if the current bean factory is a HierarchicalBeanFactory.
 	 * The returned Map will only contain beans of this type.
+	 *
+	 * 返回给定类型或子类型的所有bean，如果当前bean工厂是HierarchicalBeanFactory，则还提取在祖先bean工厂中定义的bean。返回的Map将仅包含此类型的bean。
+	 *
 	 * <p>Does consider objects created by FactoryBeans if the "allowEagerInit" flag is set,
 	 * which means that FactoryBeans will get initialized. If the object created by the
 	 * FactoryBean doesn't match, the raw FactoryBean itself will be matched against the
 	 * type. If "allowEagerInit" is not set, only raw FactoryBeans will be checked
 	 * (which doesn't require initialization of each FactoryBean).
+	 *
+	 * 如果设置了“allowEagerInit”标志，则不考虑由FactoryBeans创建的对象，表示将初始化FactoryBeans。
+	 * 如果由FactoryBean创建的对象不匹配，则原始FactoryBean本身将与类型匹配。如果未设置“allowEagerInit”，
+	 * 则仅检查原始FactoryBean（不需要初始化每个FactoryBean）。
+	 *
 	 * <p><b>Note: Beans of the same name will take precedence at the 'lowest' factory level,
 	 * i.e. such beans will be returned from the lowest factory that they are being found in,
 	 * hiding corresponding beans in ancestor factories.</b> This feature allows for

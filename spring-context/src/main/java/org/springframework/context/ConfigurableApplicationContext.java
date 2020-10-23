@@ -31,10 +31,15 @@ import org.springframework.lang.Nullable;
  * Provides facilities to configure an application context in addition
  * to the application context client methods in the
  * {@link org.springframework.context.ApplicationContext} interface.
+ * <p>
+ * SPI接口将由大多数（如果不是全部）应用程序上下文实现。
+ * 除了在{@link org.springframework.context.ApplicationContext}界面中的应用程序上下文客户端方法之外，
+ * 还提供了配置应用程序上下文的功能
  *
  * <p>Configuration and lifecycle methods are encapsulated here to avoid
  * making them obvious to ApplicationContext client code. The present
  * methods should only be used by startup and shutdown code.
+ * 配置和生命周期方法都封装在这里，以避免使它们对于ApplicationContext客户端代码显而易见。当前方法仅应由启动和关闭代码使用。
  *
  * @author Juergen Hoeller
  * @author Chris Beams
@@ -102,9 +107,13 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 
 	/**
 	 * Set the parent of this application context.
+	 * 设置此应用程序上下文的父级。
+	 *
 	 * <p>Note that the parent shouldn't be changed: It should only be set outside
 	 * a constructor if it isn't available when an object of this class is created,
 	 * for example in case of WebApplicationContext setup.
+	 * <p>
+	 * 请注意，不应更改父对象：仅当在创建此类的对象时不可用时，才应在构造函数外部设置，例如在WebApplicationContext设置的情况下。
 	 *
 	 * @param parent the parent context
 	 * @see org.springframework.web.context.ConfigurableWebApplicationContext
@@ -113,8 +122,9 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 
 	/**
 	 * Set the {@code Environment} for this application context.
+	 * 为此应用程序上下文设置{@code Environment}。
 	 *
-	 * @param environment the new environment
+	 * @param environment the new environment  新环境
 	 * @since 3.1
 	 */
 	void setEnvironment(ConfigurableEnvironment environment);
@@ -140,11 +150,17 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	/**
 	 * Add a new ApplicationListener that will be notified on context events
 	 * such as context refresh and context shutdown.
+	 * <p>
+	 * 添加一个新的ApplicationListener，它将在上下文事件时得到通知，例如上下文刷新和上下文关闭。
+	 *
 	 * <p>Note that any ApplicationListener registered here will be applied
 	 * on refresh if the context is not active yet, or on the fly with the
 	 * current event multicaster in case of a context that is already active.
+	 * <p>
+	 * 请注意，如果上下文尚未处于活动状态，则将在刷新时应用此处注册的所有ApplicationListener；
+	 * 如果上下文已经处于活动状态，则将使用当前事件多播程序即时应用。
 	 *
-	 * @param listener the ApplicationListener to register
+	 * @param listener the ApplicationListener to register  ApplicationListener进行注册
 	 * @see org.springframework.context.event.ContextRefreshedEvent
 	 * @see org.springframework.context.event.ContextClosedEvent
 	 */

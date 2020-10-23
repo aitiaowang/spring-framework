@@ -26,9 +26,14 @@ import org.springframework.lang.Nullable;
  * {@link org.springframework.context.ApplicationListener} decorator that filters
  * events from a specified event source, invoking its delegate listener for
  * matching {@link org.springframework.context.ApplicationEvent} objects only.
+ * <p>
+ * {@link org.springframework.context.ApplicationListener}装饰器，用于过滤来自指定事件源的事件，
+ * 并调用其委托侦听器以仅匹配{@link org.springframework.context.ApplicationEvent}对象。
  *
  * <p>Can also be used as base class, overriding the {@link #onApplicationEventInternal}
  * method instead of specifying a delegate listener.
+ * <p>
+ * 也可以用作基类，重写{@link #onApplicationEventInternal} 方法，而不指定代理侦听器。
  *
  * @author Juergen Hoeller
  * @author Stephane Nicoll
@@ -44,10 +49,15 @@ public class SourceFilteringListener implements GenericApplicationListener, Smar
 
 	/**
 	 * Create a SourceFilteringListener for the given event source.
-	 * @param source the event source that this listener filters for,
-	 * only processing events from this source
+	 * <p>
+	 * 为给定事件源创建SourceFilteringListener。
+	 *
+	 * @param source   the event source that this listener filters for,
+	 *                 only processing events from this source
+	 *                 此侦听器筛选的事件源，仅处理该源中的事件
 	 * @param delegate the delegate listener to invoke with event
-	 * from the specified source
+	 *                 from the specified source
+	 *                 要用事件从指定源调用的委托侦听器
 	 */
 	public SourceFilteringListener(Object source, ApplicationListener<?> delegate) {
 		this.source = source;
@@ -59,8 +69,9 @@ public class SourceFilteringListener implements GenericApplicationListener, Smar
 	 * Create a SourceFilteringListener for the given event source,
 	 * expecting subclasses to override the {@link #onApplicationEventInternal}
 	 * method (instead of specifying a delegate listener).
+	 *
 	 * @param source the event source that this listener filters for,
-	 * only processing events from this source
+	 *               only processing events from this source
 	 */
 	protected SourceFilteringListener(Object source) {
 		this.source = source;
@@ -99,6 +110,7 @@ public class SourceFilteringListener implements GenericApplicationListener, Smar
 	 * Actually process the event, after having filtered according to the
 	 * desired event source already.
 	 * <p>The default implementation invokes the specified delegate, if any.
+	 *
 	 * @param event the event to process (matching the specified source)
 	 */
 	protected void onApplicationEventInternal(ApplicationEvent event) {

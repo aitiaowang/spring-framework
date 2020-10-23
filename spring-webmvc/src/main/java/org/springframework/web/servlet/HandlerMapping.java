@@ -23,12 +23,18 @@ import org.springframework.lang.Nullable;
 /**
  * Interface to be implemented by objects that define a mapping between
  * requests and handler objects.
+ * <p>
+ * 由定义请求和处理程序对象之间的映射关系的对象实现的接口。
  *
  * <p>This class can be implemented by application developers, although this is not
  * necessary, as {@link org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping}
  * and {@link org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping}
  * are included in the framework. The former is the default if no
  * HandlerMapping bean is registered in the application context.
+ * <p>
+ * 此类可以由应用程序开发人员实现，尽管不是必需的，例如{@link org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping}
+ * 和{@link org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping} 包含在框架中。
+ * 如果未在应用程序上下文中注册任何HandlerMapping bean，则前者是默认值。
  *
  * <p>HandlerMapping implementations can support mapped interceptors but do not
  * have to. A handler will always be wrapped in a {@link HandlerExecutionChain}
@@ -36,15 +42,24 @@ import org.springframework.lang.Nullable;
  * The DispatcherServlet will first call each HandlerInterceptor's
  * {@code preHandle} method in the given order, finally invoking the handler
  * itself if all {@code preHandle} methods have returned {@code true}.
+ * <p>
+ * HandlerMapping实现可以支持映射的拦截器，但不是必须的。处理程序将始终包装在{@link HandlerExecutionChain}实例中，
+ * 并可选地伴随一些{@link HandlerInterceptor}实例。DispatcherServlet将首先以给定的顺序调用每个HandlerInterceptor的{@code preHandle}方法，
+ * 如果所有的{@code preHandle}方法都返回了{@code true}，则最终调用处理程序本身。
  *
  * <p>The ability to parameterize this mapping is a powerful and unusual
  * capability of this MVC framework. For example, it is possible to write
  * a custom mapping based on session state, cookie state or many other
  * variables. No other MVC framework seems to be equally flexible.
+ * <p>
+ * 参数化此映射的功能是此MVC框架的强大而独特的功能。例如，可以根据会话状态，cookie状态或许多其他变量来编写自定义映射。没有其他MVC框架具有同样的灵活性。
  *
  * <p>Note: Implementations can implement the {@link org.springframework.core.Ordered}
  * interface to be able to specify a sorting order and thus a priority for getting
  * applied by DispatcherServlet. Non-Ordered instances get treated as lowest priority.
+ * <p>
+ * 注意：可以实现{@link org.springframework.core.Ordered} 接口，
+ * 以便能够指定排序顺序，从而指定由DispatcherServlet应用的优先级。非排序实例被视为最低优先级。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -58,6 +73,7 @@ public interface HandlerMapping {
 	/**
 	 * Name of the {@link HttpServletRequest} attribute that contains the mapped
 	 * handler for the best matching pattern.
+	 *
 	 * @since 4.3.21
 	 */
 	String BEST_MATCHING_HANDLER_ATTRIBUTE = HandlerMapping.class.getName() + ".bestMatchingHandler";
@@ -130,6 +146,7 @@ public interface HandlerMapping {
 	 * <p>Returns {@code null} if no match was found. This is not an error.
 	 * The DispatcherServlet will query all registered HandlerMapping beans to find
 	 * a match, and only decide there is an error if none can find a handler.
+	 *
 	 * @param request current HTTP request
 	 * @return a HandlerExecutionChain instance containing handler object and
 	 * any interceptors, or {@code null} if no mapping found

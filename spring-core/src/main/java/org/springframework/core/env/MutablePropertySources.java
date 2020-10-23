@@ -29,16 +29,22 @@ import org.springframework.lang.Nullable;
  * The default implementation of the {@link PropertySources} interface.
  * Allows manipulation of contained property sources and provides a constructor
  * for copying an existing {@code PropertySources} instance.
+ * <p>
+ * {@link PropertySources}接口的默认实现。允许操纵包含的属性源，并提供一个构造函数用于复制现有的{@code PropertySources}实例。
  *
  * <p>Where <em>precedence</em> is mentioned in methods such as {@link #addFirst}
  * and {@link #addLast}, this is with regard to the order in which property sources
  * will be searched when resolving a given property with a {@link PropertyResolver}.
+ * <p>
+ * 在{@link #addFirst}和{@link #addLast}之类的方法中提到<em> 优先权 </ em>的地方，
+ * 这是关于解析给定属性时搜索属性源的顺序的使用{@link PropertyResolver}。
  *
  * @author Chris Beams
  * @author Juergen Hoeller
- * @since 3.1
  * @see PropertySourcesPropertyResolver
+ * @since 3.1
  */
+//可变属性来源
 public class MutablePropertySources implements PropertySources {
 
 	private final List<PropertySource<?>> propertySourceList = new CopyOnWriteArrayList<>();
@@ -154,6 +160,7 @@ public class MutablePropertySources implements PropertySources {
 
 	/**
 	 * Remove and return the property source with the given name, {@code null} if not found.
+	 *
 	 * @param name the name of the property source to find and remove
 	 */
 	@Nullable
@@ -166,7 +173,8 @@ public class MutablePropertySources implements PropertySources {
 
 	/**
 	 * Replace the property source with the given name with the given property source object.
-	 * @param name the name of the property source to find and replace
+	 *
+	 * @param name           the name of the property source to find and replace
 	 * @param propertySource the replacement property source
 	 * @throws IllegalArgumentException if no property source with the given name is present
 	 * @see #contains
@@ -219,6 +227,7 @@ public class MutablePropertySources implements PropertySources {
 
 	/**
 	 * Assert that the named property source is present and return its index.
+	 *
 	 * @param name {@linkplain PropertySource#getName() name of the property source} to find
 	 * @throws IllegalArgumentException if the named property source is not present
 	 */

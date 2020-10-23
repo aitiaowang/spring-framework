@@ -24,6 +24,9 @@ import java.util.Map;
  * property sources. Allows clients to set and validate required properties, customize the
  * conversion service and more through the {@link ConfigurablePropertyResolver}
  * superinterface.
+ * <p>
+ * 大多数（如果不是全部）{@link Environment}类型都将实现配置接口。提供用于设置活动和默认配置文件以及操纵基础属性源的工具。
+ * 允许客户端通过{@link ConfigurablePropertyResolver}超级接口来设置和验证所需的属性，自定义转换服务等。
  *
  * <h2>Manipulating property sources</h2>
  * <p>Property sources may be removed, reordered, or replaced; and additional
@@ -54,7 +57,7 @@ import java.util.Map;
  * MockPropertySource mockEnvVars = new MockPropertySource().withProperty("xyz", "myValue");
  * propertySources.replace(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, mockEnvVars);
  * </pre>
- *
+ * <p>
  * When an {@link Environment} is being used by an {@code ApplicationContext}, it is
  * important that any such {@code PropertySource} manipulations be performed
  * <em>before</em> the context's {@link
@@ -65,9 +68,9 @@ import java.util.Map;
  * placeholder configurers}.
  *
  * @author Chris Beams
- * @since 3.1
  * @see StandardEnvironment
  * @see org.springframework.context.ConfigurableApplicationContext#getEnvironment
+ * @since 3.1
  */
 public interface ConfigurableEnvironment extends Environment, ConfigurablePropertyResolver {
 
@@ -78,6 +81,7 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	 * <p>Any existing active profiles will be replaced with the given arguments; call
 	 * with zero arguments to clear the current set of active profiles. Use
 	 * {@link #addActiveProfile} to add a profile while preserving the existing set.
+	 *
 	 * @throws IllegalArgumentException if any profile is null, empty or whitespace-only
 	 * @see #addActiveProfile
 	 * @see #setDefaultProfiles
@@ -88,6 +92,7 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 
 	/**
 	 * Add a profile to the current set of active profiles.
+	 *
 	 * @throws IllegalArgumentException if the profile is null, empty or whitespace-only
 	 * @see #setActiveProfiles
 	 */
@@ -96,6 +101,7 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	/**
 	 * Specify the set of profiles to be made active by default if no other profiles
 	 * are explicitly made active through {@link #setActiveProfiles}.
+	 *
 	 * @throws IllegalArgumentException if any profile is null, empty or whitespace-only
 	 * @see AbstractEnvironment#DEFAULT_PROFILES_PROPERTY_NAME
 	 */
@@ -114,6 +120,14 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	 * certain user-defined property sources have search precedence over default property
 	 * sources such as the set of system properties or the set of system environment
 	 * variables.
+	 * <p>
+	 * 以可变形式返回此{@link EnvironmentSources}的{@link PropertySources}，
+	 * 允许处理在针对此{@code Environment}对象解析属性时应搜索的{@link PropertySource}对象集。
+	 * 各种{@link MutablePropertySources}方法，例如{@link MutablePropertySources＃addFirst addFirst}，
+	 * {@link MutablePropertySources＃addLast addLast}，{@link MutablePropertySources＃addBefore addBefore}和
+	 * {@link MutablePropertySources＃addAfter addAfter}允许对属性源排序进行细粒度控制。
+	 * 例如，这在确保某些用户定义的属性源优先于默认属性源（例如系统属性集或系统环境*变量）的搜索时很有用。
+	 *
 	 * @see AbstractEnvironment#customizePropertySources
 	 */
 	MutablePropertySources getPropertySources();
@@ -151,20 +165,34 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	/**
 	 * Append the given parent environment's active profiles, default profiles and
 	 * property sources to this (child) environment's respective collections of each.
+	 * <p>
+	 * 将给定的父级环境的活动配置文件，默认配置文件和属性源追加到此（子级）环境各自的集合中。
+	 *
 	 * <p>For any identically-named {@code PropertySource} instance existing in both
 	 * parent and child, the child instance is to be preserved and the parent instance
 	 * discarded. This has the effect of allowing overriding of property sources by the
 	 * child as well as avoiding redundant searches through common property source types,
 	 * e.g. system environment and system properties.
+	 * <p>
+	 * 对于父级和子级中都存在的任何同名{@code PropertySource}实例，将保留子级实例，并丢弃父级实例。
+	 * 这样的效果是允许子级覆盖属性源，并避免对常见属性源类型的重复搜索。例如系统环境和系统属性。
+	 *
 	 * <p>Active and default profile names are also filtered for duplicates, to avoid
 	 * confusion and redundant storage.
+	 * <p>
+	 * 活动和默认配置文件名称也会被过滤，以防重复，以避免混乱和冗余存储。
+	 *
 	 * <p>The parent environment remains unmodified in any case. Note that any changes to
 	 * the parent environment occurring after the call to {@code merge} will not be
 	 * reflected in the child. Therefore, care should be taken to configure parent
 	 * property sources and profile information prior to calling {@code merge}.
-	 * @param parent the environment to merge with
-	 * @since 3.1.2
+	 * <p>
+	 * 在任何情况下，父环境都保持不变。请注意，在调用{@code merge}之后对父环境所做的任何更改都不会反映在子项中。
+	 * 因此，在调用{@code merge}之前，应注意配置父属性源和配置文件信息。
+	 *
+	 * @param parent the environment to merge with  与之融合的环境
 	 * @see org.springframework.context.support.AbstractApplicationContext#setParent
+	 * @since 3.1.2
 	 */
 	void merge(ConfigurableEnvironment parent);
 

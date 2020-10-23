@@ -28,14 +28,21 @@ import org.springframework.lang.Nullable;
  * both locale resolution via the request and locale modification via
  * request and response.
  *
+ * 基于Web的语言环境解析策略的接口，它允许通过请求的语言环境解析和通过请求和响应的语言环境修改。
+ *
  * <p>This interface allows for implementations based on request, session,
  * cookies, etc. The default implementation is
  * {@link org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver},
  * simply using the request's locale provided by the respective HTTP header.
  *
+ * 该接口允许基于请求，会话，cookie等的实现。默认实现为{@link org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver}，
+ * 仅使用相应HTTP标头提供的请求区域设置即可。
+ *
  * <p>Use {@link org.springframework.web.servlet.support.RequestContext#getLocale()}
  * to retrieve the current locale in controllers or views, independent
  * of the actual resolution strategy.
+ * 使用{@link org.springframework.web.servlet.support.RequestContext#getLocale()}
+ * 可以在控制器或视图中检索当前的语言环境，而与实际的解析策略无关。
  *
  * <p>Note: As of Spring 4.0, there is an extended strategy interface
  * called {@link LocaleContextResolver}, allowing for resolution of

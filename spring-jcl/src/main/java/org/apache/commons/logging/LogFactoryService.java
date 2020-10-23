@@ -17,6 +17,7 @@
 package org.apache.commons.logging;
 
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -52,8 +53,7 @@ public class LogFactoryService extends LogFactory {
 	public void setAttribute(String name, Object value) {
 		if (value != null) {
 			this.attributes.put(name, value);
-		}
-		else {
+		} else {
 			this.attributes.remove(name);
 		}
 	}

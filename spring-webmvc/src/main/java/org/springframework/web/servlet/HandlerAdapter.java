@@ -23,24 +23,36 @@ import org.springframework.lang.Nullable;
 
 /**
  * MVC framework SPI, allowing parameterization of the core MVC workflow.
+ * MVC框架SPI，允许对核心MVC工作流程进行参数化。
  *
  * <p>Interface that must be implemented for each handler type to handle a request.
  * This interface is used to allow the {@link DispatcherServlet} to be indefinitely
  * extensible. The {@code DispatcherServlet} accesses all installed handlers through
  * this interface, meaning that it does not contain code specific to any handler type.
+ * <p>
+ * 必须为每种处理程序类型实现的接口才能处理请求。此接口用于允许{@link DispatcherServlet}无限扩展。
+ * {@code DispatcherServlet}通过此接口访问所有已安装的处理程序，这意味着它不包含特定于任何处理程序类型的代码。
  *
  * <p>Note that a handler can be of type {@code Object}. This is to enable
  * handlers from other frameworks to be integrated with this framework without
  * custom coding, as well as to allow for annotation-driven handler objects that
  * do not obey any specific Java interface.
+ * <p>
+ * 请注意，处理程序可以是{@code Object}类型。这是为了使其他框架中的处理程序无需自定义编码即可与该框架集成，
+ * 并允许注释驱动的处理程序对象不遵循任何特定的Java接口。
  *
  * <p>This interface is not intended for application developers. It is available
  * to handlers who want to develop their own web workflow.
+ * <p>
+ * 此接口不适用于应用程序开发人员。 可供想要开发自己的Web工作流程的处理程序使用。
  *
  * <p>Note: {@code HandlerAdapter} implementors may implement the {@link
  * org.springframework.core.Ordered} interface to be able to specify a sorting
  * order (and thus a priority) for getting applied by the {@code DispatcherServlet}.
  * Non-Ordered instances get treated as lowest priority.
+ * <p>
+ * 注意：{@code HandlerAdapter}实现者可以实现{@link org.springframework.core.Ordered}接口，
+ * 以便能够指定排序顺序（并因此指定优先级），以供{@code DispatcherServlet}应用。非订购实例被视为最低优先级
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -57,6 +69,7 @@ public interface HandlerAdapter {
 	 * <p>{@code
 	 * return (handler instanceof MyHandler);
 	 * }
+	 *
 	 * @param handler handler object to check
 	 * @return whether or not this object can use the given handler
 	 */
@@ -65,14 +78,15 @@ public interface HandlerAdapter {
 	/**
 	 * Use the given handler to handle this request.
 	 * The workflow that is required may vary widely.
-	 * @param request current HTTP request
+	 *
+	 * @param request  current HTTP request
 	 * @param response current HTTP response
-	 * @param handler handler to use. This object must have previously been passed
-	 * to the {@code supports} method of this interface, which must have
-	 * returned {@code true}.
-	 * @throws Exception in case of errors
+	 * @param handler  handler to use. This object must have previously been passed
+	 *                 to the {@code supports} method of this interface, which must have
+	 *                 returned {@code true}.
 	 * @return a ModelAndView object with the name of the view and the required
 	 * model data, or {@code null} if the request has been handled directly
+	 * @throws Exception in case of errors
 	 */
 	@Nullable
 	ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception;
@@ -80,6 +94,7 @@ public interface HandlerAdapter {
 	/**
 	 * Same contract as for HttpServlet's {@code getLastModified} method.
 	 * Can simply return -1 if there's no support in the handler class.
+	 *
 	 * @param request current HTTP request
 	 * @param handler handler to use
 	 * @return the lastModified value for the given handler

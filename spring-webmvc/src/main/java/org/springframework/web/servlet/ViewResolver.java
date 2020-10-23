@@ -22,12 +22,18 @@ import org.springframework.lang.Nullable;
 
 /**
  * Interface to be implemented by objects that can resolve views by name.
+ * <p>
+ * 由可以通过名称解析视图的对象实现的接口。
  *
  * <p>View state doesn't change during the running of the application,
  * so implementations are free to cache views.
+ * <p>
+ * 在应用程序运行期间，视图状态不会更改，因此实现可以自由地缓存视图。
  *
  * <p>Implementations are encouraged to support internationalization,
  * i.e. localized view resolution.
+ * <p>
+ * 鼓励实施以支持国际化，即本地化视图分辨率。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -44,13 +50,14 @@ public interface ViewResolver {
 	 * However, this is not required: Some ViewResolvers will always attempt
 	 * to build View objects with the given name, unable to return {@code null}
 	 * (rather throwing an exception when View creation failed).
+	 *
 	 * @param viewName name of the view to resolve
-	 * @param locale the Locale in which to resolve the view.
-	 * ViewResolvers that support internationalization should respect this.
+	 * @param locale   the Locale in which to resolve the view.
+	 *                 ViewResolvers that support internationalization should respect this.
 	 * @return the View object, or {@code null} if not found
 	 * (optional, to allow for ViewResolver chaining)
 	 * @throws Exception if the view cannot be resolved
-	 * (typically in case of problems creating an actual View object)
+	 *                   (typically in case of problems creating an actual View object)
 	 */
 	@Nullable
 	View resolveViewName(String viewName, Locale locale) throws Exception;

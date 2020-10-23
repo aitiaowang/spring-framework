@@ -27,11 +27,15 @@ import org.springframework.lang.Nullable;
  * servlet-related {@link org.springframework.core.env.PropertySource} objects at the
  * earliest moment that the {@link ServletContext} and (optionally) {@link ServletConfig}
  * become available.
+ * <p>
+ * {@link ConfigurableEnvironment}的专业化允许在与{@link ServletContext}和（可选）{@link ServletConfig}
+ * 最早的时候初始化与servlet相关的{@link org.springframework.core.env.PropertySource}对象。变得可用。
  *
  * @author Chris Beams
- * @since 3.1.2
  * @see ConfigurableWebApplicationContext#getEnvironment()
+ * @since 3.1.2
  */
+//可配置的Web环境
 public interface ConfigurableWebEnvironment extends ConfigurableEnvironment {
 
 	/**
@@ -39,10 +43,11 @@ public interface ConfigurableWebEnvironment extends ConfigurableEnvironment {
 	 * org.springframework.core.env.PropertySource.StubPropertySource stub property source}
 	 * instances acting as placeholders with real servlet context/config property sources
 	 * using the given parameters.
+	 *
 	 * @param servletContext the {@link ServletContext} (may not be {@code null})
-	 * @param servletConfig the {@link ServletConfig} ({@code null} if not available)
+	 * @param servletConfig  the {@link ServletConfig} ({@code null} if not available)
 	 * @see org.springframework.web.context.support.WebApplicationContextUtils#initServletPropertySources(
-	 * org.springframework.core.env.MutablePropertySources, ServletContext, ServletConfig)
+	 *org.springframework.core.env.MutablePropertySources, ServletContext, ServletConfig)
 	 */
 	void initPropertySources(@Nullable ServletContext servletContext, @Nullable ServletConfig servletConfig);
 

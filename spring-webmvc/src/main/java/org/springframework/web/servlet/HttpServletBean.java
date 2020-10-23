@@ -124,8 +124,11 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 
 	/**
 	 * Return the {@link Environment} associated with this servlet.
+	 * 返回与此Servlet关联的{@link Environment}。
+	 *
 	 * <p>If none specified, a default environment will be initialized via
 	 * {@link #createEnvironment()}.
+	 * 如果未指定，将通过{@link #createEnvironment()}初始化默认环境。
 	 */
 	@Override
 	public ConfigurableEnvironment getEnvironment() {
@@ -136,9 +139,15 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 	}
 
 	/**
+	 * 标准Servlet环境
+	 * <p>
 	 * Create and return a new {@link StandardServletEnvironment}.
+	 * 创建并返回一个新的{@link StandardServletEnvironment}。
+	 *
 	 * <p>Subclasses may override this in order to configure the environment or
 	 * specialize the environment type returned.
+	 * <p>
+	 * 子类可以重写此方法以配置环境或专门返回的环境类型。
 	 */
 	protected ConfigurableEnvironment createEnvironment() {
 		return new StandardServletEnvironment();
@@ -249,6 +258,7 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 			}
 
 			// Fail if we are still missing properties.
+			//如果我们仍然缺少属性，则失败。
 			if (!CollectionUtils.isEmpty(missingProps)) {
 				throw new ServletException(
 						"Initialization from ServletConfig for servlet '" + config.getServletName() +

@@ -102,21 +102,31 @@ public interface Log {
 
 	/**
 	 * Is debug logging currently enabled?
+	 * 当前是否启用了调试日志记录
+	 *
 	 * <p>Call this method to prevent having to perform expensive operations
 	 * (for example, <code>String</code> concatenation)
 	 * when the log level is more than debug.
+	 * <p>
+	 * 当日志级别大于调试级别时，调用此方法以防止必须执行昂贵的操作（例如，<code> String </ code>串联）
 	 *
 	 * @return true if debug is enabled in the underlying logger.
+	 * 如果在基础记录器中启用了调试，则为true。
 	 */
 	boolean isDebugEnabled();
 
 	/**
 	 * Is trace logging currently enabled?
+	 * 当前是否启用了跟踪日志记录？
+	 *
 	 * <p>Call this method to prevent having to perform expensive operations
 	 * (for example, <code>String</code> concatenation)
 	 * when the log level is more than trace.
+	 * <p>
+	 * 当日志级别大于跟踪级别时，请调用此方法以防止执行昂贵的操作（例如，<code> String </ code>串联）。
 	 *
 	 * @return true if trace is enabled in the underlying logger.
+	 * 如果在基础记录器中启用了跟踪，则为true。
 	 */
 	boolean isTraceEnabled();
 
@@ -198,8 +208,9 @@ public interface Log {
 
 	/**
 	 * Logs a message with trace log level.
+	 * 记录具有跟踪日志级别的消息。
 	 *
-	 * @param message log this message
+	 * @param message log this message  记录此消息
 	 */
 	void trace(Object message);
 
