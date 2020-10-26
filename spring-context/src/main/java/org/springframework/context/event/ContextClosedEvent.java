@@ -20,18 +20,22 @@ import org.springframework.context.ApplicationContext;
 
 /**
  * Event raised when an {@code ApplicationContext} gets closed.
+ * {@code ApplicationContext}关闭时引发的事件。
  *
  * @author Juergen Hoeller
- * @since 12.08.2003
  * @see ContextRefreshedEvent
+ * @since 12.08.2003
  */
 @SuppressWarnings("serial")
 public class ContextClosedEvent extends ApplicationContextEvent {
 
 	/**
 	 * Creates a new ContextClosedEvent.
+	 * 创建一个新的ContextClosedEvent。
+	 *
 	 * @param source the {@code ApplicationContext} that has been closed
-	 * (must not be {@code null})
+	 *               (must not be {@code null})
+	 *               已关闭的{@code ApplicationContext}（不得为{@code null}）
 	 */
 	public ContextClosedEvent(ApplicationContext source) {
 		super(source);

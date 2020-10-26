@@ -680,11 +680,15 @@ public abstract class ObjectUtils {
 
 	/**
 	 * Return a String representation of the specified Object.
+	 * 返回指定对象的字符串表示形式。
+	 *
 	 * <p>Builds a String representation of the contents in case of an array.
 	 * Returns a {@code "null"} String if {@code obj} is {@code null}.
+	 * <p>
+	 * 如果是数组，则构建内容的字符串表示形式。如果{@code obj}为{@code null}，则返回一个{@code“null”}字符串。
 	 *
-	 * @param obj the object to build a String representation for
-	 * @return a String representation of {@code obj}
+	 * @param obj the object to build a String representation for     要为其构建String表示形式的对象
+	 * @return a String representation of {@code obj}       {@code obj}的字符串表示形式
 	 */
 	public static String nullSafeToString(@Nullable Object obj) {
 		if (obj == null) {

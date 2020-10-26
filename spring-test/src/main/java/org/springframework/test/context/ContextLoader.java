@@ -47,6 +47,7 @@ import org.springframework.context.ApplicationContext;
  * @see SmartContextLoader
  * @see org.springframework.test.context.support.AnnotationConfigContextLoader AnnotationConfigContextLoader
  */
+// 上下文加载器
 public interface ContextLoader {
 
 	/**

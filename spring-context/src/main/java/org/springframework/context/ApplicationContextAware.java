@@ -23,6 +23,9 @@ import org.springframework.beans.factory.Aware;
  * Interface to be implemented by any object that wishes to be notified
  * of the {@link ApplicationContext} that it runs in.
  *
+ * 接口被任何希望被通知运行在其中的{@link ApplicationContext}的对象实现。
+ *
+ *
  * <p>Implementing this interface makes sense for example when an object
  * requires access to a set of collaborating beans. Note that configuration
  * via bean references is preferable to implementing this interface just
@@ -56,16 +59,25 @@ import org.springframework.beans.factory.Aware;
  * @see org.springframework.context.support.ApplicationObjectSupport
  * @see org.springframework.beans.factory.BeanFactoryAware
  */
+//应用上下文感知
 public interface ApplicationContextAware extends Aware {
 
 	/**
 	 * Set the ApplicationContext that this object runs in.
 	 * Normally this call will be used to initialize the object.
+	 *
+	 * 设置该对象在其中运行的ApplicationContext。通常，此调用将用于初始化该对象。
+	 *
 	 * <p>Invoked after population of normal bean properties but before an init callback such
 	 * as {@link org.springframework.beans.factory.InitializingBean#afterPropertiesSet()}
 	 * or a custom init-method. Invoked after {@link ResourceLoaderAware#setResourceLoader},
 	 * {@link ApplicationEventPublisherAware#setApplicationEventPublisher} and
 	 * {@link MessageSourceAware}, if applicable.
+	 *
+	 * 在填充常规bean属性之后但在诸如{@link org.springframework.beans.factory.InitializingBean #afterPropertiesSet()}
+	 * 之类的init回调或自定义init方法之前调用。如果适用，在{@link ResourceLoaderAware #setResourceLoader}，
+	 * {@link ApplicationEventPublisherAware #setApplicationEventPublisher}和{@link MessageSourceAware}之后调用。
+	 *
 	 * @param applicationContext the ApplicationContext object to be used by this object
 	 * @throws ApplicationContextException in case of context initialization errors
 	 * @throws BeansException if thrown by application context methods

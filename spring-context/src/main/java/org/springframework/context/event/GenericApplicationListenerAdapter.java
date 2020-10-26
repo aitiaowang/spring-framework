@@ -33,9 +33,10 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  *
  * @author Juergen Hoeller
  * @author Stephane Nicoll
- * @since 3.0
  * @see org.springframework.context.ApplicationListener#onApplicationEvent
+ * @since 3.0
  */
+// 通用应用程序侦听器适配器
 public class GenericApplicationListenerAdapter implements GenericApplicationListener, SmartApplicationListener {
 
 	private static final Map<Class<?>, ResolvableType> eventTypeCache = new ConcurrentReferenceHashMap<>();
@@ -49,7 +50,10 @@ public class GenericApplicationListenerAdapter implements GenericApplicationList
 
 	/**
 	 * Create a new GenericApplicationListener for the given delegate.
+	 * 为给定的委托创建一个新的GenericApplicationListener(通用应用程序监听器)。
+	 *
 	 * @param delegate the delegate listener to be invoked
+	 *                 要调用的委托侦听器
 	 */
 	@SuppressWarnings("unchecked")
 	public GenericApplicationListenerAdapter(ApplicationListener<?> delegate) {
@@ -70,8 +74,7 @@ public class GenericApplicationListenerAdapter implements GenericApplicationList
 		if (this.delegate instanceof SmartApplicationListener) {
 			Class<? extends ApplicationEvent> eventClass = (Class<? extends ApplicationEvent>) eventType.resolve();
 			return (eventClass != null && ((SmartApplicationListener) this.delegate).supportsEventType(eventClass));
-		}
-		else {
+		} else {
 			return (this.declaredEventType == null || this.declaredEventType.isAssignableFrom(eventType));
 		}
 	}

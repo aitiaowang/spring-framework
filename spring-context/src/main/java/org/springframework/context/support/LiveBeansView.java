@@ -41,34 +41,50 @@ import org.springframework.util.StringUtils;
  * and their dependencies from either a local {@code ApplicationContext} (with a
  * local {@code LiveBeansView} bean definition) or all registered ApplicationContexts
  * (driven by the {@value #MBEAN_DOMAIN_PROPERTY_NAME} environment property).
+ * <p>
+ * 活跃bean视图公开的适配器，从本地{@code ApplicationContext}(使用本地{@code LiveBeansView} bean定义)
+ * 或所有注册的ApplicationContexts(由{@value #MBEAN_DOMAIN_PROPERTY_NAME}环境属性驱动)构建当前bean及其依赖关系的快照。
  *
  * <p>Note: This feature is still in beta and primarily designed for use with
  * Spring Tool Suite 3.1 and higher.
+ * 注意：该功能仍处于beta(测试)中，主要设计用于Spring Tool Suite 3.1及更高版本。
  *
  * @author Juergen Hoeller
  * @author Stephane Nicoll
- * @since 3.2
  * @see #getSnapshotAsJson()
  * @see org.springframework.web.context.support.LiveBeansViewServlet
+ * @since 3.2
  */
 public class LiveBeansView implements LiveBeansViewMBean, ApplicationContextAware {
 
 	/**
 	 * The "MBean Domain" property name.
+	 * “ MBean域”属性名称。
 	 */
 	public static final String MBEAN_DOMAIN_PROPERTY_NAME = "spring.liveBeansView.mbeanDomain";
 
 	/**
 	 * The MBean application key.
+	 * MBean应用程序密钥。
 	 */
 	public static final String MBEAN_APPLICATION_KEY = "application";
 
+	/**
+	 * 应用程序上下文
+	 *
+	 * @date 2020/10/26 10:43
+	 */
 	private static final Set<ConfigurableApplicationContext> applicationContexts = new LinkedHashSet<>();
 
 	@Nullable
 	private static String applicationName;
 
 
+	/**
+	 * 注册应用程序上下文
+	 *
+	 * @date 2020/10/26 10:57
+	 */
 	static void registerApplicationContext(ConfigurableApplicationContext applicationContext) {
 		String mbeanDomain = applicationContext.getEnvironment().getProperty(MBEAN_DOMAIN_PROPERTY_NAME);
 		if (mbeanDomain != null) {
@@ -79,8 +95,7 @@ public class LiveBeansView implements LiveBeansViewMBean, ApplicationContextAwar
 						applicationName = applicationContext.getApplicationName();
 						server.registerMBean(new LiveBeansView(),
 								new ObjectName(mbeanDomain, MBEAN_APPLICATION_KEY, applicationName));
-					}
-					catch (Throwable ex) {
+					} catch (Throwable ex) {
 						throw new ApplicationContextException("Failed to register LiveBeansView MBean", ex);
 					}
 				}
@@ -89,6 +104,12 @@ public class LiveBeansView implements LiveBeansViewMBean, ApplicationContextAwar
 		}
 	}
 
+	/**
+	 * 取消注册应用程序上下文
+	 *
+	 * @return
+	 * @date 2020/10/26 10:21
+	 */
 	static void unregisterApplicationContext(ConfigurableApplicationContext applicationContext) {
 		synchronized (applicationContexts) {
 			if (applicationContexts.remove(applicationContext) && applicationContexts.isEmpty()) {
@@ -98,11 +119,9 @@ public class LiveBeansView implements LiveBeansViewMBean, ApplicationContextAwar
 					if (mbeanDomain != null) {
 						server.unregisterMBean(new ObjectName(mbeanDomain, MBEAN_APPLICATION_KEY, applicationName));
 					}
-				}
-				catch (Throwable ex) {
+				} catch (Throwable ex) {
 					throw new ApplicationContextException("Failed to unregister LiveBeansView MBean", ex);
-				}
-				finally {
+				} finally {
 					applicationName = null;
 				}
 			}
@@ -132,8 +151,7 @@ public class LiveBeansView implements LiveBeansViewMBean, ApplicationContextAwar
 		Set<ConfigurableApplicationContext> contexts;
 		if (this.applicationContext != null) {
 			contexts = Collections.singleton(this.applicationContext);
-		}
-		else {
+		} else {
 			contexts = findApplicationContexts();
 		}
 		return generateJson(contexts);
@@ -142,6 +160,7 @@ public class LiveBeansView implements LiveBeansViewMBean, ApplicationContextAwar
 	/**
 	 * Find all applicable ApplicationContexts for the current application.
 	 * <p>Called if no specific ApplicationContext has been set for this LiveBeansView.
+	 *
 	 * @return the set of ApplicationContexts
 	 */
 	protected Set<ConfigurableApplicationContext> findApplicationContexts() {
@@ -158,18 +177,18 @@ public class LiveBeansView implements LiveBeansViewMBean, ApplicationContextAwar
 	 * attribute with nested bean description objects. Each bean object contains a
 	 * bean, scope, type and resource attribute, as well as a dependencies attribute
 	 * with a nested array of bean names that the present bean depends on.
+	 *
 	 * @param contexts the set of ApplicationContexts
 	 * @return the JSON document
 	 */
 	protected String generateJson(Set<ConfigurableApplicationContext> contexts) {
 		StringBuilder result = new StringBuilder("[\n");
-		for (Iterator<ConfigurableApplicationContext> it = contexts.iterator(); it.hasNext();) {
+		for (Iterator<ConfigurableApplicationContext> it = contexts.iterator(); it.hasNext(); ) {
 			ConfigurableApplicationContext context = it.next();
 			result.append("{\n\"context\": \"").append(context.getId()).append("\",\n");
 			if (context.getParent() != null) {
 				result.append("\"parent\": \"").append(context.getParent().getId()).append("\",\n");
-			}
-			else {
+			} else {
 				result.append("\"parent\": null,\n");
 			}
 			result.append("\"beans\": [\n");
@@ -194,8 +213,7 @@ public class LiveBeansView implements LiveBeansViewMBean, ApplicationContextAwar
 					Class<?> beanType = bf.getType(beanName);
 					if (beanType != null) {
 						result.append("\"type\": \"").append(beanType.getName()).append("\",\n");
-					}
-					else {
+					} else {
 						result.append("\"type\": null,\n");
 					}
 					result.append("\"resource\": \"").append(getEscapedResourceDescription(bd)).append("\",\n");
@@ -218,9 +236,10 @@ public class LiveBeansView implements LiveBeansViewMBean, ApplicationContextAwar
 	/**
 	 * Determine whether the specified bean is eligible for inclusion in the
 	 * LiveBeansView JSON snapshot.
+	 *
 	 * @param beanName the name of the bean
-	 * @param bd the corresponding bean definition
-	 * @param bf the containing bean factory
+	 * @param bd       the corresponding bean definition
+	 * @param bf       the containing bean factory
 	 * @return {@code true} if the bean is to be included; {@code false} otherwise
 	 */
 	protected boolean isBeanEligible(String beanName, BeanDefinition bd, ConfigurableBeanFactory bf) {
@@ -231,6 +250,7 @@ public class LiveBeansView implements LiveBeansViewMBean, ApplicationContextAwar
 	/**
 	 * Determine a resource description for the given bean definition and
 	 * apply basic JSON escaping (backslashes, double quotes) to it.
+	 *
 	 * @param bd the bean definition to build the resource description for
 	 * @return the JSON-escaped resource description
 	 */
@@ -245,11 +265,9 @@ public class LiveBeansView implements LiveBeansViewMBean, ApplicationContextAwar
 			char character = resourceDescription.charAt(i);
 			if (character == '\\') {
 				result.append('/');
-			}
-			else if (character == '"') {
+			} else if (character == '"') {
 				result.append("\\").append('"');
-			}
-			else {
+			} else {
 				result.append(character);
 			}
 		}

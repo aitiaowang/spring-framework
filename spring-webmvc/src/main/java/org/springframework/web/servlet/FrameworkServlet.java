@@ -822,6 +822,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * @date 2020/10/21 17:20
 	 */
 	protected void configureAndRefreshWebApplicationContext(ConfigurableWebApplicationContext wac) {
+		//对象转字符串
 		String string = ObjectUtils.identityToString(wac);
 		System.out.println("ObjectUtils.identityToString(wac)=======================》" + string);
 		System.out.println(ObjectUtils.identityToString(wac));

@@ -65,6 +65,7 @@ import org.springframework.util.ResourceUtils;
  * @see #prepareContext
  * @see #customizeContext
  */
+// 抽象上下文加载器
 public abstract class AbstractContextLoader implements SmartContextLoader {
 
 	private static final String[] EMPTY_STRING_ARRAY = new String[0];

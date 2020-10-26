@@ -57,6 +57,7 @@ import org.springframework.util.StringUtils;
  * @see #loadContext(MergedContextConfiguration)
  * @see #loadContext(String...)
  */
+// 抽象通用上下文加载器
 public abstract class AbstractGenericContextLoader extends AbstractContextLoader {
 
 	protected static final Log logger = LogFactory.getLog(AbstractGenericContextLoader.class);

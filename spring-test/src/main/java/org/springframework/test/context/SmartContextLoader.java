@@ -21,6 +21,9 @@ import org.springframework.context.ApplicationContext;
 /**
  * Strategy interface for loading an {@link ApplicationContext application context}
  * for an integration test managed by the Spring TestContext Framework.
+ * <p>
+ * 用于加载{@link ApplicationContext 应用程序上下文} 的策略接口，用于由Spring TestContext Framework管理的集成测试。
+ *
  *
  * <p>The {@code SmartContextLoader} SPI supersedes the {@link ContextLoader} SPI
  * introduced in Spring 2.5: a {@code SmartContextLoader} can choose to process
@@ -28,6 +31,11 @@ import org.springframework.context.ApplicationContext;
  * {@code SmartContextLoader} can set active bean definition profiles in the
  * context that it loads (see {@link MergedContextConfiguration#getActiveProfiles()}
  * and {@link #loadContext(MergedContextConfiguration)}).
+ * <p>
+ * {@code SmartContextLoader} SPI取代了Spring 2.5中引入的{@link ContextLoader} SPI ，
+ * {@code SmartContextLoader}可以选择处理资源位置或带注释的类。
+ * 此外，一个{@code SmartContextLoader}可以在它加载的上下文中设置活动的bean定义配置文件
+ * （请参阅{@link MergedContextConfiguration #getActiveProfiles()}和{@link #loadContext(MergedContextConfiguration)}）
  *
  * <p>See the Javadoc for {@link ContextConfiguration @ContextConfiguration}
  * for a definition of <em>annotated class</em>.
@@ -64,12 +72,13 @@ import org.springframework.context.ApplicationContext;
  * </ul>
  *
  * @author Sam Brannen
- * @since 3.1
  * @see ContextConfiguration
  * @see ActiveProfiles
  * @see ContextConfigurationAttributes
  * @see MergedContextConfiguration
+ * @since 3.1
  */
+// 智能上下文加载器
 public interface SmartContextLoader extends ContextLoader {
 
 	/**
@@ -86,6 +95,7 @@ public interface SmartContextLoader extends ContextLoader {
 	 * {@link ContextConfigurationAttributes}. Consequently, leaving the
 	 * {@code locations} or {@code classes} property empty signals that
 	 * this {@code SmartContextLoader} was not able to generate or detect defaults.
+	 *
 	 * @param configAttributes the context configuration attributes to process
 	 */
 	void processContextConfiguration(ContextConfigurationAttributes configAttributes);
@@ -111,8 +121,9 @@ public interface SmartContextLoader extends ContextLoader {
 	 * instances will be automatically closed on JVM shutdown. This allows for
 	 * freeing of external resources held by beans within the context (e.g.,
 	 * temporary files).
+	 *
 	 * @param mergedConfig the merged context configuration to use to load the
-	 * application context
+	 *                     application context
 	 * @return a new application context
 	 * @throws Exception if context loading failed
 	 * @see #processContextConfiguration(ContextConfigurationAttributes)
