@@ -29,17 +29,21 @@ public class BeanCurrentlyInCreationException extends BeanCreationException {
 	/**
 	 * Create a new BeanCurrentlyInCreationException,
 	 * with a default error message that indicates a circular reference.
-	 * @param beanName the name of the bean requested
+	 * 创建一个新的BeanCurrentlyInCreationException，并带有指示循环引用的默认错误消息。
+	 *
+	 * @param beanName the name of the bean requested 请求的bean的名称
 	 */
 	public BeanCurrentlyInCreationException(String beanName) {
+		//当前正在创建请求的bean：是否存在不可解析的循环引用？
 		super(beanName,
 				"Requested bean is currently in creation: Is there an unresolvable circular reference?");
 	}
 
 	/**
 	 * Create a new BeanCurrentlyInCreationException.
+	 *
 	 * @param beanName the name of the bean requested
-	 * @param msg the detail message
+	 * @param msg      the detail message
 	 */
 	public BeanCurrentlyInCreationException(String beanName, String msg) {
 		super(beanName, msg);

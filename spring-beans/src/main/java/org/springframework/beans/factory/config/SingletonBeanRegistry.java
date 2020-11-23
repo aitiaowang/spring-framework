@@ -53,7 +53,7 @@ public interface SingletonBeanRegistry {
 	 * this anyway if it supports a BeanFactory's lazy initialization of singletons.
 	 *
 	 * @param beanName        the name of the bean
-	 * @param singletonObject the existing singleton object
+	 * @param singletonObject the existing singleton object  现有的单例对象
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet
 	 * @see org.springframework.beans.factory.DisposableBean#destroy
 	 * @see org.springframework.beans.factory.support.BeanDefinitionRegistry#registerBeanDefinition

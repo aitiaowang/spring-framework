@@ -37,16 +37,21 @@ import org.springframework.util.ObjectUtils;
  */
 public class SingletonTargetSource implements TargetSource, Serializable {
 
-	/** use serialVersionUID from Spring 1.2 for interoperability. */
+	/**
+	 * use serialVersionUID from Spring 1.2 for interoperability.
+	 */
 	private static final long serialVersionUID = 9031246629662423738L;
 
 
-	/** Target cached and invoked using reflection. */
+	/**
+	 * Target cached and invoked using reflection.
+	 */
 	private final Object target;
 
 
 	/**
 	 * Create a new SingletonTargetSource for the given target.
+	 *
 	 * @param target the target object
 	 */
 	public SingletonTargetSource(Object target) {
@@ -79,6 +84,8 @@ public class SingletonTargetSource implements TargetSource, Serializable {
 	/**
 	 * Two invoker interceptors are equal if they have the same target or if the
 	 * targets or the targets are equal.
+	 * <p>
+	 * 如果两个调用程序拦截器具有相同的目标，或者两个或多个目标相等，则它们是相等的。
 	 */
 	@Override
 	public boolean equals(Object other) {

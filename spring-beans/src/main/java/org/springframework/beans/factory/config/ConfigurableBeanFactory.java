@@ -372,9 +372,10 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	/**
 	 * Explicitly control the current in-creation status of the specified bean.
 	 * For container-internal use only.
+	 * 明确控制指定bean的当前增量状态。 仅供内部容器使用。
 	 *
 	 * @param beanName   the name of the bean
-	 * @param inCreation whether the bean is currently in creation
+	 * @param inCreation whether the bean is currently in creation  该bean当前是否在创建中
 	 * @since 3.1
 	 */
 	void setCurrentlyInCreation(String beanName, boolean inCreation);
