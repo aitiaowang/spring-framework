@@ -46,7 +46,11 @@ public class FactoryBeanTests {
 	private static final Resource ABSTRACT_CONTEXT = qualifiedResource(CLASS, "abstract.xml");
 	private static final Resource CIRCULAR_CONTEXT = qualifiedResource(CLASS, "circular.xml");
 
-
+	/**
+	 * 测试Factory Bean返回Null
+	 *
+	 * @date 2020/12/15 17:01
+	 */
 	@Test
 	public void testFactoryBeanReturnsNull() throws Exception {
 		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
@@ -297,8 +301,7 @@ public class FactoryBeanTests {
 			AtomicInteger c = count.get(beanName);
 			if (c != null) {
 				return c.intValue();
-			}
-			else {
+			} else {
 				return 0;
 			}
 		}

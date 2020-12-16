@@ -18,6 +18,8 @@ package org.springframework.core.env;
 
 /**
  * Interface indicating a component that contains and exposes an {@link Environment} reference.
+ * <p>
+ * 指示包含并公开{@link Environment}引用的组件的接口
  *
  * <p>All Spring application contexts are EnvironmentCapable, and the interface is used primarily
  * for performing {@code instanceof} checks in framework methods that accept BeanFactory
@@ -33,15 +35,16 @@ package org.springframework.core.env;
  * a ConfigurableApplicationContext, at which point it too may be configured.
  *
  * @author Chris Beams
- * @since 3.1
  * @see Environment
  * @see ConfigurableEnvironment
  * @see org.springframework.context.ConfigurableApplicationContext#getEnvironment()
+ * @since 3.1
  */
 public interface EnvironmentCapable {
 
 	/**
 	 * Return the {@link Environment} associated with this component.
+	 * 返回与此组件关联的{@link Environment}。
 	 */
 	Environment getEnvironment();
 

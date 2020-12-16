@@ -21,6 +21,7 @@ import org.springframework.lang.Nullable;
 /**
  * Interface representing an object whose value set can be merged with
  * that of a parent object.
+ * 表示对象的接口，该对象的值集可以与父对象的值集合并。
  *
  * @author Rob Harrop
  * @see org.springframework.beans.factory.support.ManagedSet
@@ -33,6 +34,7 @@ public interface Mergeable {
 
 	/**
 	 * Is merging enabled for this particular instance?
+	 * 是否为此特定实例启用了合并？
 	 */
 	boolean isMergeEnabled();
 

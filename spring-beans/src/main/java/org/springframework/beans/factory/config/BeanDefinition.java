@@ -42,8 +42,11 @@ import org.springframework.lang.Nullable;
 public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
+	 * 单例标识
 	 * Scope identifier for the standard singleton scope: "singleton".
+	 * 标准单例作用域的作用域标识符：“ singleton”。
 	 * <p>Note that extended bean factories might support further scopes.
+	 * 请注意，扩展的bean工厂可能支持更多范围。
 	 *
 	 * @see #setScope
 	 */
@@ -51,7 +54,10 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
 	 * Scope identifier for the standard prototype scope: "prototype".
+	 * 标准原型范围的范围标识符：“原型”
+	 *
 	 * <p>Note that extended bean factories might support further scopes.
+	 * 请注意，扩展的bean工厂可能支持更多范围。
 	 *
 	 * @see #setScope
 	 */
@@ -133,6 +139,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
 	 * Override the target scope of this bean, specifying a new scope name.
+	 * 覆盖此bean的目标作用域，并指定一个新的作用域名称。
 	 *
 	 * @see #SCOPE_SINGLETON
 	 * @see #SCOPE_PROTOTYPE

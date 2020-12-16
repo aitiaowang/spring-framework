@@ -62,6 +62,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	/**
 	 * Scope identifier for the standard prototype scope: "prototype".
 	 * Custom scopes can be added via {@code registerScope}.
+	 * 标准原型范围的范围标识符：“原型”。 可以通过{@code registerScope}添加自定义范围。
 	 *
 	 * @see #registerScope
 	 */

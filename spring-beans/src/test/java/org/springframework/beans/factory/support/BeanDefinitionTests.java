@@ -28,6 +28,11 @@ import static org.junit.Assert.*;
  */
 public class BeanDefinitionTests {
 
+	/**
+	 * bean定义相等
+	 *
+	 * @date 2020/12/15 16:24
+	 */
 	@Test
 	public void beanDefinitionEquality() {
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);
@@ -45,6 +50,11 @@ public class BeanDefinitionTests {
 		assertTrue(bd.hashCode() == otherBd.hashCode());
 	}
 
+	/**
+	 * bean具有属性值的定义相等
+	 *
+	 * @date 2020/12/15 16:24
+	 */
 	@Test
 	public void beanDefinitionEqualityWithPropertyValues() {
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);
@@ -53,16 +63,30 @@ public class BeanDefinitionTests {
 		RootBeanDefinition otherBd = new RootBeanDefinition(TestBean.class);
 		otherBd.getPropertyValues().add("name", "myName");
 		assertTrue(!bd.equals(otherBd));
+		System.out.println(!bd.equals(otherBd));
 		assertTrue(!otherBd.equals(bd));
+		System.out.println(!otherBd.equals(bd));
+
 		otherBd.getPropertyValues().add("age", "11");
 		assertTrue(!bd.equals(otherBd));
+		System.out.println(!bd.equals(otherBd));
 		assertTrue(!otherBd.equals(bd));
+		System.out.println(!otherBd.equals(bd));
+
 		otherBd.getPropertyValues().add("age", "99");
 		assertTrue(bd.equals(otherBd));
+		System.out.println(bd.equals(otherBd));
 		assertTrue(otherBd.equals(bd));
+		System.out.println(otherBd.equals(bd));
 		assertTrue(bd.hashCode() == otherBd.hashCode());
+		System.out.println("bd.hashCode()====" + bd.hashCode() + "  otherBd.hashCode()===" + otherBd.hashCode());
 	}
 
+	/**
+	 * bean带有构造函数参数的定义相等
+	 *
+	 * @date 2020/12/15 16:26
+	 */
 	@Test
 	public void beanDefinitionEqualityWithConstructorArguments() {
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);
@@ -81,6 +105,11 @@ public class BeanDefinitionTests {
 		assertTrue(bd.hashCode() == otherBd.hashCode());
 	}
 
+	/**
+	 * 类型构造函数参数的bean定义相等
+	 *
+	 * @date 2020/12/15 16:43
+	 */
 	@Test
 	public void beanDefinitionEqualityWithTypedConstructorArguments() {
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);
@@ -121,6 +150,11 @@ public class BeanDefinitionTests {
 		assertTrue(bd.hashCode() == otherBd.hashCode());
 	}
 
+	/**
+	 * bean定义持有人相等
+	 *
+	 * @date 2020/12/15 16:44
+	 */
 	@Test
 	public void beanDefinitionHolderEquality() {
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);
@@ -140,6 +174,11 @@ public class BeanDefinitionTests {
 		assertTrue(holder.hashCode() == otherHolder.hashCode());
 	}
 
+	/**
+	 * bean定义合并
+	 *
+	 * @date 2020/12/15 16:49
+	 */
 	@Test
 	public void beanDefinitionMerging() {
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);

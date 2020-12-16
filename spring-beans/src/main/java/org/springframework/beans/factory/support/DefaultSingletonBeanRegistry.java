@@ -42,12 +42,18 @@ import org.springframework.util.StringUtils;
  * {@link org.springframework.beans.factory.config.SingletonBeanRegistry}.
  * Allows for registering singleton instances that should be shared
  * for all callers of the registry, to be obtained via bean name.
+ * <p>
+ * 共享bean实例的通用注册表，实现{@link org.springframework.beans.factory.config.SingletonBeanRegistry}。
+ * 允许注册应该由bean名称获得的所有注册表调用者共享的单例实例。
  *
  * <p>Also supports registration of
  * {@link org.springframework.beans.factory.DisposableBean} instances,
  * (which might or might not correspond to registered singletons),
  * to be destroyed on shutdown of the registry. Dependencies between
  * beans can be registered to enforce an appropriate shutdown order.
+ * <p>
+ * 还支持{@link org.springframework.beans.factory.DisposableBean}实例的注册（可能对应或不对应已注册的单例），
+ * 在关闭注册表时被销毁。可以注册bean之间的依赖关系以强制执行适当的关闭命令
  *
  * <p>This class mainly serves as base class for
  * {@link org.springframework.beans.factory.BeanFactory} implementations,
@@ -234,6 +240,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
+	 * 三级缓存中获取实例
+	 * <p>
 	 * Return the (raw) singleton object registered under the given name.
 	 * 返回以给定名称注册的（原始）单例对象。
 	 * <p>Checks already instantiated singletons and also allows for an early
@@ -514,9 +522,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/**
 	 * Register a dependent bean for the given bean,
 	 * to be destroyed before the given bean is destroyed.
+	 * <p>
+	 * 在给定的bean被销毁之前，为给定的bean注册一个要被销毁的依赖bean。
 	 *
 	 * @param beanName          the name of the bean
-	 * @param dependentBeanName the name of the dependent bean
+	 * @param dependentBeanName the name of the dependent bean  依赖bean的名称
 	 */
 	public void registerDependentBean(String beanName, String dependentBeanName) {
 		String canonicalName = canonicalName(beanName);
@@ -539,6 +549,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/**
 	 * Determine whether the specified dependent bean has been registered as
 	 * dependent on the given bean or on any of its transitive dependencies.
+	 * 确定指定的依赖项是否已注册为依赖于给定bean或其任何传递依赖项。
 	 *
 	 * @param beanName          the name of the bean to check
 	 * @param dependentBeanName the name of the dependent bean
@@ -567,6 +578,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				alreadySeen = new HashSet<>();
 			}
 			alreadySeen.add(beanName);
+			// TODO 猜测，这里有循环依赖
 			if (isDependent(transitiveDependency, dependentBeanName, alreadySeen)) {
 				return true;
 			}
@@ -576,8 +588,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * Determine whether a dependent bean has been registered for the given name.
+	 * 确定是否已为给定名称注册了依赖bean。
 	 *
-	 * @param beanName the name of the bean to check
+	 * @param beanName the name of the bean to check 要检查的bean的名称
 	 */
 	protected boolean hasDependentBean(String beanName) {
 		return this.dependentBeanMap.containsKey(beanName);
@@ -737,10 +750,15 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * Exposes the singleton mutex to subclasses and external collaborators.
+	 * <p>
+	 * 将单例互斥锁公开给子类和外部协作者。
 	 * <p>Subclasses should synchronize on the given Object if they perform
 	 * any sort of extended singleton creation phase. In particular, subclasses
 	 * should <i>not</i> have their own mutexes involved in singleton creation,
 	 * to avoid the potential for deadlocks in lazy-init situations.
+	 * <p>
+	 * 如果子类执行任何扩展的单例创建阶段，则子类应在给定的Object上进行同步。
+	 * 特别是，子类不应该在单例创建中涉及它们自己的互斥体，以避免在惰性初始化情况下出现死锁的可能性。
 	 */
 	@Override
 	public final Object getSingletonMutex() {
