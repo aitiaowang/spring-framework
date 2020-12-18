@@ -62,16 +62,27 @@ public interface SingletonBeanRegistry {
 
 	/**
 	 * Return the (raw) singleton object registered under the given name.
+	 * <p>
+	 * 返回以给定名称注册的（原始）单例对象。
+	 *
 	 * <p>Only checks already instantiated singletons; does not return an Object
 	 * for singleton bean definitions which have not been instantiated yet.
+	 * <p>
+	 * 只检查已经实例化的单例;不返回尚未实例化的单例bean定义的对象。
+	 *
 	 * <p>The main purpose of this method is to access manually registered singletons
 	 * (see {@link #registerSingleton}). Can also be used to access a singleton
 	 * defined by a bean definition that already been created, in a raw fashion.
+	 * <p>
+	 * 这个方法的主要目的是访问手动注册的单例对象(参见{@link #registerSingleton})。也可以用于访问由已经创建的bean定义的单例，以原始方式。
+	 *
 	 * <p><b>NOTE:</b> This lookup method is not aware of FactoryBean prefixes or aliases.
 	 * You need to resolve the canonical bean name first before obtaining the singleton instance.
+	 * 注意：此查找方法不知道FactoryBean前缀或别名。在获取单例实例之前，您需要首先解析规范化的bean名称。
 	 *
 	 * @param beanName the name of the bean to look for
 	 * @return the registered singleton object, or {@code null} if none found
+	 * 注册的单例对象；如果找不到，则为{@code null}
 	 * @see ConfigurableListableBeanFactory#getBeanDefinition
 	 */
 	@Nullable

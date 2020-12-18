@@ -55,10 +55,18 @@ public class FactoryBeanTests {
 	public void testFactoryBeanReturnsNull() throws Exception {
 		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(factory).loadBeanDefinitions(RETURNS_NULL_CONTEXT);
-
-		assertEquals("null", factory.getBean("factoryBean").toString());
+//		assertEquals("null", factory.getBean("factoryBean").toString());
+		Object factoryBean = factory.getBean("factoryBean");
+		System.out.println(factoryBean);
+		Object bean = factory.getBean("factoryBean");
+		System.out.println(bean.getClass());
 	}
 
+	/**
+	 * 使用自动装配测试工厂bean
+	 *
+	 * @date 2020/12/17 16:54
+	 */
 	@Test
 	public void testFactoryBeansWithAutowiring() throws Exception {
 		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
@@ -66,6 +74,7 @@ public class FactoryBeanTests {
 
 		BeanFactoryPostProcessor ppc = (BeanFactoryPostProcessor) factory.getBean("propertyPlaceholderConfigurer");
 		ppc.postProcessBeanFactory(factory);
+		System.out.println("========" + factory.getType("betaFactory"));
 
 		assertNull(factory.getType("betaFactory"));
 
@@ -80,6 +89,11 @@ public class FactoryBeanTests {
 		assertEquals("yourName", beta.getName());
 	}
 
+	/**
+	 * 使用中间工厂Bean自动装配失败测试工厂Bean
+	 *
+	 * @date 2020/12/18 11:58
+	 */
 	@Test
 	public void testFactoryBeansWithIntermediateFactoryBeanAutowiringFailure() throws Exception {
 		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
@@ -95,6 +109,11 @@ public class FactoryBeanTests {
 		assertSame(gamma, beta.getGamma());
 	}
 
+	/**
+	 * 通过注释测试抽象工厂Bean
+	 *
+	 * @date 2020/12/18 13:39
+	 */
 	@Test
 	public void testAbstractFactoryBeanViaAnnotation() throws Exception {
 		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();

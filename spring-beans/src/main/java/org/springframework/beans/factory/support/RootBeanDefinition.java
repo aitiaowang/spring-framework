@@ -77,6 +77,7 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 
 	/**
 	 * Package-visible field for caching the determined Class of a given bean definition.
+	 * 包-可见的字段，用于缓存给定bean定义的确定的Class。
 	 */
 	@Nullable
 	volatile Class<?> resolvedTargetType;
@@ -311,6 +312,8 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 
 	/**
 	 * Return the target definition that is being decorated by this bean definition, if any.
+	 * <p>
+	 * 返回由此bean定义修饰的目标定义（如果有）。
 	 */
 	@Nullable
 	public BeanDefinitionHolder getDecoratedDefinition() {

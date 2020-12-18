@@ -666,6 +666,8 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	/**
 	 * Return whether this bean is a candidate for getting autowired into some other bean.
+	 * <p>
+	 * 返回此bean是否适合自动连接到其他bean。
 	 */
 	@Override
 	public boolean isAutowireCandidate() {
@@ -913,6 +915,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	/**
 	 * Return if there are method overrides defined for this bean.
+	 * 如果为此bean定义了方法重写，则返回。
 	 *
 	 * @since 5.0.2
 	 */
@@ -1113,6 +1116,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 */
 	public void validate() throws BeanDefinitionValidationException {
 		if (hasMethodOverrides() && getFactoryMethodName() != null) {
+			// 无法将工厂方法与容器生成的方法重写结合使用：“ +”工厂方法必须创建具体的bean实例。
 			throw new BeanDefinitionValidationException(
 					"Cannot combine factory method with container-generated method overrides: " +
 							"the factory method must create the concrete bean instance.");
@@ -1125,11 +1129,14 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	/**
 	 * Validate and prepare the method overrides defined for this bean.
 	 * Checks for existence of a method with the specified name.
+	 * <p>
+	 * 验证并准备为此bean定义的方法替代。检查是否存在具有指定名称的方法。
 	 *
 	 * @throws BeanDefinitionValidationException in case of validation failure
 	 */
 	public void prepareMethodOverrides() throws BeanDefinitionValidationException {
 		// Check that lookup methods exist and determine their overloaded status.
+		// 检查查找方法是否存在，并确定其重载状态。
 		if (hasMethodOverrides()) {
 			getMethodOverrides().getOverrides().forEach(this::prepareMethodOverride);
 		}

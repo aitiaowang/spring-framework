@@ -353,8 +353,14 @@ public interface BeanFactory {
 	/**
 	 * Determine the type of the bean with the given name. More specifically,
 	 * determine the type of object that {@link #getBean} would return for the given name.
+	 * <p>
+	 * 确定具有给定名称的bean的类型。更具体地说，确定{@link #getBean}将针对给定名称返回的对象的类型。
+	 *
 	 * <p>For a {@link FactoryBean}, return the type of object that the FactoryBean creates,
 	 * as exposed by {@link FactoryBean#getObjectType()}.
+	 * <p>
+	 * 对于{@link FactoryBean}，返回由{@link FactoryBean#getObjectType()}公开的FactoryBean创建的对象的类型。
+	 *
 	 * <p>Translates aliases back to the corresponding canonical bean name.
 	 * Will ask the parent factory if the bean cannot be found in this factory instance.
 	 *

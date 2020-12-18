@@ -293,6 +293,9 @@ public interface ListableBeanFactory extends BeanFactory {
 	/**
 	 * Find all beans which are annotated with the supplied {@link Annotation} type,
 	 * returning a Map of bean names with corresponding bean instances.
+	 * <p>
+	 * 查找所有使用提供的{@link Annotation}类型进行注释的bean,返回带有相应bean实例的bean名称的映射。
+	 *
 	 * <p>Note that this method considers objects created by FactoryBeans, which means
 	 * that FactoryBeans will get initialized in order to determine their object type.
 	 *

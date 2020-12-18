@@ -102,7 +102,7 @@ import org.springframework.util.StringUtils;
  * <p>Note that readers for specific bean definition formats are typically
  * implemented separately rather than as bean factory subclasses: see for example
  * {@link org.springframework.beans.factory.xml.XmlBeanDefinitionReader}.
- *
+ * <p>
  * 请注意，用于特定bean定义格式的阅读器通常是单独实现的，而不是作为bean工厂的子类实现的：
  * 例如，请参见{@link org.springframework.beans.factory.xml.XmlBeanDefinitionReader}。
  *
@@ -110,7 +110,7 @@ import org.springframework.util.StringUtils;
  * {@link org.springframework.beans.factory.ListableBeanFactory} interface,
  * have a look at {@link StaticListableBeanFactory}, which manages existing
  * bean instances rather than creating new ones based on bean definitions.
- *
+ * <p>
  * 对于{@link org.springframework.beans.factory.ListableBeanFactory}接口的替代实现，
  * 请看一下{@link StaticListableBeanFactory}，它管理现有的bean实例，而不是基于bean定义创建新的bean实例
  *
@@ -192,6 +192,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	/**
 	 * Map from bean name to merged BeanDefinitionHolder.
+	 * 从bean名称映射到合并的BeanDefinitionHolder(bean定义持有人)。
 	 */
 	private final Map<String, BeanDefinitionHolder> mergedBeanDefinitionHolders = new ConcurrentHashMap<>(256);
 
@@ -235,6 +236,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	/**
 	 * Create a new DefaultListableBeanFactory.
+	 * 创建一个新的DefaultListableBeanFactory。
 	 */
 	public DefaultListableBeanFactory() {
 		super();
@@ -803,20 +805,27 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	/**
+	 * 是Autowire(自动注入)候选人
+	 * <p>
 	 * Determine whether the specified bean definition qualifies as an autowire candidate,
 	 * to be injected into other beans which declare a dependency of matching type.
+	 * <p>
+	 * 确定指定的bean定义是否符合自动装配候选条件，可以注入到声明匹配类型依赖项的其他bean中。
 	 *
-	 * @param beanName   the name of the bean definition to check
-	 * @param mbd        the merged bean definition to check
-	 * @param descriptor the descriptor of the dependency to resolve
+	 * @param beanName   the name of the bean definition to check  要检查的bean定义的名称
+	 * @param mbd        the merged bean definition to check  要检查的合并bean定义
+	 * @param descriptor the descriptor of the dependency to resolve  要解决的依赖项的描述符
 	 * @param resolver   the AutowireCandidateResolver to use for the actual resolution algorithm
+	 *                   AutowireCandidateResolver用于实际的分辨率算法
 	 * @return whether the bean should be considered as autowire candidate
+	 * 是否应将bean视为自动装配候选对象
 	 */
 	protected boolean isAutowireCandidate(String beanName, RootBeanDefinition mbd,
 										  DependencyDescriptor descriptor, AutowireCandidateResolver resolver) {
 
 		String bdName = BeanFactoryUtils.transformedBeanName(beanName);
 		resolveBeanClass(mbd, bdName);
+		//构造函数注入
 		if (mbd.isFactoryMethodUnique && mbd.factoryMethodToIntrospect == null) {
 			new ConstructorResolver(this).resolveFactoryMethodIfPossible(mbd);
 		}
@@ -939,6 +948,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	//---------------------------------------------------------------------
 	// Implementation of BeanDefinitionRegistry interface
+	//BeanDefinitionRegistry接口的实现
 	//---------------------------------------------------------------------
 
 	@Override
@@ -1006,11 +1016,16 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				//仍处于启动注册阶段
 				this.beanDefinitionMap.put(beanName, beanDefinition);
 				this.beanDefinitionNames.add(beanName);
+				/**
+				 * 删除手动注册的单例名称，从单例名称配置缓存列表中,如果存在，则删除
+				 * {@link manualSingletonNames}
+				 */
 				removeManualSingletonName(beanName);
 			}
+			// 冻结的Bean定义名称
 			this.frozenBeanDefinitionNames = null;
 		}
-
+		//bean已经定义，或者已实例化
 		if (existingDefinition != null || containsSingleton(beanName)) {
 			//重置bean的定义
 			resetBeanDefinition(beanName);
@@ -1550,6 +1565,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	/**
 	 * Add an entry to the candidate map: a bean instance if available or just the resolved
 	 * type, preventing early bean initialization ahead of primary candidate selection.
+	 * <p>
+	 * 在候选映射中添加一个条目：一个bean实例（如果有的话）或只是解析的类型，以防止在选择主要候选对象之前尽早初始化bean。
 	 */
 	private void addCandidateEntry(Map<String, Object> candidates, String candidateName,
 								   DependencyDescriptor descriptor, Class<?> requiredType) {
@@ -1751,6 +1768,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	/**
 	 * Raise a BeanNotOfRequiredTypeException for an unresolvable dependency, if applicable,
 	 * i.e. if the target type of the bean would match but an exposed proxy doesn't.
+	 * <p>
+	 * 提出一个BeanNotOfRequiredTypeException(Bean不是必需的类型异常)以解决不可解决的依赖关系（如果适用），
+	 * 即，如果bean的目标类型将匹配，但暴露的代理不匹配。
 	 */
 	private void checkBeanNotOfRequiredType(Class<?> type, DependencyDescriptor descriptor) {
 		for (String beanName : this.beanDefinitionNames) {
@@ -1760,6 +1780,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				if (targetType != null && type.isAssignableFrom(targetType) &&
 						isAutowireCandidate(beanName, mbd, descriptor, getAutowireCandidateResolver())) {
 					// Probably a proxy interfering with target type match -> throw meaningful exception.
+					// 可能是干扰目标类型匹配的代理->抛出有意义的异常。
 					Object beanInstance = getSingleton(beanName, false);
 					Class<?> beanType = (beanInstance != null && beanInstance.getClass() != NullBean.class ?
 							beanInstance.getClass() : predictBeanType(beanName, mbd));
@@ -1769,6 +1790,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				}
 			} catch (NoSuchBeanDefinitionException ex) {
 				// Bean definition got removed while we were iterating -> ignore.
+				// 迭代时删除了Bean定义->忽略。
 			}
 		}
 

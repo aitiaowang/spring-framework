@@ -304,6 +304,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 			if (singletonObject == null) {
 				//在工厂的单例销毁时不允许创建单例bean
 				if (this.singletonsCurrentlyInDestruction) {
+					//单例bean创建不允许当单例工厂在销毁时(不要在销毁方法实现中从BeanFactory请求bean !)
 					throw new BeanCreationNotAllowedException(beanName,
 							"Singleton bean creation not allowed while singletons of this factory are in destruction " +
 									"(Do not request a bean from a BeanFactory in a destroy method implementation!)");
@@ -484,10 +485,16 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * Add the given bean to the list of disposable beans in this registry.
+	 * <p>
+	 * 将给定的bean添加到此注册表中的一次性bean列表中。
+	 *
 	 * <p>Disposable beans usually correspond to registered singletons,
 	 * matching the bean name but potentially being a different instance
 	 * (for example, a DisposableBean adapter for a singleton that does not
 	 * naturally implement Spring's DisposableBean interface).
+	 * <p>
+	 * 一次性Bean通常对应于注册的单例，与Bean名称匹配，但可能是不同的实例
+	 * （例如，单例的DisposableBean适配器自然不实现Spring的DisposableBean接口）。
 	 *
 	 * @param beanName the name of the bean
 	 * @param bean     the bean instance
@@ -529,6 +536,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @param dependentBeanName the name of the dependent bean  依赖bean的名称
 	 */
 	public void registerDependentBean(String beanName, String dependentBeanName) {
+		//获取bean的原始名称
 		String canonicalName = canonicalName(beanName);
 
 		synchronized (this.dependentBeanMap) {
