@@ -22,6 +22,10 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.io.Resource;
 
 /**
+ * 对DefaultListableBeanFactory类进行了扩展，主要用于从XML文档中读取BeanDefinition，对于注册和获取Bean都是
+ * 使用从父类DefaultListableBeanFactory继承的方法去实现，而唯独与父类不同的个性化实现就是增加了XmlBeanDefinitionReader
+ * 类型的reader属性，在XmlBeanFactory中主要使用reader属性对资源文件进行读取和注册
+ * <p>
  * Convenience extension of {@link DefaultListableBeanFactory} that reads bean definitions
  * from an XML document. Delegates to {@link XmlBeanDefinitionReader} underneath; effectively
  * equivalent to using an XmlBeanDefinitionReader with a DefaultListableBeanFactory.
@@ -44,9 +48,9 @@ import org.springframework.core.io.Resource;
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Chris Beams
- * @since 15 April 2001
  * @see org.springframework.beans.factory.support.DefaultListableBeanFactory
  * @see XmlBeanDefinitionReader
+ * @since 15 April 2001
  * @deprecated as of Spring 3.1 in favor of {@link DefaultListableBeanFactory} and
  * {@link XmlBeanDefinitionReader}
  */
@@ -60,6 +64,7 @@ public class XmlBeanFactory extends DefaultListableBeanFactory {
 	/**
 	 * Create a new XmlBeanFactory with the given resource,
 	 * which must be parsable using DOM.
+	 *
 	 * @param resource the XML resource to load bean definitions from
 	 * @throws BeansException in case of loading or parsing errors
 	 */
@@ -70,12 +75,14 @@ public class XmlBeanFactory extends DefaultListableBeanFactory {
 	/**
 	 * Create a new XmlBeanFactory with the given input stream,
 	 * which must be parsable using DOM.
-	 * @param resource the XML resource to load bean definitions from
+	 *
+	 * @param resource          the XML resource to load bean definitions from
 	 * @param parentBeanFactory parent bean factory
 	 * @throws BeansException in case of loading or parsing errors
 	 */
 	public XmlBeanFactory(Resource resource, BeanFactory parentBeanFactory) throws BeansException {
 		super(parentBeanFactory);
+		//加载资源
 		this.reader.loadBeanDefinitions(resource);
 	}
 

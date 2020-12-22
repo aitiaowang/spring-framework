@@ -226,13 +226,19 @@ public class ConstructorArgumentValues {
 
 	/**
 	 * Add a generic argument value to be matched by type or name (if available).
+	 * <p>
+	 * 添加一个通用参数值，以按类型或名称进行匹配（如果有）。
+	 *
 	 * <p>Note: A single generic argument value will just be used once,
 	 * rather than matched multiple times.
+	 * <p>
+	 * 注意：单个通用参数值将仅使用一次，而不是多次匹配。
 	 *
-	 * @param newValue the argument value in the form of a ValueHolder
+	 * @param newValue the argument value in the form of a ValueHolder    以ValueHolder形式的参数值
 	 *                 <p>Note: Identical ValueHolder instances will only be registered once,
 	 *                 to allow for merging and re-merging of argument value definitions. Distinct
 	 *                 ValueHolder instances carrying the same content are of course allowed.
+	 *                 注意：相同的ValueHolder实例将仅注册一次，以允许合并和重新合并参数值定义。不同的带有相同内容的ValueHolder实例当然是允许的。
 	 */
 	public void addGenericArgumentValue(ValueHolder newValue) {
 		Assert.notNull(newValue, "ValueHolder must not be null");
@@ -244,6 +250,8 @@ public class ConstructorArgumentValues {
 	/**
 	 * Add a generic argument value, merging the new value (typically a collection)
 	 * with the current value if demanded: see {@link org.springframework.beans.Mergeable}.
+	 * <p>
+	 * 添加一个通用参数值，如果需要的话，将新值（通常是一个集合）与当前值合并：请参见{@link org.springframework.beans.Mergeable}。
 	 *
 	 * @param newValue the argument value in the form of a ValueHolder
 	 */

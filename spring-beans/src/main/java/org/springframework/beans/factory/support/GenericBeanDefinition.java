@@ -22,6 +22,7 @@ import org.springframework.util.ObjectUtils;
 
 /**
  * 泛型bean定义
+ * <p>
  * GenericBeanDefinition is a one-stop shop for standard bean definition purposes.
  * Like any bean definition, it allows for specifying a class plus optionally
  * constructor argument values and property values. Additionally, deriving from a

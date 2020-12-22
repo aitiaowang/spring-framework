@@ -124,6 +124,8 @@ import org.springframework.lang.Nullable;
  */
 
 /**
+ * 定义获取bean及bean的各种属性
+ * <p>
  * BeanFactory 和 FactoryBean的区别：
  * 1.BeanFactory是个bean工厂，是一个工厂类(接口)， 它负责生产和管理bean的一个工厂
  * 是ioc 容器最底层的接口，是个ioc容器，是spring用来管理和装配普通bean的ioc容器（这些bean成为普通bean）。

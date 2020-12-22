@@ -17,6 +17,8 @@
 package org.springframework.core.env;
 
 /**
+ * 定义获取Environment方法
+ * <p>
  * Interface indicating a component that contains and exposes an {@link Environment} reference.
  * <p>
  * 指示包含并公开{@link Environment}引用的组件的接口

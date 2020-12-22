@@ -84,10 +84,16 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * 综合AbstractBeanFactory并对接口AutowireCapableBeanFactory进行实现
+ * <p>
  * Abstract bean factory superclass that implements default bean creation,
  * with the full capabilities specified by the {@link RootBeanDefinition} class.
  * Implements the {@link org.springframework.beans.factory.config.AutowireCapableBeanFactory}
  * interface in addition to AbstractBeanFactory's {@link #createBean} method.
+ * <p>
+ * 实现默认bean创建的抽象bean工厂超类，具有{@link RootBeanDefinition}类指定的全部功能。
+ * 除了AbstractBeanFactory的{@link #createBean}方法之外，
+ * 还实现了{@link org.springframework.beans.factory.config.AutowireCapableBeanFactory}接口。
  *
  * <p>Provides bean creation (with constructor resolution), property population,
  * wiring (including autowiring), and initialization. Handles runtime bean
@@ -188,6 +194,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	public AbstractAutowireCapableBeanFactory() {
 		super();
+		// ignoreDependencyInterface 忽略接口的自动装配功能
 		ignoreDependencyInterface(BeanNameAware.class);
 		ignoreDependencyInterface(BeanFactoryAware.class);
 		ignoreDependencyInterface(BeanClassLoaderAware.class);
@@ -195,6 +202,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * Create a new AbstractAutowireCapableBeanFactory with the given parent.
+	 * <p>
+	 * 使用给定的父级创建一个新的AbstractAutowireCapableBeanFactory。
 	 *
 	 * @param parentBeanFactory parent bean factory, or {@code null} if none
 	 */

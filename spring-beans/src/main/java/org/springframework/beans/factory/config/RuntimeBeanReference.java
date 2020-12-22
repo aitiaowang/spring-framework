@@ -40,7 +40,10 @@ public class RuntimeBeanReference implements BeanReference {
 
 	/**
 	 * Create a new RuntimeBeanReference to the given bean name.
-	 * @param beanName name of the target bean
+	 * <p>
+	 * 创建一个新的RuntimeBeanReference到给定的bean名称。
+	 *
+	 * @param beanName name of the target bean  目标bean的名称
 	 */
 	public RuntimeBeanReference(String beanName) {
 		this(beanName, false);
@@ -49,9 +52,13 @@ public class RuntimeBeanReference implements BeanReference {
 	/**
 	 * Create a new RuntimeBeanReference to the given bean name,
 	 * with the option to mark it as reference to a bean in the parent factory.
-	 * @param beanName name of the target bean
+	 * <p>
+	 * 创建一个给定bean名称的新RuntimeBeanReference，并带有将其标记为对父工厂中bean的引用的选项。
+	 *
+	 * @param beanName name of the target bean 目标bean的名称
 	 * @param toParent whether this is an explicit reference to a bean in the
-	 * parent factory
+	 *                 parent factory
+	 *                 这是否是对父工厂中的bean的显式引用
 	 */
 	public RuntimeBeanReference(String beanName, boolean toParent) {
 		Assert.hasText(beanName, "'beanName' must not be empty");

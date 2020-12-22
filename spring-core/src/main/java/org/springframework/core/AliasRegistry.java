@@ -17,8 +17,13 @@
 package org.springframework.core;
 
 /**
+ * 定义对Alias的简单增删改等操作
+ * <p>
  * Common interface for managing aliases. Serves as super-interface for
  * {@link org.springframework.beans.factory.support.BeanDefinitionRegistry}.
+ * <p>
+ * 用于管理别名的通用接口。
+ * 用作{@link org.springframework.beans.factory.support.BeanDefinitionRegistry}的超级接口。
  *
  * @author Juergen Hoeller
  * @since 2.5.2

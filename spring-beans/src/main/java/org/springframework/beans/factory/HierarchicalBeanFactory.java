@@ -19,8 +19,11 @@ package org.springframework.beans.factory;
 import org.springframework.lang.Nullable;
 
 /**
+ * 继承BeanFactory,也就是在BeanFactory定义的功能的基础上增加了对parentFactory的支持
+ * <p>
  * Sub-interface implemented by bean factories that can be part
  * of a hierarchy.
+ * <p>
  * 由bean工厂实现的子接口，可以是层次结构的一部分。
  *
  * <p>The corresponding {@code setParentBeanFactory} method for bean
@@ -34,7 +37,6 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.beans.factory.config.ConfigurableBeanFactory#setParentBeanFactory
  * @since 07.07.2003
  */
-//分层的Bean工厂(子父级)
 public interface HierarchicalBeanFactory extends BeanFactory {
 
 	/**

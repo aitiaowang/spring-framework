@@ -77,12 +77,19 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.StringValueResolver;
 
 /**
+ * 综合FactoryBeanRegistrySupport和ConfigurableBeanFactory的功能
+ * <p>
  * Abstract base class for {@link org.springframework.beans.factory.BeanFactory}
  * implementations, providing the full capabilities of the
  * {@link org.springframework.beans.factory.config.ConfigurableBeanFactory} SPI.
  * Does <i>not</i> assume a listable bean factory: can therefore also be used
  * as base class for bean factory implementations which obtain bean definitions
  * from some backend resource (where bean definition access is an expensive operation).
+ * <p>
+ * {@link org.springframework.beans.factory.BeanFactory}实现的抽象基类，
+ * 提供SPI {@link org.springframework.beans.factory.config.ConfigurableBeanFactory}的全部功能。
+ * <i>不是</ i>假定有一个可列出的bean工厂：因此也可以用作从某些后端资源（其中bean定义访问是一项昂贵的操作）
+ * 获得bean定义的bean工厂实现的基类。
  *
  * <p>This class provides a singleton cache (through its base class
  * {@link org.springframework.beans.factory.support.DefaultSingletonBeanRegistry},

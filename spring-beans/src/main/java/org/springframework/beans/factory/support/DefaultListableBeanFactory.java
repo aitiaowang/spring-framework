@@ -84,6 +84,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * spring注册及加载bean的默认实现，而对于XmlBeanFactory与DefaultListableBeanFactory不同的地方其实就是
+ * XmlBeanFactory中使用了自定义的XML读取器XmlBeanDefinitionReader,实现了个性化的XmlBeanDefinitionReader读取
+ * <p>
  * Spring's default implementation of the {@link ConfigurableListableBeanFactory}
  * and {@link BeanDefinitionRegistry} interfaces: a full-fledged bean factory
  * based on bean definition metadata, extensible through post-processors.
@@ -244,6 +247,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	/**
 	 * Create a new DefaultListableBeanFactory with the given parent.
+	 * <p>
+	 * 使用给定的父级创建一个新的DefaultListableBeanFactory。
 	 *
 	 * @param parentBeanFactory the parent BeanFactory
 	 */

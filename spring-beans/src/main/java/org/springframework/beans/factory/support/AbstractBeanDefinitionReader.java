@@ -35,8 +35,12 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
+ * 对EnvironmentCapable，BeanDefinitionReader定义的功能进行实现
+ * <p>
  * Abstract base class for bean definition readers which implement
  * the {@link BeanDefinitionReader} interface.
+ * <p>
+ * 实现{@link BeanDefinitionReader}接口的bean定义阅读器的抽象基类。
  *
  * <p>Provides common properties like the bean factory to work on
  * and the class loader to use for loading bean classes.

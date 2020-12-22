@@ -31,6 +31,8 @@ import org.springframework.lang.Nullable;
 /**
  * {@link EntityResolver} implementation for the Spring beans DTD,
  * to load the DTD from the Spring class path (or JAR file).
+ * <p>
+ * {@link EntityResolver}实现为Spring bean DTD，从Spring类路径（或JAR文件）中加载DTD。
  *
  * <p>Fetches "spring-beans.dtd" from the class path resource
  * "/org/springframework/beans/factory/xml/spring-beans.dtd",
@@ -39,8 +41,8 @@ import org.springframework.lang.Nullable;
  *
  * @author Juergen Hoeller
  * @author Colin Sampaleanu
- * @since 04.06.2003
  * @see ResourceEntityResolver
+ * @since 04.06.2003
  */
 public class BeansDtdResolver implements EntityResolver {
 
@@ -76,8 +78,7 @@ public class BeansDtdResolver implements EntityResolver {
 						logger.trace("Found beans DTD [" + systemId + "] in classpath: " + dtdFile);
 					}
 					return source;
-				}
-				catch (FileNotFoundException ex) {
+				} catch (FileNotFoundException ex) {
 					if (logger.isDebugEnabled()) {
 						logger.debug("Could not resolve beans DTD [" + systemId + "]: not found in classpath", ex);
 					}

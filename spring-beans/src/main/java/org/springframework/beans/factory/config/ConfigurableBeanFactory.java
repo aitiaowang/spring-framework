@@ -31,16 +31,25 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.StringValueResolver;
 
 /**
+ * 提供配置Factory的各种方法
+ * <p>
  * Configuration interface to be implemented by most bean factories. Provides
  * facilities to configure a bean factory, in addition to the bean factory
  * client methods in the {@link org.springframework.beans.factory.BeanFactory}
  * interface.
+ * <p>
+ * 由大多数bean工厂实现的配置接口。提供了配置一个bean工厂的设施，除了bean工厂
+ * 客户端方法在{@link org.springframework.beans.factory.BeanFactory}接口。
  *
  * <p>This bean factory interface is not meant to be used in normal application
  * code: Stick to {@link org.springframework.beans.factory.BeanFactory} or
  * {@link org.springframework.beans.factory.ListableBeanFactory} for typical
  * needs. This extended interface is just meant to allow for framework-internal
  * plug'n'play and for special access to bean factory configuration methods.
+ * <p>
+ * 此bean工厂接口不适合在常规应用程序中使用代码：
+ * 坚持使用{@link org.springframework.beans.factory.BeanFactory}或{@link org.springframework.beans.factory.ListableBeanFactory}来满足典型的需求。
+ * 此扩展接口仅用于允许框架内部即插即用，并允许对bean工厂配置方法的特殊访问。
  *
  * @author Juergen Hoeller
  * @see org.springframework.beans.factory.BeanFactory
