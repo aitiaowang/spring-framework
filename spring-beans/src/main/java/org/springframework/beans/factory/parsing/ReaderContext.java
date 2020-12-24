@@ -183,6 +183,8 @@ public class ReaderContext {
 
 	/**
 	 * Fire an import-processed event.
+	 * <p>
+	 * 触发导入处理的事件。
 	 */
 	public void fireImportProcessed(String importedResource, Resource[] actualResources, @Nullable Object source) {
 		this.eventListener.importProcessed(new ImportDefinition(importedResource, actualResources, source));

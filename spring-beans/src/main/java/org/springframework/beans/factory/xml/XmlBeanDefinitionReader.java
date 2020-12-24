@@ -242,8 +242,13 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Specify the {@link NamespaceHandlerResolver} to use.
+	 * <p>
+	 * 指定要使用的{@link NamespaceHandlerResolver}。
+	 *
 	 * <p>If none is specified, a default instance will be created through
 	 * {@link #createDefaultNamespaceHandlerResolver()}.
+	 * <p>
+	 * 如果未指定，则将通过{@link #createDefaultNamespaceHandlerResolver()}创建默认实例。
 	 */
 	public void setNamespaceHandlerResolver(@Nullable NamespaceHandlerResolver namespaceHandlerResolver) {
 		this.namespaceHandlerResolver = namespaceHandlerResolver;
@@ -589,6 +594,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Lazily create a default NamespaceHandlerResolver, if not set before.
+	 * <p>
+	 * 延迟创建默认的NamespaceHandlerResolver（如果之前未设置）。
 	 *
 	 * @see #createDefaultNamespaceHandlerResolver()
 	 */
@@ -601,7 +608,12 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Create the default implementation of {@link NamespaceHandlerResolver} used if none is specified.
+	 * <p>
+	 * 如果未指定，则创建{@link NamespaceHandlerResolver}的默认实现。
+	 *
 	 * <p>The default implementation returns an instance of {@link DefaultNamespaceHandlerResolver}.
+	 * <p>
+	 * 默认实现返回{@link DefaultNamespaceHandlerResolver}的实例。
 	 *
 	 * @see DefaultNamespaceHandlerResolver#DefaultNamespaceHandlerResolver(ClassLoader)
 	 */

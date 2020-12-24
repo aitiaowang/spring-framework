@@ -135,6 +135,8 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 
 	/**
 	 * Package-visible field that indicates a before-instantiation post-processor having kicked in.
+	 * <p>
+	 * 程序包可见的字段，指示已启动实例化前的后处理器。
 	 */
 	@Nullable
 	volatile Boolean beforeInstantiationResolved;

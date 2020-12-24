@@ -162,8 +162,10 @@ public interface ConfigurableListableBeanFactory
 	/**
 	 * Return whether this factory's bean definitions are frozen,
 	 * i.e. are not supposed to be modified or post-processed any further.
+	 * <p>
+	 * 返回此工厂的Bean定义是否被冻结，即，不应被修改或进一步处理。
 	 *
-	 * @return {@code true} if the factory's configuration is considered frozen
+	 * @return {@code true} if the factory's configuration is considered frozen  {@code true}（如果认为出厂配置已冻结）
 	 */
 	boolean isConfigurationFrozen();
 

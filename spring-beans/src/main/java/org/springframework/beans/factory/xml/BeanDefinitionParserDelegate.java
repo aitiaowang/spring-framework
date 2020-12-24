@@ -1075,10 +1075,13 @@ public class BeanDefinitionParserDelegate {
 	public Object parsePropertySubElement(Element ele, @Nullable BeanDefinition bd, @Nullable String defaultValueType) {
 		//不是指定的默认命名空间
 		if (!isDefaultNamespace(ele)) {
+			// 解析嵌套的自定义元素
 			return parseNestedCustomElement(ele, bd);
 		} else if (nodeNameEquals(ele, BEAN_ELEMENT)) {
+			// 解析Bean定义默认元素
 			BeanDefinitionHolder nestedBd = parseBeanDefinitionElement(ele, bd);
 			if (nestedBd != null) {
+				// 装饰Bean定义（如果需要）
 				nestedBd = decorateBeanDefinitionIfRequired(ele, nestedBd, bd);
 			}
 			return nestedBd;
@@ -1451,8 +1454,10 @@ public class BeanDefinitionParserDelegate {
 
 	/**
 	 * Parse a custom element (outside of the default namespace).
+	 * <p>
+	 * 解析自定义元素（默认名称空间之外）。
 	 *
-	 * @param ele the element to parse
+	 * @param ele the element to parse  要解析的元素
 	 * @return the resulting bean definition
 	 */
 	@Nullable
@@ -1463,6 +1468,8 @@ public class BeanDefinitionParserDelegate {
 	/**
 	 * Parse a custom element (outside of the default namespace).
 	 * 解析自定义元素（默认名称空间之外）。
+	 * <p>
+	 * containingBd为父类bean，对顶层元素的解析应设置为null
 	 *
 	 * @param ele          the element to parse
 	 * @param containingBd the containing bean definition (if any)
@@ -1470,10 +1477,12 @@ public class BeanDefinitionParserDelegate {
 	 */
 	@Nullable
 	public BeanDefinition parseCustomElement(Element ele, @Nullable BeanDefinition containingBd) {
+		// 获取对应的命名空间
 		String namespaceUri = getNamespaceURI(ele);
 		if (namespaceUri == null) {
 			return null;
 		}
+		// 根据命名空间找到对应的NamespaceHandler进行解析
 		NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
 		if (handler == null) {
 			error("Unable to locate Spring NamespaceHandler for XML schema namespace [" + namespaceUri + "]", ele);

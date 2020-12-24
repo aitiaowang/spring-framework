@@ -965,6 +965,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		if (beanDefinition instanceof AbstractBeanDefinition) {
 			try {
+				/**
+				 * 注册前的最后一次校验，这里的校验不同于之前的XML校验，
+				 * 主要是对于AbstractBeanDefinition属性中的methodOverrides校验，
+				 * 校验methodOverrides是否与工厂方法并存或者methodOverrides对应的方法根本不存在
+				 */
 				((AbstractBeanDefinition) beanDefinition).validate();
 			} catch (BeanDefinitionValidationException ex) {
 				throw new BeanDefinitionStoreException(beanDefinition.getResourceDescription(), beanName,
@@ -978,27 +983,35 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			if (!isAllowBeanDefinitionOverriding()) {
 				//Bean定义覆盖异常。因为相同名称的bean已经存在(existingDefinition != null)，且不允许覆盖(相同名称的不同定义)
 				throw new BeanDefinitionOverrideException(beanName, beanDefinition, existingDefinition);
-			} else if (existingDefinition.getRole() < beanDefinition.getRole()) {
+			}
+			// 框架bean覆盖用户bean
+			else if (existingDefinition.getRole() < beanDefinition.getRole()) {
 				// e.g. was ROLE_APPLICATION, now overriding with ROLE_SUPPORT or ROLE_INFRASTRUCTURE
 				//bean被覆盖，例如是ROLE_APPLICATION，现在已被ROLE_SUPPORT或ROLE_INFRASTRUCTURE覆盖
 				if (logger.isInfoEnabled()) {
+					// 用框架生成的bean定义覆盖用户定义的bean定义:用beanDefinition替换existingDefinition(现有定义)
 					logger.info("Overriding user-defined bean definition for bean '" + beanName +
 							"' with a framework-generated bean definition: replacing [" +
 							existingDefinition + "] with [" + beanDefinition + "]");
 				}
-			} else if (!beanDefinition.equals(existingDefinition)) {
+			}
+			// 不同bean，使用最新bean覆盖原有bean
+			else if (!beanDefinition.equals(existingDefinition)) {
 				if (logger.isDebugEnabled()) {
+					//覆盖bean的定义:替换 existingDefinition 使用 beanDefinition
 					logger.debug("Overriding bean definition for bean '" + beanName +
 							"' with a different definition: replacing [" + existingDefinition +
 							"] with [" + beanDefinition + "]");
 				}
 			} else {
 				if (logger.isTraceEnabled()) {
+					//重写bean的定义为bean beanName 用等价的定义:替换 existingDefinition 使用 beanDefinition
 					logger.trace("Overriding bean definition for bean '" + beanName +
 							"' with an equivalent definition: replacing [" + existingDefinition +
 							"] with [" + beanDefinition + "]");
 				}
 			}
+			// 覆盖原有bean定义
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 
 			// beanDefinitionMap中不存在同名的定义bean
@@ -1006,19 +1019,25 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			//开始了bean的创建
 			if (hasBeanCreationStarted()) {
 				// Cannot modify startup-time collection elements anymore (for stable iteration)
-				//无法再修改启动时收集元素（用于稳定的迭代）
+				//无法再修改启动时收集元素（用于稳定的迭代）-- 因为beanDefinitionMap是全局变量，这里定会存在并发访问的情况
 				synchronized (this.beanDefinitionMap) {
 					this.beanDefinitionMap.put(beanName, beanDefinition);
-					//更新bean的定义名称列表
+					/**
+					 * 更新bean的定义名称列表
+					 * 使用{@link java.util.concurrent.CopyOnWriteArrayList#add(Object)}方式，在读多写少的情况，实现线程安全，且性能最优
+					 *  从线程安全及性能上区分，倒叙排，Vector效率最低， Vector > SynchronizedList > CopyOnWriteArrayList（适用于读多写少）
+					 *  {@link java.util.Collections.SynchronizedList} 能把所有 List 接口的实现类转换成线程安全的List，比 Vector 有更好的扩展性和兼容性
+					 */
 					List<String> updatedDefinitions = new ArrayList<>(this.beanDefinitionNames.size() + 1);
 					updatedDefinitions.addAll(this.beanDefinitionNames);
 					updatedDefinitions.add(beanName);
 					this.beanDefinitionNames = updatedDefinitions;
 					removeManualSingletonName(beanName);
 				}
-			} else {
+			}
+			//仍处于启动注册阶段
+			else {
 				// Still in startup registration phase
-				//仍处于启动注册阶段
 				this.beanDefinitionMap.put(beanName, beanDefinition);
 				this.beanDefinitionNames.add(beanName);
 				/**
@@ -1032,7 +1051,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 		//bean已经定义，或者已实例化
 		if (existingDefinition != null || containsSingleton(beanName)) {
-			//重置bean的定义
+			//重置beanName对应的缓存
 			resetBeanDefinition(beanName);
 
 			//配置冻结
@@ -1169,6 +1188,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	 *                  修改操作的前提条件 （如果不适用此条件，则可以跳过该操作）
 	 */
 	private void updateManualSingletonNames(Consumer<Set<String>> action, Predicate<Set<String>> condition) {
+		// 开始了bean的创建
 		if (hasBeanCreationStarted()) {
 			// Cannot modify startup-time collection elements anymore (for stable iteration)
 			// 无法再修改启动时收集元素（用于稳定的迭代）

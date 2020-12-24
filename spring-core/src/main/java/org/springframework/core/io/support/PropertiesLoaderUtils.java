@@ -41,8 +41,8 @@ import org.springframework.util.ResourceUtils;
  *
  * @author Juergen Hoeller
  * @author Rob Harrop
- * @since 2.0
  * @see PropertiesLoaderSupport
+ * @since 2.0
  */
 public abstract class PropertiesLoaderUtils {
 
@@ -52,6 +52,7 @@ public abstract class PropertiesLoaderUtils {
 	/**
 	 * Load properties from the given EncodedResource,
 	 * potentially defining a specific encoding for the properties file.
+	 *
 	 * @see #fillProperties(java.util.Properties, EncodedResource)
 	 */
 	public static Properties loadProperties(EncodedResource resource) throws IOException {
@@ -63,7 +64,8 @@ public abstract class PropertiesLoaderUtils {
 	/**
 	 * Fill the given properties from the given EncodedResource,
 	 * potentially defining a specific encoding for the properties file.
-	 * @param props the Properties instance to load into
+	 *
+	 * @param props    the Properties instance to load into
 	 * @param resource the resource to load from
 	 * @throws IOException in case of I/O errors
 	 */
@@ -75,8 +77,9 @@ public abstract class PropertiesLoaderUtils {
 
 	/**
 	 * Actually load properties from the given EncodedResource into the given Properties instance.
-	 * @param props the Properties instance to load into
-	 * @param resource the resource to load from
+	 *
+	 * @param props     the Properties instance to load into
+	 * @param resource  the resource to load from
 	 * @param persister the PropertiesPersister to use
 	 * @throws IOException in case of I/O errors
 	 */
@@ -90,17 +93,14 @@ public abstract class PropertiesLoaderUtils {
 			if (filename != null && filename.endsWith(XML_FILE_EXTENSION)) {
 				stream = resource.getInputStream();
 				persister.loadFromXml(props, stream);
-			}
-			else if (resource.requiresReader()) {
+			} else if (resource.requiresReader()) {
 				reader = resource.getReader();
 				persister.load(props, reader);
-			}
-			else {
+			} else {
 				stream = resource.getInputStream();
 				persister.load(props, stream);
 			}
-		}
-		finally {
+		} finally {
 			if (stream != null) {
 				stream.close();
 			}
@@ -112,6 +112,7 @@ public abstract class PropertiesLoaderUtils {
 
 	/**
 	 * Load properties from the given resource (in ISO-8859-1 encoding).
+	 *
 	 * @param resource the resource to load from
 	 * @return the populated Properties instance
 	 * @throws IOException if loading failed
@@ -125,7 +126,8 @@ public abstract class PropertiesLoaderUtils {
 
 	/**
 	 * Fill the given properties from the given resource (in ISO-8859-1 encoding).
-	 * @param props the Properties instance to fill
+	 *
+	 * @param props    the Properties instance to fill
 	 * @param resource the resource to load from
 	 * @throws IOException if loading failed
 	 */
@@ -135,12 +137,10 @@ public abstract class PropertiesLoaderUtils {
 			String filename = resource.getFilename();
 			if (filename != null && filename.endsWith(XML_FILE_EXTENSION)) {
 				props.loadFromXML(is);
-			}
-			else {
+			} else {
 				props.load(is);
 			}
-		}
-		finally {
+		} finally {
 			is.close();
 		}
 	}
@@ -150,6 +150,7 @@ public abstract class PropertiesLoaderUtils {
 	 * (in ISO-8859-1 encoding), using the default class loader.
 	 * <p>Merges properties if more than one resource of the same name
 	 * found in the class path.
+	 *
 	 * @param resourceName the name of the class path resource
 	 * @return the populated Properties instance
 	 * @throws IOException if loading failed
@@ -161,12 +162,19 @@ public abstract class PropertiesLoaderUtils {
 	/**
 	 * Load all properties from the specified class path resource
 	 * (in ISO-8859-1 encoding), using the given class loader.
+	 * <p>
+	 * 使用给定的类加载器从指定的类路径资源（以ISO-8859-1编码）加载所有属性。
+	 *
 	 * <p>Merges properties if more than one resource of the same name
 	 * found in the class path.
-	 * @param resourceName the name of the class path resource
-	 * @param classLoader the ClassLoader to use for loading
-	 * (or {@code null} to use the default class loader)
-	 * @return the populated Properties instance
+	 * <p>
+	 * 如果在类路径中找到多个同名资源，则合并属性。
+	 *
+	 * @param resourceName the name of the class path resource  类路径资源的名称
+	 * @param classLoader  the ClassLoader to use for loading
+	 *                     (or {@code null} to use the default class loader)
+	 *                     用于加载的ClassLoader（或使用默认类加载器的{@code null}）
+	 * @return the populated Properties instance  填充的Properties实例
 	 * @throws IOException if loading failed
 	 */
 	public static Properties loadAllProperties(String resourceName, @Nullable ClassLoader classLoader) throws IOException {
@@ -186,12 +194,10 @@ public abstract class PropertiesLoaderUtils {
 			try {
 				if (resourceName.endsWith(XML_FILE_EXTENSION)) {
 					props.loadFromXML(is);
-				}
-				else {
+				} else {
 					props.load(is);
 				}
-			}
-			finally {
+			} finally {
 				is.close();
 			}
 		}

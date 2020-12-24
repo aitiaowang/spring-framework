@@ -62,6 +62,7 @@ public class SimpleAliasRegistry implements AliasRegistry {
 		Assert.hasText(name, "'name' must not be empty");
 		Assert.hasText(alias, "'alias' must not be empty");
 		synchronized (this.aliasMap) {
+			// 如果beanName与alias相同的话，不记录alias,并删除对应的alias
 			if (alias.equals(name)) {
 				this.aliasMap.remove(alias);
 				if (logger.isDebugEnabled()) {
@@ -72,8 +73,10 @@ public class SimpleAliasRegistry implements AliasRegistry {
 				if (registeredName != null) {
 					if (registeredName.equals(name)) {
 						// An existing alias - no need to re-register
+						// 现有别名-无需重新注册
 						return;
 					}
+					//如果alias不允许覆盖则抛出异常
 					if (!allowAliasOverriding()) {
 						throw new IllegalStateException("Cannot define alias '" + alias + "' for name '" +
 								name + "': It is already registered for name '" + registeredName + "'.");
@@ -83,7 +86,11 @@ public class SimpleAliasRegistry implements AliasRegistry {
 								registeredName + "' with new target name '" + name + "'");
 					}
 				}
+				/**
+				 * alias循环检查，当A-B存在时，若再次出现A-C-B时，校验不通过，抛出异常
+				 */
 				checkForAliasCircle(name, alias);
+				// 注册alias
 				this.aliasMap.put(alias, name);
 				if (logger.isTraceEnabled()) {
 					logger.trace("Alias definition '" + alias + "' registered for name '" + name + "'");
@@ -94,6 +101,8 @@ public class SimpleAliasRegistry implements AliasRegistry {
 
 	/**
 	 * Return whether alias overriding is allowed.
+	 * <p>
+	 * 返回是否允许别名覆盖。
 	 * Default is {@code true}.
 	 */
 	protected boolean allowAliasOverriding() {
@@ -102,6 +111,8 @@ public class SimpleAliasRegistry implements AliasRegistry {
 
 	/**
 	 * Determine whether the given name has the given alias registered.
+	 * <p>
+	 * 确定给定名称是否已注册给定别名。
 	 *
 	 * @param name  the name to check
 	 * @param alias the alias to look for
@@ -203,9 +214,13 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	 * Check whether the given name points back to the given alias as an alias
 	 * in the other direction already, catching a circular reference upfront
 	 * and throwing a corresponding IllegalStateException.
+	 * <p>
+	 * 检查给定名称是否已经在另一个方向上以别名的形式指向给定别名，是否在前面捕获了循环引用并引发了相应的IllegalStateException。
+	 * <p>
+	 * 当A->B存在时，若再次出现A->C->B则会抛出异常
 	 *
-	 * @param name  the candidate name
-	 * @param alias the candidate alias
+	 * @param name  the candidate name 候选人姓名
+	 * @param alias the candidate alias 候选别名
 	 * @see #registerAlias
 	 * @see #hasAlias
 	 */

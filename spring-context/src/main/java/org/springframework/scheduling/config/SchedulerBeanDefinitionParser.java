@@ -24,6 +24,8 @@ import org.springframework.util.StringUtils;
 
 /**
  * Parser for the 'scheduler' element of the 'task' namespace.
+ * <p>
+ * 用于'task'名称空间的'scheduler'元素的解析器。
  *
  * @author Mark Fisher
  * @since 3.0
