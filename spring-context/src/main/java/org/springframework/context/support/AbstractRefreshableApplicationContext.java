@@ -125,6 +125,12 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 * initializing a fresh bean factory for the next phase of the context's lifecycle.
 	 * <p>
 	 * 此实现对此上下文的基础bean工厂执行实际的刷新，关闭先前的bean工厂（如果有），并为上下文生命周期的下一阶段初始化一个新的bean工厂。
+	 * <p>
+	 * 1.创建DefaultListableBeanFactory
+	 * 2.指定序列化ID
+	 * 3.定制BeanFactory
+	 * 4.加载BeanDefinition
+	 * 5.使用全局变量来记录BeanFactory类实例
 	 */
 	@Override
 	protected final void refreshBeanFactory() throws BeansException {
@@ -133,9 +139,13 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			closeBeanFactory();
 		}
 		try {
+			// 创建DefaultListableBeanFactory
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
+			// 为了序列化指定id，如果需要的话，让这个BeanFactory从id反序列化到BeanFactory对象
 			beanFactory.setSerializationId(getId());
+			// 定制BeanFactory，设置相关属性，包括是否允许覆盖同名称的不同定义的对象以及循环依赖
 			customizeBeanFactory(beanFactory);
+			// 初始化DodumentReader,并进行XML文件读取及解析
 			loadBeanDefinitions(beanFactory);
 			this.beanFactory = beanFactory;
 		} catch (IOException ex) {
@@ -209,11 +219,18 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	/**
 	 * Customize the internal bean factory used by this context.
 	 * Called for each {@link #refresh()} attempt.
+	 * <p>
+	 * 定制此上下文使用的内部bean工厂。每次尝试{@link #refresh()}时都要调用。
+	 *
 	 * <p>The default implementation applies this context's
 	 * {@linkplain #setAllowBeanDefinitionOverriding "allowBeanDefinitionOverriding"}
 	 * and {@linkplain #setAllowCircularReferences "allowCircularReferences"} settings,
 	 * if specified. Can be overridden in subclasses to customize any of
 	 * {@link DefaultListableBeanFactory}'s settings.
+	 * <p>
+	 * 默认实现将应用此上下文的{@linkplain #setAllowBeanDefinitionOverriding “allowBeanDefinitionOverriding”}
+	 * 和{@linkplain #setAllowCircularReferences “allowCircularReferences”}设置（如果已指定）。
+	 * 可以在子类中重写以自定义{@link DefaultListableBeanFactory}的任何设置。
 	 *
 	 * @param beanFactory the newly created bean factory for this context
 	 * @see DefaultListableBeanFactory#setAllowBeanDefinitionOverriding
@@ -222,9 +239,13 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 * @see DefaultListableBeanFactory#setAllowEagerClassLoading
 	 */
 	protected void customizeBeanFactory(DefaultListableBeanFactory beanFactory) {
+		// 如果属性allowBeanDefinitionOverriding不为空，设置给beanFactory对象相应属性
+		// 此属性的含义：是否允许覆盖相同名称的不同定义的对象
 		if (this.allowBeanDefinitionOverriding != null) {
 			beanFactory.setAllowBeanDefinitionOverriding(this.allowBeanDefinitionOverriding);
 		}
+		// 如果属性allowCircularReferences不为空，设置给beanFactory对象相应属性
+		// 此属性的含义：是否允许bean之前存在循环依赖
 		if (this.allowCircularReferences != null) {
 			beanFactory.setAllowCircularReferences(this.allowCircularReferences);
 		}

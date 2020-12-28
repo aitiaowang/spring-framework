@@ -68,8 +68,11 @@ public class ResourceEditorRegistrar implements PropertyEditorRegistrar {
 	/**
 	 * Create a new ResourceEditorRegistrar for the given {@link ResourceLoader}
 	 * and {@link PropertyResolver}.
-	 * @param resourceLoader the ResourceLoader (or ResourcePatternResolver)
-	 * to create editors for (usually an ApplicationContext)
+	 * <p>
+	 * 为给定的{@link ResourceLoader}创建一个新的ResourceEditorRegistrar和{@link PropertyResolver}。
+	 *
+	 * @param resourceLoader   the ResourceLoader (or ResourcePatternResolver)
+	 *                         to create editors for (usually an ApplicationContext)
 	 * @param propertyResolver the PropertyResolver (usually an Environment)
 	 * @see org.springframework.core.env.Environment
 	 * @see org.springframework.core.io.support.ResourcePatternResolver
@@ -85,8 +88,15 @@ public class ResourceEditorRegistrar implements PropertyEditorRegistrar {
 	 * Populate the given {@code registry} with the following resource editors:
 	 * ResourceEditor, InputStreamEditor, InputSourceEditor, FileEditor, URLEditor,
 	 * URIEditor, ClassEditor, ClassArrayEditor.
+	 * <p>
+	 * 使用以下资源编辑器填充给定的{@code registry}：ResourceEditor，InputStreamEditor，
+	 * InputSourceEditor，FileEditor，URLEditor，URIEditor，ClassEditor，ClassArrayEditor。
+	 *
 	 * <p>If this registrar has been configured with a {@link ResourcePatternResolver},
 	 * a ResourceArrayPropertyEditor will be registered as well.
+	 * <p>
+	 * 如果此注册商已配置了{@link ResourcePatternResolver}，则ResourceArrayPropertyEditor也将被注册。
+	 *
 	 * @see org.springframework.core.io.ResourceEditor
 	 * @see org.springframework.beans.propertyeditors.InputStreamEditor
 	 * @see org.springframework.beans.propertyeditors.InputSourceEditor
@@ -123,12 +133,13 @@ public class ResourceEditorRegistrar implements PropertyEditorRegistrar {
 	/**
 	 * Override default editor, if possible (since that's what we really mean to do here);
 	 * otherwise register as a custom editor.
+	 * <p>
+	 * 如果可能的话，覆盖默认的编辑器（因为这是我们真正要做的事情）；否则注册为自定义编辑器。
 	 */
 	private void doRegisterEditor(PropertyEditorRegistry registry, Class<?> requiredType, PropertyEditor editor) {
 		if (registry instanceof PropertyEditorRegistrySupport) {
 			((PropertyEditorRegistrySupport) registry).overrideDefaultEditor(requiredType, editor);
-		}
-		else {
+		} else {
 			registry.registerCustomEditor(requiredType, editor);
 		}
 	}
