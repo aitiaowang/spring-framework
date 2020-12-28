@@ -158,7 +158,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	static {
 		// Eagerly load the ContextClosedEvent class to avoid weird classloader issues
 		// on application shutdown in WebLogic 8.1. (Reported by Dustin Woods.)
+		//尽早加载ContextClosedEvent类，以避免在WebLogic 8.1中的应用程序关闭时出现奇怪的类加载器问题。 （达斯汀·伍兹报道）。
 		ContextClosedEvent.class.getName();
+		System.out.println("ContextClosedEvent.class.getName()=========" + ContextClosedEvent.class.getName());
 	}
 
 
@@ -271,6 +273,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Create a new AbstractApplicationContext with no parent.
+	 * <p>
+	 * 创建一个没有父级的新AbstractApplicationContext。
 	 */
 	public AbstractApplicationContext() {
 		this.resourcePatternResolver = getResourcePatternResolver();
@@ -278,6 +282,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Create a new AbstractApplicationContext with the given parent context.
+	 * <p>
+	 * 使用给定的父上下文创建一个新的AbstractApplicationContext。
 	 *
 	 * @param parent the parent context
 	 */
@@ -577,7 +583,24 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * 加载或者刷新，持久化配置
-	 * 由于这是一个启动方法，如果失败，它应该销毁已经创建的单例，以避免悬空资源。换句话说，在调用这个方法之后，应该实例化所有的单例，或者根本不实例化单例
+	 * 由于这是一个启动方法，如果失败，它应该销毁已经创建的单例，以避免悬空资源。
+	 * 换句话说，在调用这个方法之后，应该实例化所有的单例，或者根本不实例化单例
+	 *
+	 * <p>
+	 * ClassPathXmlApplicationContext初始化步骤：
+	 * 1.初始化前的准备工作，例如对系统属性或者环境变量进行准备及验证
+	 * 2.初始化BeanFactory，并进行XML文件的读取；在这一步中，会复用BeanFactory中的配置文件读取解析及其他功能。
+	 * 这一步之后，ClassPathXMLApplicationContext实际上就已经包含了BeanFactory所提供的功能，也就可以进行Bean的提取等基础操作了
+	 * 3.对BeanFactory进行各种功能填充,@Qualifier与@Autowired这2个注解就是在这一步中增加的支持
+	 * 4.子类覆盖方法做额外的处理
+	 * 5.激活各种BeanFactory处理器
+	 * 6.注册拦截Bean创建的bean处理器，这里只是注册，真正的调用是在getBean的时候
+	 * 7.为上下文初始化Message源，即对不同语言的消息体进行国际化处理
+	 * 8.初始化应用消息广播器，并放入“ApplicationEventMulticaster” bean中
+	 * 9.留给子类来初始化其他的bean
+	 * 10.在所有注册的bean中查找listener bean，注册到消息广播器中
+	 * 11.初始化剩下的单实例（非惰性的）
+	 * 12.完成刷新过程，通知生命周期处理器lifecycleProcessor刷新过程，同时发出ContextRefreshEvent通知别人
 	 *
 	 * @date 2020/10/13 11:26
 	 */
@@ -589,48 +612,48 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
-			// 告诉子类刷新内部bean工厂。
+			// 告诉子类刷新内部bean工厂。(初始化beanFactory，并进行XML文件读取)
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
-			//准备在此上下文中使用的bean工厂。
+			//准备在此上下文中使用的bean工厂(对BeanFactory进行各种功能填充)。
 			prepareBeanFactory(beanFactory);
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
-				//允许在上下文子类中对bean工厂进行后处理。
+				//允许在上下文子类中对bean工厂进行后处理。(子类覆盖方法做额外处理)
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
-				//调用在上下文中注册为bean的工厂处理器。
+				//调用在上下文中注册为bean的工厂处理器。(激活各种BeanFactory处理器)
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
-				//注册拦截Bean创建的Bean处理器。
+				//注册拦截Bean创建的Bean处理器。（注册拦截Bean创建的Bean处理器，这里只是注册，真正的调用是在getBean时候）
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
-				//为此上下文初始化消息源。
+				//为此上下文初始化消息源。(为上下文初始化Message源，即不同语言的消息体，国际换处理)
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
-				//为此上下文初始化事件多播器。
+				//为此上下文初始化事件多播器。（初始化应用消息广播器，并放入 'ApplicationEventMulticaster' bean中）
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
-				//在特定上下文子类中初始化其他特殊bean
+				//在特定上下文子类中初始化其他特殊bean  (留给子类来初始化其他的bean)
 				onRefresh();
 
 				// Check for listener beans and register them.
-				//检查侦听器bean并注册它们。
+				//检查侦听器bean并注册它们。(在所有注册的bean中查找Listener bean,注册到消息广播器中)
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
-				//实例化所有剩余的（非延迟初始化）单例。
+				//实例化所有剩余的（非延迟初始化）单例。（初始化剩下的单实例，非惰性的）
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
-				//最后一步：发布相应的事件
+				//最后一步：发布相应的事件 （完成刷新过程，通知生命周期处理器 lifecycleProcessor 刷新过程，同时发出ContextRefreshEvent通知别人）
 				finishRefresh();
 			} catch (BeansException ex) {
 				if (logger.isWarnEnabled()) {
@@ -679,23 +702,28 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment.
+		// 在上下文环境中初始化任何占位符属性源。
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable:
 		// see ConfigurablePropertyResolver#setRequiredProperties
+		//验证标记为必需的所有属性都是可解析的：请参见ConfigurablePropertyResolver＃setRequiredProperties
 		getEnvironment().validateRequiredProperties();
 
 		// Store pre-refresh ApplicationListeners...
+		// 存储预刷新的ApplicationListeners ...
 		if (this.earlyApplicationListeners == null) {
 			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);
 		} else {
 			// Reset local application listeners to pre-refresh state.
+			// 将本地应用程序侦听器重置为预刷新状态。
 			this.applicationListeners.clear();
 			this.applicationListeners.addAll(this.earlyApplicationListeners);
 		}
 
 		// Allow for the collection of early ApplicationEvents,
 		// to be published once the multicaster is available...
+		// 允许收集早期的ApplicationEvent，一旦多播器可用时就发布...
 		this.earlyApplicationEvents = new LinkedHashSet<>();
 	}
 

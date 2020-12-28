@@ -1919,14 +1919,20 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				// DisposableBean interface, custom destroy method.
 				//注册一个对所有给定bean执行所有销毁工作的DisposableBean实现：DestructionAwareBeanPostProcessors，
 				// DisposableBean接口，自定义destroy方法。
+				/**
+				 * 单例模式下注册需要销毁的bean，此方法中会处理实现DisposableBean的bean，
+				 * 并且对所有的bean使用DestructionAwareBeanPostProcessors
+				 */
 				registerDisposableBean(beanName,
 						new DisposableBeanAdapter(bean, beanName, mbd, getBeanPostProcessors(), acc));
 			} else {
-				// A bean with a custom scope...
+				// A bean with a custom scope...  具有自定义范围的bean ...
 				Scope scope = this.scopes.get(mbd.getScope());
 				if (scope == null) {
+					// 没有为作用域名称注册作用域
 					throw new IllegalStateException("No Scope registered for scope name '" + mbd.getScope() + "'");
 				}
+				// 注册销毁回调
 				scope.registerDestructionCallback(beanName,
 						new DisposableBeanAdapter(bean, beanName, mbd, getBeanPostProcessors(), acc));
 			}

@@ -1296,12 +1296,18 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		descriptor.initParameterNameDiscovery(getParameterNameDiscoverer());
 		if (Optional.class == descriptor.getDependencyType()) {
 			return createOptionalDependency(descriptor, requestingBeanName);
-		} else if (ObjectFactory.class == descriptor.getDependencyType() ||
+		}
+		// Objectfactory类注入的特殊处理
+		else if (ObjectFactory.class == descriptor.getDependencyType() ||
 				ObjectProvider.class == descriptor.getDependencyType()) {
 			return new DependencyObjectProvider(descriptor, requestingBeanName);
-		} else if (javaxInjectProviderClass == descriptor.getDependencyType()) {
+		}
+		// javaxInjectProviderClass类注入的特殊处理
+		else if (javaxInjectProviderClass == descriptor.getDependencyType()) {
 			return new Jsr330Factory().createDependencyProvider(descriptor, requestingBeanName);
-		} else {
+		}
+		// 通用处理逻辑
+		else {
 			Object result = getAutowireCandidateResolver().getLazyResolutionProxyIfNecessary(
 					descriptor, requestingBeanName);
 			if (result == null) {
@@ -1315,6 +1321,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	public Object doResolveDependency(DependencyDescriptor descriptor, @Nullable String beanName,
 									  @Nullable Set<String> autowiredBeanNames, @Nullable TypeConverter typeConverter) throws BeansException {
 
+		// 获取注入点
 		InjectionPoint previousInjectionPoint = ConstructorResolver.setCurrentInjectionPoint(descriptor);
 		try {
 			Object shortcut = descriptor.resolveShortcut(this);
@@ -1323,6 +1330,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 
 			Class<?> type = descriptor.getDependencyType();
+			//用于支持spring中新增的注解@Value
 			Object value = getAutowireCandidateResolver().getSuggestedValue(descriptor);
 			if (value != null) {
 				if (value instanceof String) {
@@ -1336,6 +1344,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					return converter.convertIfNecessary(value, type, descriptor.getTypeDescriptor());
 				} catch (UnsupportedOperationException ex) {
 					// A custom TypeConverter which does not support TypeDescriptor resolution...
+					// 一个不支持TypeDescriptor分辨率的自定义TypeConverter。
 					return (descriptor.getField() != null ?
 							converter.convertIfNecessary(value, type, descriptor.getField()) :
 							converter.convertIfNecessary(value, type, descriptor.getMethodParameter()));
@@ -1347,8 +1356,13 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				return multipleBeans;
 			}
 
+			/**
+			 * 根据属性类型找到beanFactory中所有类型的匹配bean，
+			 * 返回值的构成为：key=匹配的beanName,value=beanName对应的实例化后的bean（通过getBean（beanName返回））
+			 */
 			Map<String, Object> matchingBeans = findAutowireCandidates(beanName, type, descriptor);
 			if (matchingBeans.isEmpty()) {
+				// 如果autowire的require属性为true,而找到的匹配项确为空，则抛出异常
 				if (isRequired(descriptor)) {
 					raiseNoMatchingBeanFound(type, descriptor.getResolvableType(), descriptor);
 				}
@@ -1367,6 +1381,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 						// In case of an optional Collection/Map, silently ignore a non-unique case:
 						// possibly it was meant to be an empty collection of multiple regular beans
 						// (before 4.3 in particular when we didn't even look for collection beans).
+						//如果是可选的Collection / Map，请静默忽略一个非唯一的情况：
+						// 可能是空的多个常规Bean的
+						//（尤其是在4.3之前，甚至当我们甚至没有寻找collection时）豆子）。
 						return null;
 					}
 				}
@@ -1407,6 +1424,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		Class<?> type = descriptor.getDependencyType();
 
 		if (descriptor instanceof StreamDependencyDescriptor) {
+			// 解析指定beanName的属性所匹配的值，并把解析到的属性名称存储在autowiredBeanNames中，当属性存在多个封装bean时，如：
+			// @Autowired private List<A> aList; 将会找到所有匹配A类型的bean并将其注入
 			Map<String, Object> matchingBeans = findAutowireCandidates(beanName, type, descriptor);
 			if (autowiredBeanNames != null) {
 				autowiredBeanNames.addAll(matchingBeans.keySet());
@@ -1437,6 +1456,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				autowiredBeanNames.addAll(matchingBeans.keySet());
 			}
 			TypeConverter converter = (typeConverter != null ? typeConverter : getTypeConverter());
+			// 通过转换器将bean的值转换为对应的type类型
 			Object result = converter.convertIfNecessary(matchingBeans.values(), resolvedArrayType);
 			if (result instanceof Object[]) {
 				Comparator<Object> comparator = adaptDependencyComparator(matchingBeans);
@@ -1529,6 +1549,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	/**
 	 * Find bean instances that match the required type.
 	 * Called during autowiring for the specified bean.
+	 * <p>
+	 * 查找与所需类型匹配的bean实例。 在自动装配指定的bean期间调用。
 	 *
 	 * @param beanName     the name of the bean that is about to be wired
 	 * @param requiredType the actual type of bean to look for
@@ -1612,7 +1634,12 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	/**
 	 * Determine the autowire candidate in the given set of beans.
+	 * <p>
+	 * 在给定的bean组中确定自动装配候选。
+	 *
 	 * <p>Looks for {@code @Primary} and {@code @Priority} (in that order).
+	 * <p>
+	 * 查找{@code @Primary}和{@code @Priority}（按此顺序）。
 	 *
 	 * @param candidates a Map of candidate names and candidate instances
 	 *                   that match the required type, as returned by {@link #findAutowireCandidates}
@@ -1779,6 +1806,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	/**
 	 * Raise a NoSuchBeanDefinitionException or BeanNotOfRequiredTypeException
 	 * for an unresolvable dependency.
+	 * <p>
+	 * 提出NoSuchBeanDefinitionException或BeanNotOfRequiredTypeException以解决不可解决的依赖关系
 	 */
 	private void raiseNoMatchingBeanFound(
 			Class<?> type, ResolvableType resolvableType, DependencyDescriptor descriptor) throws BeansException {

@@ -82,6 +82,8 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	/**
 	 * Constant that indicates no externally defined autowiring. Note that
 	 * BeanFactoryAware etc and annotation-driven injection will still be applied.
+	 * <p>
+	 * 指示没有外部定义的自动装配的常数。请注意，BeanFactoryAware等和注释驱动的注入将仍然适用。
 	 *
 	 * @see #createBean
 	 * @see #autowire
@@ -92,6 +94,8 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	/**
 	 * Constant that indicates autowiring bean properties by name
 	 * (applying to all bean property setters).
+	 * <p>
+	 * 用名称指示自动装配bean属性的常量（适用于所有bean属性设置器）。
 	 *
 	 * @see #createBean
 	 * @see #autowire
@@ -102,6 +106,8 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	/**
 	 * Constant that indicates autowiring bean properties by type
 	 * (applying to all bean property setters).
+	 * <p>
+	 * 指示按类型自动装配bean属性的常量（适用于所有bean属性设置器）。
 	 *
 	 * @see #createBean
 	 * @see #autowire
@@ -112,6 +118,8 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	/**
 	 * Constant that indicates autowiring the greediest constructor that
 	 * can be satisfied (involves resolving the appropriate constructor).
+	 * <p>
+	 * 指示自动装配可以满足的最贪婪的构造函数的常数（涉及解析适当的构造函数）
 	 *
 	 * @see #createBean
 	 * @see #autowire
@@ -322,6 +330,9 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * Apply {@link BeanPostProcessor BeanPostProcessors} to the given existing bean
 	 * instance, invoking their {@code postProcessBeforeInitialization} methods.
 	 * The returned bean instance may be a wrapper around the original.
+	 * <p>
+	 * 将{@link BeanPostProcessor BeanPostProcessors}应用于给定的现有bean实例，
+	 * 调用其{@code postProcessBeforeInitialization}方法。返回的bean实例可能是原始实例的包装。
 	 *
 	 * @param existingBean the existing bean instance
 	 * @param beanName     the name of the bean, to be passed to it if necessary
@@ -425,12 +436,15 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 
 	/**
 	 * Resolve the specified dependency against the beans defined in this factory.
+	 * <p>
+	 * 解决针对此工厂中定义的Bean的指定依赖关系。
 	 *
-	 * @param descriptor         the descriptor for the dependency (field/method/constructor)
-	 * @param requestingBeanName the name of the bean which declares the given dependency
+	 * @param descriptor         the descriptor for the dependency (field/method/constructor)  依赖项的描述符（字段/方法/构造函数）
+	 * @param requestingBeanName the name of the bean which declares the given dependency   声明给定依赖项的bean的名称
 	 * @param autowiredBeanNames a Set that all names of autowired beans (used for
 	 *                           resolving the given dependency) are supposed to be added to
-	 * @param typeConverter      the TypeConverter to use for populating arrays and collections
+	 *                           将自动连接bean(用于解析给定依赖项)的所有名称添加到其中的集合
+	 * @param typeConverter      the TypeConverter to use for populating arrays and collections  用于填充数组和集合的TypeConverter
 	 * @return the resolved object, or {@code null} if none found
 	 * @throws NoSuchBeanDefinitionException   if no matching bean was found
 	 * @throws NoUniqueBeanDefinitionException if more than one matching bean was found

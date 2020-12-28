@@ -125,6 +125,11 @@ class ConstructorResolver {
 	 * 参数的初始类型，所以需要经过类型转换器的过滤以确保参数类型与对应的构造函数参数类型完全对应
 	 * (3).配置文件获取
 	 * -- (1)、(2)步都无法获取到相关信息，开始新一轮的分析，从BeanDefinition中获取配置的构造函数信息，委托给resolveConstructorArguments方法，并返回解析的参数的个数
+	 * <p>
+	 * 2.构造函数的确定
+	 * 3.根据确定的构造函数转换对应的参数类型
+	 * 4.构造函数不确定性的验证
+	 * 5.根据实例化策略以及得到的构造函数及构造函数参数实例化bean
 	 *
 	 * @param beanName     the name of the bean
 	 * @param mbd          the merged bean definition for the bean
@@ -892,6 +897,7 @@ class ConstructorResolver {
 	}
 
 	static InjectionPoint setCurrentInjectionPoint(@Nullable InjectionPoint injectionPoint) {
+		// 当前注入点
 		InjectionPoint old = currentInjectionPoint.get();
 		if (injectionPoint != null) {
 			currentInjectionPoint.set(injectionPoint);

@@ -85,6 +85,8 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 
 	/**
 	 * Create a new AbstractRefreshableApplicationContext with the given parent context.
+	 * <p>
+	 * 使用给定的父上下文创建一个新的AbstractRefreshableApplicationContext。
 	 *
 	 * @param parent the parent context
 	 */
