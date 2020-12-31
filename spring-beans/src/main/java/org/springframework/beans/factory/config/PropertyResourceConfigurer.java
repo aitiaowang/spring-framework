@@ -45,9 +45,9 @@ import org.springframework.util.ObjectUtils;
  * can be detected and decrypted accordingly before processing them.
  *
  * @author Juergen Hoeller
- * @since 02.10.2003
  * @see PropertyOverrideConfigurer
  * @see PropertyPlaceholderConfigurer
+ * @since 02.10.2003
  */
 public abstract class PropertyResourceConfigurer extends PropertiesLoaderSupport
 		implements BeanFactoryPostProcessor, PriorityOrdered {
@@ -57,6 +57,7 @@ public abstract class PropertyResourceConfigurer extends PropertiesLoaderSupport
 
 	/**
 	 * Set the order value of this object for sorting purposes.
+	 *
 	 * @see PriorityOrdered
 	 */
 	public void setOrder(int order) {
@@ -72,6 +73,12 @@ public abstract class PropertyResourceConfigurer extends PropertiesLoaderSupport
 	/**
 	 * {@linkplain #mergeProperties Merge}, {@linkplain #convertProperties convert} and
 	 * {@linkplain #processProperties process} properties against the given bean factory.
+	 * <p>
+	 * 针对给定bean工厂的{@linkplain #mergeProperties Merge}，{@linkplain #convertProperties convert}
+	 * 和{@linkplain #processProperties process}属性。
+	 * <p>
+	 * 得到配置，将得到的配置转换为合适的类型，最后将配置内容告知BeanFactory
+	 *
 	 * @throws BeanInitializationException if any properties cannot be loaded
 	 */
 	@Override
@@ -80,12 +87,13 @@ public abstract class PropertyResourceConfigurer extends PropertiesLoaderSupport
 			Properties mergedProps = mergeProperties();
 
 			// Convert the merged properties, if necessary.
+			// 如有必要，请转换合并的属性。
 			convertProperties(mergedProps);
 
 			// Let the subclass process the properties.
+			// 让子类处理属性。
 			processProperties(beanFactory, mergedProps);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new BeanInitializationException("Could not load properties", ex);
 		}
 	}
@@ -95,6 +103,7 @@ public abstract class PropertyResourceConfigurer extends PropertiesLoaderSupport
 	 * if necessary. The result will then be processed.
 	 * <p>The default implementation will invoke {@link #convertPropertyValue}
 	 * for each property value, replacing the original with the converted value.
+	 *
 	 * @param props the Properties to convert
 	 * @see #processProperties
 	 */
@@ -114,7 +123,8 @@ public abstract class PropertyResourceConfigurer extends PropertiesLoaderSupport
 	 * Convert the given property from the properties source to the value
 	 * which should be applied.
 	 * <p>The default implementation calls {@link #convertPropertyValue(String)}.
-	 * @param propertyName the name of the property that the value is defined for
+	 *
+	 * @param propertyName  the name of the property that the value is defined for
 	 * @param propertyValue the original value from the properties source
 	 * @return the converted value, to be used for processing
 	 * @see #convertPropertyValue(String)
@@ -129,8 +139,9 @@ public abstract class PropertyResourceConfigurer extends PropertiesLoaderSupport
 	 * <p>The default implementation simply returns the original value.
 	 * Can be overridden in subclasses, for example to detect
 	 * encrypted values and decrypt them accordingly.
+	 *
 	 * @param originalValue the original value from the properties source
-	 * (properties file or local "properties")
+	 *                      (properties file or local "properties")
 	 * @return the converted value, to be used for processing
 	 * @see #setProperties
 	 * @see #setLocations
@@ -144,8 +155,9 @@ public abstract class PropertyResourceConfigurer extends PropertiesLoaderSupport
 
 	/**
 	 * Apply the given Properties to the given BeanFactory.
+	 *
 	 * @param beanFactory the BeanFactory used by the application context
-	 * @param props the Properties to apply
+	 * @param props       the Properties to apply
 	 * @throws org.springframework.beans.BeansException in case of errors
 	 */
 	protected abstract void processProperties(ConfigurableListableBeanFactory beanFactory, Properties props)

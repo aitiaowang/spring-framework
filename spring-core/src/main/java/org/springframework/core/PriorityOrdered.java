@@ -20,6 +20,8 @@ package org.springframework.core;
  * Extension of the {@link Ordered} interface, expressing a <em>priority</em>
  * ordering: {@code PriorityOrdered} objects are always applied before
  * <em>plain</em> {@link Ordered} objects regardless of their order values.
+ * <p>
+ * {@link Ordered}接口的扩展，表示<em> 优先 </ em> 顺序：{@code PriorityOrdered}对象总是在<em> plain </ em> {@link Ordered}对象之前应用他们的订单价值。
  *
  * <p>When sorting a set of {@code Ordered} objects, {@code PriorityOrdered}
  * objects and <em>plain</em> {@code Ordered} objects are effectively treated as
@@ -40,9 +42,9 @@ package org.springframework.core;
  *
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @since 2.5
  * @see org.springframework.beans.factory.config.PropertyOverrideConfigurer
  * @see org.springframework.beans.factory.config.PropertyPlaceholderConfigurer
+ * @since 2.5
  */
 public interface PriorityOrdered extends Ordered {
 }

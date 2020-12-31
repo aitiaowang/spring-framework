@@ -626,6 +626,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				// Invoke factory processors registered as beans in the context.
 				//调用在上下文中注册为bean的工厂处理器。(激活各种BeanFactory处理器)
+				// 修改应用程序上下文的Bean定义，调整上下文的基础Bean工厂的Bean属性值。在bean实例化前调用
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
@@ -834,6 +835,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * initialization. All bean definitions will have been loaded, but no beans
 	 * will have been instantiated yet. This allows for registering special
 	 * BeanPostProcessors etc in certain ApplicationContext implementations.
+	 * <p>
+	 * 在标准初始化之后，修改应用程序上下文的内部bean工厂。所有bean定义都将被加载，
+	 * 但是还没有实例化bean。这允许在某些ApplicationContext实现中注册特殊的BeanPostProcessors等。
 	 *
 	 * @param beanFactory the bean factory used by the application context
 	 */
@@ -843,13 +847,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Instantiate and invoke all registered BeanFactoryPostProcessor beans,
 	 * respecting explicit order if given.
-	 * <p>Must be called before singleton instantiation.
+	 * <p>
+	 * 实例化并调用所有已注册的BeanFactoryPostProcessor Bean，遵循显式顺序（如果给定的话）。
+	 *
+	 * <p>Must be called before singleton instantiation.  必须在单例实例化之前调用。
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
 		// (e.g. through an @Bean method registered by ConfigurationClassPostProcessor)
+		//检测LoadTimeWeaver并准备进行编织（如果同时进行的话）,（例如，通过ConfigurationClassPostProcessor注册的@Bean方法）
 		if (beanFactory.getTempClassLoader() == null && beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));
@@ -859,7 +867,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Instantiate and register all BeanPostProcessor beans,
 	 * respecting explicit order if given.
+	 * <p>
+	 * 实例化并注册所有BeanPostProcessor Bean，遵循显式顺序（如果给定）。
+	 *
 	 * <p>Must be called before any instantiation of application beans.
+	 * 必须在应用程序bean的任何实例化之前调用。
 	 */
 	protected void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {
 		PostProcessorRegistrationDelegate.registerBeanPostProcessors(beanFactory, this);
@@ -868,6 +880,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Initialize the MessageSource.
 	 * Use parent's if none defined in this context.
+	 * <p>
+	 * 初始化MessageSource。 如果在此上下文中未定义父项，则使用父项。
 	 */
 	protected void initMessageSource() {
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();

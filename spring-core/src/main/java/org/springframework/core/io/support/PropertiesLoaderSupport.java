@@ -41,7 +41,9 @@ import org.springframework.util.PropertiesPersister;
  */
 public abstract class PropertiesLoaderSupport {
 
-	/** Logger available to subclasses. */
+	/**
+	 * Logger available to subclasses.
+	 */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	@Nullable
@@ -66,7 +68,7 @@ public abstract class PropertiesLoaderSupport {
 	 * loaded from files.
 	 */
 	public void setProperties(Properties properties) {
-		this.localProperties = new Properties[] {properties};
+		this.localProperties = new Properties[]{properties};
 	}
 
 	/**
@@ -83,7 +85,7 @@ public abstract class PropertiesLoaderSupport {
 	 * that follows JDK 1.5's properties XML format.
 	 */
 	public void setLocation(Resource location) {
-		this.locations = new Resource[] {location};
+		this.locations = new Resource[]{location};
 	}
 
 	/**
@@ -123,6 +125,7 @@ public abstract class PropertiesLoaderSupport {
 	 * <p>Default is none, using the {@code java.util.Properties}
 	 * default encoding.
 	 * <p>Only applies to classic properties files, not to XML files.
+	 *
 	 * @see org.springframework.util.PropertiesPersister#load
 	 */
 	public void setFileEncoding(String encoding) {
@@ -132,6 +135,7 @@ public abstract class PropertiesLoaderSupport {
 	/**
 	 * Set the PropertiesPersister to use for parsing properties files.
 	 * The default is DefaultPropertiesPersister.
+	 *
 	 * @see org.springframework.util.DefaultPropertiesPersister
 	 */
 	public void setPropertiesPersister(@Nullable PropertiesPersister propertiesPersister) {
@@ -143,12 +147,15 @@ public abstract class PropertiesLoaderSupport {
 	/**
 	 * Return a merged Properties instance containing both the
 	 * loaded properties and properties set on this FactoryBean.
+	 * <p>
+	 * 返回一个合并的Properties实例，其中包含加载的属性和在此FactoryBean上设置的属性。
 	 */
 	protected Properties mergeProperties() throws IOException {
 		Properties result = new Properties();
 
 		if (this.localOverride) {
 			// Load properties from file upfront, to let local properties override.
+			// 从文件预先加载属性，以使本地属性被覆盖。
 			loadProperties(result);
 		}
 
@@ -168,7 +175,10 @@ public abstract class PropertiesLoaderSupport {
 
 	/**
 	 * Load properties into the given instance.
-	 * @param props the Properties instance to load into
+	 * <p>
+	 * 将属性加载到给定实例中。
+	 *
+	 * @param props the Properties instance to load into  要加载到的Properties实例
 	 * @throws IOException in case of I/O errors
 	 * @see #setLocations
 	 */
@@ -181,14 +191,12 @@ public abstract class PropertiesLoaderSupport {
 				try {
 					PropertiesLoaderUtils.fillProperties(
 							props, new EncodedResource(location, this.fileEncoding), this.propertiesPersister);
-				}
-				catch (FileNotFoundException | UnknownHostException | SocketException ex) {
+				} catch (FileNotFoundException | UnknownHostException | SocketException ex) {
 					if (this.ignoreResourceNotFound) {
 						if (logger.isDebugEnabled()) {
 							logger.debug("Properties resource not found: " + ex.getMessage());
 						}
-					}
-					else {
+					} else {
 						throw ex;
 					}
 				}
