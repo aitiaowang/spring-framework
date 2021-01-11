@@ -60,9 +60,15 @@ public interface Lifecycle {
 
 	/**
 	 * Start this component.
+	 * <p>
+	 * 启动此组件。
+	 *
 	 * <p>Should not throw an exception if the component is already running.
+	 * 如果组件已经在运行，则不应抛出异常。
+	 *
 	 * <p>In the case of a container, this will propagate the start signal to all
 	 * components that apply.
+	 * 对于容器，这会将启动信号传播到所有适用的组件。
 	 *
 	 * @see SmartLifecycle#isAutoStartup()
 	 */
@@ -72,14 +78,25 @@ public interface Lifecycle {
 	 * Stop this component, typically in a synchronous fashion, such that the component is
 	 * fully stopped upon return of this method. Consider implementing {@link SmartLifecycle}
 	 * and its {@code stop(Runnable)} variant when asynchronous stop behavior is necessary.
+	 * <p>
+	 * 通常以同步方式停止此组件，以使该组件在返回此方法后完全停止。
+	 * 当需要异步停止行为时，请考虑实现{@link SmartLifecycle} 及其{@code stop(Runnable)}变体。
+	 *
 	 * <p>Note that this stop notification is not guaranteed to come before destruction:
 	 * On regular shutdown, {@code Lifecycle} beans will first receive a stop notification
 	 * before the general destruction callbacks are being propagated; however, on hot
 	 * refresh during a context's lifetime or on aborted refresh attempts, a given bean's
 	 * destroy method will be called without any consideration of stop signals upfront.
+	 * <p>
+	 * 请注意，此停止通知不能保证在销毁之前出现：在常规关闭时，{@code Lifecycle} bean在传播一般销毁回调之前将首先收到一个停止通知。
+	 * 但是，在上下文生命周期中进行热刷新或中止刷新尝试时，将调用给定bean的destroy方法，而无需事先考虑停止信号。
+	 *
 	 * <p>Should not throw an exception if the component is not running (not started yet).
+	 * 如果组件未运行（尚未启动），则不应引发异常。
+	 *
 	 * <p>In the case of a container, this will propagate the stop signal to all components
 	 * that apply.
+	 * 对于容器，这会将停止信号传播到所有适用的组件。
 	 *
 	 * @see SmartLifecycle#stop(Runnable)
 	 * @see org.springframework.beans.factory.DisposableBean#destroy()

@@ -4,7 +4,6 @@
 	AspectJ load-time weaving config file to install common Spring aspects.
 -->
 <aspectj>
-
 	<!--
 	<weaver options="-showWeaveInfo"/>
 	-->

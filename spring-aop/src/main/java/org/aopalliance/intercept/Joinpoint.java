@@ -41,9 +41,15 @@ public interface Joinpoint {
 
 	/**
 	 * Proceed to the next interceptor in the chain.
+	 * <p>
+	 * 继续执行链中的下一个拦截器。
+	 *
 	 * <p>The implementation and the semantics of this method depends
 	 * on the actual joinpoint type (see the children interfaces).
-	 * @return see the children interfaces' proceed definition
+	 * <p>
+	 * 此方法的实现和语义取决于实际的连接点类型（请参见子接口）。
+	 *
+	 * @return see the children interfaces' proceed definition  参见子界面的进行定义
 	 * @throws Throwable if the joinpoint throws an exception
 	 */
 	Object proceed() throws Throwable;
@@ -51,6 +57,7 @@ public interface Joinpoint {
 	/**
 	 * Return the object that holds the current joinpoint's static part.
 	 * <p>For instance, the target object for an invocation.
+	 *
 	 * @return the object (can be null if the accessible object is static)
 	 */
 	Object getThis();

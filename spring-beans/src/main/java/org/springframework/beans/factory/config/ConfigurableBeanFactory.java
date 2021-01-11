@@ -115,10 +115,16 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 	/**
 	 * Specify a temporary ClassLoader to use for type matching purposes.
 	 * Default is none, simply using the standard bean ClassLoader.
+	 * <p>
+	 * 指定一个临时的ClassLoader以用于类型匹配。 *默认为无，只需使用标准bean ClassLoader。
+	 *
 	 * <p>A temporary ClassLoader is usually just specified if
 	 * <i>load-time weaving</i> is involved, to make sure that actual bean
 	 * classes are loaded as lazily as possible. The temporary loader is
 	 * then removed once the BeanFactory completes its bootstrap phase.
+	 * <p>
+	 * 如果涉及到加载时编织，通常只是指定一个临时的ClassLoader，
+	 * 以确保尽可能延迟地加载实际的bean类。一旦BeanFactory完成其引导阶段，便将临时加载器删除。
 	 *
 	 * @since 2.5
 	 */

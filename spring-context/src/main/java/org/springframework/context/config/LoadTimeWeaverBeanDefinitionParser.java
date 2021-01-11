@@ -32,6 +32,8 @@ import org.springframework.util.ClassUtils;
 
 /**
  * Parser for the &lt;context:load-time-weaver/&gt; element.
+ * <p>
+ * <context：load-time-weaver />元素的解析器。
  *
  * @author Juergen Hoeller
  * @since 2.5
@@ -40,6 +42,7 @@ class LoadTimeWeaverBeanDefinitionParser extends AbstractSingleBeanDefinitionPar
 
 	/**
 	 * The bean name of the internally managed AspectJ weaving enabler.
+	 *
 	 * @since 4.3.1
 	 */
 	public static final String ASPECTJ_WEAVING_ENABLER_BEAN_NAME =
@@ -73,8 +76,13 @@ class LoadTimeWeaverBeanDefinitionParser extends AbstractSingleBeanDefinitionPar
 	protected void doParse(Element element, ParserContext parserContext, BeanDefinitionBuilder builder) {
 		builder.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
 
+		// 是否开启AspectJ
 		if (isAspectJWeavingEnabled(element.getAttribute(ASPECTJ_WEAVING_ATTRIBUTE), parserContext)) {
+
 			if (!parserContext.getRegistry().containsBeanDefinition(ASPECTJ_WEAVING_ENABLER_BEAN_NAME)) {
+				/**
+				 * 将{@link org.springframework.context.weaving.AspectJWeavingEnabler} 封装在BeanDefinition中注册
+				 */
 				RootBeanDefinition def = new RootBeanDefinition(ASPECTJ_WEAVING_ENABLER_CLASS_NAME);
 				parserContext.registerBeanComponent(
 						new BeanComponentDefinition(def, ASPECTJ_WEAVING_ENABLER_BEAN_NAME));
@@ -87,14 +95,18 @@ class LoadTimeWeaverBeanDefinitionParser extends AbstractSingleBeanDefinitionPar
 	}
 
 	protected boolean isAspectJWeavingEnabled(String value, ParserContext parserContext) {
+		// 开启
 		if ("on".equals(value)) {
 			return true;
 		}
+		// 关闭
 		else if ("off".equals(value)) {
 			return false;
 		}
+		// autodetect
 		else {
-			// Determine default...
+			// Determine default...   确定默认值...
+			// 自动检测
 			ClassLoader cl = parserContext.getReaderContext().getBeanClassLoader();
 			return (cl != null && cl.getResource(AspectJWeavingEnabler.ASPECTJ_AOP_XML_RESOURCE) != null);
 		}

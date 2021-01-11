@@ -40,13 +40,15 @@ import org.springframework.util.Assert;
  * @author Rob Harrop
  * @author Juergen Hoeller
  * @author Mark Fisher
- * @since 2.5
  * @see AopNamespaceUtils
+ * @since 2.5
  */
 public abstract class AopConfigUtils {
 
 	/**
 	 * The bean name of the internally managed auto-proxy creator.
+	 * <p>
+	 * 内部管理的自动代理创建者的Bean名称。
 	 */
 	public static final String AUTO_PROXY_CREATOR_BEAN_NAME =
 			"org.springframework.aop.config.internalAutoProxyCreator";
@@ -93,6 +95,13 @@ public abstract class AopConfigUtils {
 		return registerAspectJAnnotationAutoProxyCreatorIfNecessary(registry, null);
 	}
 
+	/**
+	 * 如有必要，注册AspectJ注释自动代理创建器
+	 * <p>
+	 * 对于Aop的实现，基本都是靠{@link AnnotationAwareAspectJAutoProxyCreator}去完成，它可以根据
+	 * {@code @Point} 注解定义的切点来自动代理相匹配的bean，但是为了简洁配置，Spring使用了自定义配置来
+	 * 帮助我们自动注册{@link AnnotationAwareAspectJAutoProxyCreator}，其注册过程就是在这里实现的
+	 */
 	@Nullable
 	public static BeanDefinition registerAspectJAnnotationAutoProxyCreatorIfNecessary(
 			BeanDefinitionRegistry registry, @Nullable Object source) {
@@ -100,6 +109,25 @@ public abstract class AopConfigUtils {
 		return registerOrEscalateApcAsRequired(AnnotationAwareAspectJAutoProxyCreator.class, registry, source);
 	}
 
+	/**
+	 * 强制自动代理创建者使用类代理
+	 * <p>
+	 * 强制使用的过程其实也是一个属性设置的过程
+	 * <p>
+	 * proxy-target-class: Spring Aop部分使用JDK或者CGlib来为目标对象创建代理(建议尽量使用JDK的动态代理)，
+	 * 如果被代理的目标对象实现了至少一个接口，则会使用JDK动态代理，所有该目标类实现的接口都将被代理。
+	 * 若该目标对象没有实现任何接口，则创建一个CGLIB代理，如果希望强制使用CGLIB代理(例如希望代理目标对象的所有方法
+	 * 而不只是实现自己接口的方法（原本应是JDK代理，强制使用为CGILB代理）)那也可以；
+	 * 但需要考虑以下2个问题：
+	 * 1.无法通知(advise) Final方法，因为他们不能被覆写
+	 * 2.需要将CGLIB二进制发行包放在classPath下面
+	 * <p>
+	 * JDK动态代理：其代理对象必须是某个接口的实现，
+	 * CGILB代理：实现原理类似于JDK动态代理，只是她在运行期间生成的代理对象是针对目标类扩展的子类；
+	 * CGILB高效的代码生成包，底层是依靠ASM(开源的java字节码编辑类库)操作字节码实现的，性能比JDK强
+	 *
+	 * @param registry
+	 */
 	public static void forceAutoProxyCreatorToUseClassProxying(BeanDefinitionRegistry registry) {
 		if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
 			BeanDefinition definition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);
@@ -114,21 +142,27 @@ public abstract class AopConfigUtils {
 		}
 	}
 
+	/**
+	 * 根据需要注册或升级AutoProxyCreator
+	 */
 	@Nullable
 	private static BeanDefinition registerOrEscalateApcAsRequired(
 			Class<?> cls, BeanDefinitionRegistry registry, @Nullable Object source) {
 
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
-
+		// 如果已经存在了自动代理创建器且存在的自动代理创建器与现在的不一致，那么需要根据优先级来判断需要使用哪种
 		if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
 			BeanDefinition apcDefinition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);
 			if (!cls.getName().equals(apcDefinition.getBeanClassName())) {
+				// 获取优先级并对比
 				int currentPriority = findPriorityForClass(apcDefinition.getBeanClassName());
 				int requiredPriority = findPriorityForClass(cls);
 				if (currentPriority < requiredPriority) {
+					// 改变bean最重要的就是改变bean所对应的className属性
 					apcDefinition.setBeanClassName(cls.getName());
 				}
 			}
+			//如果已经存在自动代理创建器并且与将要创建的一致，那么无需在此创建
 			return null;
 		}
 
@@ -136,6 +170,7 @@ public abstract class AopConfigUtils {
 		beanDefinition.setSource(source);
 		beanDefinition.getPropertyValues().add("order", Ordered.HIGHEST_PRECEDENCE);
 		beanDefinition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+		//注册自动代理创建者
 		registry.registerBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME, beanDefinition);
 		return beanDefinition;
 	}

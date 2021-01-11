@@ -40,8 +40,11 @@ public interface AdvisorAdapter {
 	 * Does this adapter understand this advice object? Is it valid to
 	 * invoke the {@code getInterceptors} method with an Advisor that
 	 * contains this advice as an argument?
-	 * @param advice an Advice such as a BeforeAdvice
-	 * @return whether this adapter understands the given advice object
+	 * <p>
+	 * 此适配器是否理解此通知对象？使用带有此通知作为参数的Advisor来调用{@code getInterceptors}方法是否有效？
+	 *
+	 * @param advice an Advice such as a BeforeAdvice  诸如BeforeAdvice之类的通知
+	 * @return whether this adapter understands the given advice object  此适配器是否理解给定的通知对象
 	 * @see #getInterceptor(org.springframework.aop.Advisor)
 	 * @see org.springframework.aop.BeforeAdvice
 	 */
@@ -52,8 +55,9 @@ public interface AdvisorAdapter {
 	 * the given advice to an interception-based AOP framework.
 	 * <p>Don't worry about any Pointcut contained in the Advisor;
 	 * the AOP framework will take care of checking the pointcut.
+	 *
 	 * @param advisor the Advisor. The supportsAdvice() method must have
-	 * returned true on this object
+	 *                returned true on this object
 	 * @return an AOP Alliance interceptor for this Advisor. There's
 	 * no need to cache instances for efficiency, as the AOP framework
 	 * caches advice chains.

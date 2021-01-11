@@ -39,26 +39,32 @@ import org.springframework.lang.Nullable;
  * access stateful resources (such as output streams when streaming LOB
  * contents) or keep result state within the object.
  *
+ * @param <T> the result type
  * @author Rod Johnson
  * @author Juergen Hoeller
- * @since April 24, 2003
- * @param <T> the result type
  * @see JdbcTemplate
  * @see RowCallbackHandler
  * @see RowMapper
  * @see org.springframework.jdbc.core.support.AbstractLobStreamingResultSetExtractor
+ * @since April 24, 2003
  */
 @FunctionalInterface
 public interface ResultSetExtractor<T> {
 
 	/**
 	 * Implementations must implement this method to process the entire ResultSet.
+	 * <p>
+	 * 实现必须实现此方法来处理整个ResultSet。
+	 *
 	 * @param rs the ResultSet to extract data from. Implementations should
-	 * not close this: it will be closed by the calling JdbcTemplate.
+	 *           not close this: it will be closed by the calling JdbcTemplate.
+	 *           <p>
+	 *           要从中提取数据的ResultSet。实施*不应关闭此窗口：它将由调用JdbcTemplate关闭。
 	 * @return an arbitrary result object, or {@code null} if none
 	 * (the extractor will typically be stateful in the latter case).
-	 * @throws SQLException if a SQLException is encountered getting column
-	 * values or navigating (that is, there's no need to catch SQLException)
+	 * 任意结果对象，如果没有，则为{@code null}（提取器在后一种情况下通常是有状态的）。
+	 * @throws SQLException        if a SQLException is encountered getting column
+	 *                             values or navigating (that is, there's no need to catch SQLException)
 	 * @throws DataAccessException in case of custom exceptions
 	 */
 	@Nullable

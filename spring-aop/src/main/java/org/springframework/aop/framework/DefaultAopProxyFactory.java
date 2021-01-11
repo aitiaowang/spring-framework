@@ -38,16 +38,41 @@ import org.springframework.aop.SpringProxy;
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
- * @since 12.03.2004
  * @see AdvisedSupport#setOptimize
  * @see AdvisedSupport#setProxyTargetClass
  * @see AdvisedSupport#setInterfaces
+ * @since 12.03.2004
  */
 @SuppressWarnings("serial")
 public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
+
+	/**
+	 * 选择JDK或者CGLIB代理的条件判断：
+	 * 1.optimize(优化): 用来控制通过CGLIB创建的代理是否使用激进的优化策略，除非完全了解AOP的代理如何处理优化，
+	 * 否则，不推荐用户使用这个设置，目前这个属性仅用于CGLIB代理，对于JDK动态代理(缺省代理)无效
+	 * 2.proxyTargetClass: 这个属性为true时，目标类本身被代理而不是目标类的接口。
+	 * 如果这个属性值被设为true，CGLIB代理将被创建，设置方式：<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+	 * 3.hasNoUserSuppliedProxyInterfaces: 是否存在代理接口
+	 *
+	 * <p>
+	 * 1.如果目标对象实现了接口，默认情况下会采用JDK的动态代理实现AOP
+	 * 2.如果目标对象实现了接口，可以强制使用CGILB实现AOP
+	 * 3.如果目标对象没有实现了接口，必须采用CGLIB库，Spring会自动在JDK动态代理和CGLIB之间转换
+	 *
+	 * <p>
+	 * 如何强制使用CGLIB实现AOP:
+	 * 1.添加CGLIB库，Spring_HOME/cglib/*.jar
+	 * 2.在spring配置文件中加入<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+	 *
+	 * <p>
+	 * JDK动态代理和CGLIB字节码生成的区别：
+	 * 1.JDK动态代理只能对实现了接口的类生成代理，而不能针对类
+	 * 2.CGLIB是针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法，因为是继承，所以该类或者方法最好不要声明成final
+	 */
 	@Override
 	public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
+		// 优化 || 代理类 || 不存在代理接口
 		if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
 			Class<?> targetClass = config.getTargetClass();
 			if (targetClass == null) {
@@ -58,8 +83,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 				return new JdkDynamicAopProxy(config);
 			}
 			return new ObjenesisCglibAopProxy(config);
-		}
-		else {
+		} else {
 			return new JdkDynamicAopProxy(config);
 		}
 	}
@@ -68,6 +92,8 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 	 * Determine whether the supplied {@link AdvisedSupport} has only the
 	 * {@link org.springframework.aop.SpringProxy} interface specified
 	 * (or no proxy interfaces specified at all).
+	 * <p>
+	 * 确定提供的{@link AdvisedSupport}是否仅指定了{@link org.springframework.aop.SpringProxy}接口（或根本没有指定代理接口）。
 	 */
 	private boolean hasNoUserSuppliedProxyInterfaces(AdvisedSupport config) {
 		Class<?>[] ifcs = config.getProxiedInterfaces();

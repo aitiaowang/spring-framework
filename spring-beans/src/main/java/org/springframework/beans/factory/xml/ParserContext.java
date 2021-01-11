@@ -31,12 +31,14 @@ import org.springframework.lang.Nullable;
  * Context that gets passed along a bean definition parsing process,
  * encapsulating all relevant configuration as well as state.
  * Nested inside an {@link XmlReaderContext}.
+ * <p>
+ * 在bean定义解析过程中传递的上下文，封装了所有相关的配置和状态。嵌套在{@link XmlReaderContext}中。
  *
  * @author Rob Harrop
  * @author Juergen Hoeller
- * @since 2.0
  * @see XmlReaderContext
  * @see BeanDefinitionParserDelegate
+ * @since 2.0
  */
 public final class ParserContext {
 
@@ -56,7 +58,7 @@ public final class ParserContext {
 	}
 
 	public ParserContext(XmlReaderContext readerContext, BeanDefinitionParserDelegate delegate,
-			@Nullable BeanDefinition containingBeanDefinition) {
+						 @Nullable BeanDefinition containingBeanDefinition) {
 
 		this.readerContext = readerContext;
 		this.delegate = delegate;
@@ -115,8 +117,7 @@ public final class ParserContext {
 		CompositeComponentDefinition containingComponent = getContainingComponent();
 		if (containingComponent != null) {
 			containingComponent.addNestedComponent(component);
-		}
-		else {
+		} else {
 			this.readerContext.fireComponentRegistered(component);
 		}
 	}

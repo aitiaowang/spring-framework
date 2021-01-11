@@ -71,6 +71,9 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 	 * Name of the LoadTimeWeaver bean in the factory. If such a bean is supplied,
 	 * the context will use a temporary ClassLoader for type matching, in order
 	 * to allow the LoadTimeWeaver to process all actual bean classes.
+	 * <p>
+	 * 工厂中LoadTimeWeaver Bean的名称。如果提供了这样的bean，则上下文将使用临时的ClassLoader进行类型匹配，
+	 * 以便允许LoadTimeWeaver处理所有实际的bean类。
 	 *
 	 * @see org.springframework.instrument.classloading.LoadTimeWeaver
 	 * @since 2.5

@@ -30,7 +30,9 @@ import org.springframework.util.Assert;
  */
 public class ProxyConfig implements Serializable {
 
-	/** use serialVersionUID from Spring 1.2 for interoperability. */
+	/**
+	 * use serialVersionUID from Spring 1.2 for interoperability.
+	 */
 	private static final long serialVersionUID = -8409359707199703185L;
 
 
@@ -55,6 +57,7 @@ public class ProxyConfig implements Serializable {
 	 * <p>Note: Depending on the configuration of the concrete proxy factory,
 	 * the proxy-target-class behavior will also be applied if no interfaces
 	 * have been specified (and no interface autodetection is activated).
+	 *
 	 * @see org.springframework.aop.TargetSource#getTargetClass()
 	 */
 	public void setProxyTargetClass(boolean proxyTargetClass) {
@@ -63,6 +66,8 @@ public class ProxyConfig implements Serializable {
 
 	/**
 	 * Return whether to proxy the target class directly as well as any interfaces.
+	 * <p>
+	 * 返回是否直接代理目标类以及任何接口。
 	 */
 	public boolean isProxyTargetClass() {
 		return this.proxyTargetClass;
@@ -73,11 +78,17 @@ public class ProxyConfig implements Serializable {
 	 * The exact meaning of "aggressive optimizations" will differ
 	 * between proxies, but there is usually some tradeoff.
 	 * Default is "false".
+	 * <p>
+	 * 设置代理是否应执行积极的优化。代理之间“积极优化”的确切含义会有所不同，但通常会有一些折衷。默认为“ false”
+	 *
 	 * <p>For example, optimization will usually mean that advice changes won't
 	 * take effect after a proxy has been created. For this reason, optimization
 	 * is disabled by default. An optimize value of "true" may be ignored
 	 * if other settings preclude optimization: for example, if "exposeProxy"
 	 * is set to "true" and that's not compatible with the optimization.
+	 * <p>
+	 * 例如，优化通常将意味着通知更改将不会在创建代理后生效。因此，默认情况下禁用优化。
+	 * 如果其他设置无法进行优化，则可以忽略优化值“true”：例如，如果将“exposeProxy”设置为“true”，并且与优化不兼容。
 	 */
 	public void setOptimize(boolean optimize) {
 		this.optimize = optimize;
@@ -85,6 +96,8 @@ public class ProxyConfig implements Serializable {
 
 	/**
 	 * Return whether proxies should perform aggressive optimizations.
+	 * <p>
+	 * 返回代理是否应执行积极的优化。
 	 */
 	public boolean isOptimize() {
 		return this.optimize;
@@ -149,6 +162,7 @@ public class ProxyConfig implements Serializable {
 
 	/**
 	 * Copy configuration from the other config object.
+	 *
 	 * @param other object to copy configuration from
 	 */
 	public void copyFrom(ProxyConfig other) {

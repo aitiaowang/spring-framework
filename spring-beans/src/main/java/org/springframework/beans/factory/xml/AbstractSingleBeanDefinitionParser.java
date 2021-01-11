@@ -150,8 +150,13 @@ public abstract class AbstractSingleBeanDefinitionParser extends AbstractBeanDef
 	/**
 	 * Parse the supplied {@link Element} and populate the supplied
 	 * {@link BeanDefinitionBuilder} as required.
+	 * <p>
+	 * 解析提供的{@link Element}并根据需要填充{@link BeanDefinitionBuilder}。
+	 *
 	 * <p>The default implementation delegates to the {@code doParse}
 	 * version without ParserContext argument.
+	 * <p>
+	 * 默认实现将委托给没有ParserContext参数的{@code doParse}版本。
 	 *
 	 * @param element       the XML element being parsed
 	 * @param parserContext the object encapsulating the current state of the parsing process

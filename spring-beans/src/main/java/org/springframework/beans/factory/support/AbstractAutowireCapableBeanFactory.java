@@ -124,6 +124,7 @@ import org.springframework.util.StringUtils;
  * @see BeanDefinitionRegistry
  * @since 13.02.2004
  */
+// 具有Autowire功能的抽象Bean工厂
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory
 		implements AutowireCapableBeanFactory {
 

@@ -22,7 +22,7 @@ import java.util.EventListener;
  * Interface to be implemented by application event listeners.
  * Based on the standard {@code java.util.EventListener} interface
  * for the Observer design pattern.
- * 由应用程序事件侦听器实现的接口。基于观察者设计模式的标准{@code java.util.EventListener}接口。
+	 * 由应用程序事件侦听器实现的接口。基于观察者设计模式的标准{@code java.util.EventListener}接口。
  *
  *
  * <p>As of Spring 3.0, an ApplicationListener can generically declare the event type

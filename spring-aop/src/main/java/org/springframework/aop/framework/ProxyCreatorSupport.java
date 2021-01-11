@@ -26,8 +26,8 @@ import org.springframework.util.Assert;
  * Provides convenient access to a configurable AopProxyFactory.
  *
  * @author Juergen Hoeller
- * @since 2.0.3
  * @see #createAopProxy()
+ * @since 2.0.3
  */
 @SuppressWarnings("serial")
 public class ProxyCreatorSupport extends AdvisedSupport {
@@ -36,7 +36,9 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 
 	private final List<AdvisedSupportListener> listeners = new LinkedList<>();
 
-	/** Set to true when the first AOP proxy has been created. */
+	/**
+	 * Set to true when the first AOP proxy has been created.
+	 */
 	private boolean active = false;
 
 
@@ -49,6 +51,7 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 
 	/**
 	 * Create a new ProxyCreatorSupport instance.
+	 *
 	 * @param aopProxyFactory the AopProxyFactory to use
 	 */
 	public ProxyCreatorSupport(AopProxyFactory aopProxyFactory) {
@@ -77,6 +80,7 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 
 	/**
 	 * Add the given AdvisedSupportListener to this proxy configuration.
+	 *
 	 * @param listener the listener to register
 	 */
 	public void addListener(AdvisedSupportListener listener) {
@@ -86,6 +90,7 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 
 	/**
 	 * Remove the given AdvisedSupportListener from this proxy configuration.
+	 *
 	 * @param listener the listener to deregister
 	 */
 	public void removeListener(AdvisedSupportListener listener) {
@@ -97,16 +102,20 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 	/**
 	 * Subclasses should call this to get a new AOP proxy. They should <b>not</b>
 	 * create an AOP proxy with {@code this} as an argument.
+	 * <p>
+	 * 子类应该调用这个函数来获得新的AOP代理。他们不应该用{@code this}作为参数来创建AOP代理。
 	 */
 	protected final synchronized AopProxy createAopProxy() {
 		if (!this.active) {
 			activate();
 		}
+		// 创建代理
 		return getAopProxyFactory().createAopProxy(this);
 	}
 
 	/**
 	 * Activate this proxy configuration.
+	 *
 	 * @see AdvisedSupportListener#activated
 	 */
 	private void activate() {
@@ -118,6 +127,7 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 
 	/**
 	 * Propagate advice change event to all AdvisedSupportListeners.
+	 *
 	 * @see AdvisedSupportListener#adviceChanged
 	 */
 	@Override

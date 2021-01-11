@@ -37,6 +37,9 @@ import org.springframework.util.ClassUtils;
  * {@link org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator}
  * subclass that exposes AspectJ's invocation context and understands AspectJ's rules
  * for advice precedence when multiple pieces of advice come from the same aspect.
+ * <p>
+ * {@link org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator}
+ * 公开AspectJ的调用上下文并理解AspectJ的规则的子类，用于当多条通知来自同一方面时的通知优先级。
  *
  * @author Adrian Colyer
  * @author Juergen Hoeller
@@ -44,6 +47,7 @@ import org.springframework.util.ClassUtils;
  * @since 2.0
  */
 @SuppressWarnings("serial")
+//自动代理创建器
 public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProxyCreator {
 
 	private static final Comparator<Advisor> DEFAULT_PRECEDENCE_COMPARATOR = new AspectJPrecedenceComparator();
@@ -79,8 +83,7 @@ public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProx
 				result.add(pcAdvisor.getAdvisor());
 			}
 			return result;
-		}
-		else {
+		} else {
 			return super.sortAdvisors(advisors);
 		}
 	}

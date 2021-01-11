@@ -27,6 +27,9 @@ import org.springframework.util.Assert;
  * Adapter implementation of the ResultSetExtractor interface that delegates
  * to a RowMapper which is supposed to create an object for each row.
  * Each object is added to the results List of this ResultSetExtractor.
+ * <p>
+ * ResultSetExtractor接口的适配器实现，该实现将委托给RowMapper，
+ * 该RowMapper应该为每行创建一个对象。每个对象都添加到此ResultSetExtractor的结果列表中。
  *
  * <p>Useful for the typical case of one object per row in the database table.
  * The number of entries in the results list will match the number of rows.
@@ -51,13 +54,14 @@ import org.springframework.util.Assert;
  * package: Instead of working with separate JdbcTemplate and RowMapper objects,
  * you can have executable query objects (containing row-mapping logic) there.
  *
- * @author Juergen Hoeller
- * @since 1.0.2
  * @param <T> the result element type
+ * @author Juergen Hoeller
  * @see RowMapper
  * @see JdbcTemplate
  * @see org.springframework.jdbc.object.MappingSqlQuery
+ * @since 1.0.2
  */
+// 行映射器结果集提取器
 public class RowMapperResultSetExtractor<T> implements ResultSetExtractor<List<T>> {
 
 	private final RowMapper<T> rowMapper;
@@ -67,6 +71,7 @@ public class RowMapperResultSetExtractor<T> implements ResultSetExtractor<List<T
 
 	/**
 	 * Create a new RowMapperResultSetExtractor.
+	 *
 	 * @param rowMapper the RowMapper which creates an object for each row
 	 */
 	public RowMapperResultSetExtractor(RowMapper<T> rowMapper) {
@@ -75,9 +80,10 @@ public class RowMapperResultSetExtractor<T> implements ResultSetExtractor<List<T
 
 	/**
 	 * Create a new RowMapperResultSetExtractor.
-	 * @param rowMapper the RowMapper which creates an object for each row
+	 *
+	 * @param rowMapper    the RowMapper which creates an object for each row
 	 * @param rowsExpected the number of expected rows
-	 * (just used for optimized collection handling)
+	 *                     (just used for optimized collection handling)
 	 */
 	public RowMapperResultSetExtractor(RowMapper<T> rowMapper, int rowsExpected) {
 		Assert.notNull(rowMapper, "RowMapper is required");

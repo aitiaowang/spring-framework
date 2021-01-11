@@ -29,6 +29,10 @@ public interface LifecycleProcessor extends Lifecycle {
 
 	/**
 	 * Notification of context refresh, e.g. for auto-starting components.
+	 * <p>
+	 * 上下文刷新的通知，例如用于自动启动组件。
+	 * <p>
+	 * 启动所有实现了Lifecycle接口的bean
 	 */
 	void onRefresh();
 

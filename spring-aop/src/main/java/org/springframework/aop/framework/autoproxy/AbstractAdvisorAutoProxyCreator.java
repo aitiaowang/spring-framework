@@ -47,6 +47,7 @@ import org.springframework.util.Assert;
  * @see #findCandidateAdvisors
  */
 @SuppressWarnings("serial")
+// 抽象顾问自动代理创建器
 public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyCreator {
 
 	@Nullable
@@ -82,8 +83,11 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 
 	/**
 	 * Find all eligible Advisors for auto-proxying this class.
+	 * <p>
+	 * 找到所有合适的顾问来自动代理这个类。
+	 *
 	 * @param beanClass the clazz to find advisors for
-	 * @param beanName the name of the currently proxied bean
+	 * @param beanName  the name of the currently proxied bean
 	 * @return the empty List, not {@code null},
 	 * if there are no pointcuts or interceptors
 	 * @see #findCandidateAdvisors
@@ -91,7 +95,9 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	 * @see #extendAdvisors
 	 */
 	protected List<Advisor> findEligibleAdvisors(Class<?> beanClass, String beanName) {
+		// 获取所有的增强
 		List<Advisor> candidateAdvisors = findCandidateAdvisors();
+		// 寻找所有增强中适用于bean的增强并应用
 		List<Advisor> eligibleAdvisors = findAdvisorsThatCanApply(candidateAdvisors, beanClass, beanName);
 		extendAdvisors(eligibleAdvisors);
 		if (!eligibleAdvisors.isEmpty()) {
@@ -102,6 +108,9 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 
 	/**
 	 * Find all candidate Advisors to use in auto-proxying.
+	 * <p>
+	 * 查找要在自动代理中使用的所有候选顾问。
+	 *
 	 * @return the List of candidate Advisors
 	 */
 	protected List<Advisor> findCandidateAdvisors() {
@@ -112,9 +121,12 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	/**
 	 * Search the given candidate Advisors to find all Advisors that
 	 * can apply to the specified bean.
+	 * <p>
+	 * 搜索给定的候选Advisor，以查找可以应用于指定bean的所有Advisor。
+	 *
 	 * @param candidateAdvisors the candidate Advisors
-	 * @param beanClass the target's bean class
-	 * @param beanName the target's bean name
+	 * @param beanClass         the target's bean class
+	 * @param beanName          the target's bean name
 	 * @return the List of applicable Advisors
 	 * @see ProxyCreationContext#getCurrentProxiedBeanName()
 	 */
@@ -123,9 +135,9 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 
 		ProxyCreationContext.setCurrentProxiedBeanName(beanName);
 		try {
+			// 过滤已经得到的advisors
 			return AopUtils.findAdvisorsThatCanApply(candidateAdvisors, beanClass);
-		}
-		finally {
+		} finally {
 			ProxyCreationContext.setCurrentProxiedBeanName(null);
 		}
 	}
@@ -133,6 +145,7 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	/**
 	 * Return whether the Advisor bean with the given name is eligible
 	 * for proxying in the first place.
+	 *
 	 * @param beanName the name of the Advisor bean
 	 * @return whether the bean is eligible
 	 */
@@ -143,6 +156,7 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	/**
 	 * Sort advisors based on ordering. Subclasses may choose to override this
 	 * method to customize the sorting strategy.
+	 *
 	 * @param advisors the source List of Advisors
 	 * @return the sorted List of Advisors
 	 * @see org.springframework.core.Ordered
@@ -160,8 +174,9 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	 * <p>The default implementation is empty.
 	 * <p>Typically used to add Advisors that expose contextual information
 	 * required by some of the later advisors.
+	 *
 	 * @param candidateAdvisors the Advisors that have already been identified as
-	 * applying to a given bean
+	 *                          applying to a given bean
 	 */
 	protected void extendAdvisors(List<Advisor> candidateAdvisors) {
 	}

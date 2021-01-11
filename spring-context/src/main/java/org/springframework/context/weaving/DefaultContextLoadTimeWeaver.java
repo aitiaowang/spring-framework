@@ -38,10 +38,14 @@ import org.springframework.util.Assert;
 /**
  * Default {@link LoadTimeWeaver} bean for use in an application context,
  * decorating an automatically detected internal {@code LoadTimeWeaver}.
+ * <p>
+ * 在应用程序上下文中使用的默认{@link LoadTimeWeaver} bean装饰自动检测到的内部{@code LoadTimeWeaver}。
  *
  * <p>Typically registered for the default bean name
  * "{@code loadTimeWeaver}"; the most convenient way to achieve this is
  * Spring's {@code <context:load-time-weaver>} XML tag.
+ * <p>
+ * 通常注册为默认bean名称“{@code loadTimeWeaver}”;实现此目的最方便的方法是Spring的{@code <context：load-time-weaver>} XML标签。
  *
  * <p>This class implements a runtime environment check for obtaining the
  * appropriate weaver implementation: As of Spring Framework 5.0, it detects
@@ -52,8 +56,8 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @author Ramnivas Laddad
  * @author Costin Leau
- * @since 2.5
  * @see org.springframework.context.ConfigurableApplicationContext#LOAD_TIME_WEAVER_BEAN_NAME
+ * @since 2.5
  */
 public class DefaultContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassLoaderAware, DisposableBean {
 
@@ -81,19 +85,23 @@ public class DefaultContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassLo
 			}
 			this.loadTimeWeaver = serverSpecificLoadTimeWeaver;
 		}
+		// 检查当前虚拟机中的Instrumentation实例是否可用
 		else if (InstrumentationLoadTimeWeaver.isInstrumentationAvailable()) {
 			logger.debug("Found Spring's JVM agent for instrumentation");
+			/**
+			 * 不仅仅是实例化了一个{@link InstrumentationLoadTimeWeaver}类型的实例；
+			 * 额外操作有：
+			 * 1.在实例化的过程中，会对当前的this.instrumentation属性进行初始化为代表着当前虚拟机的实例
+			 */
 			this.loadTimeWeaver = new InstrumentationLoadTimeWeaver(classLoader);
-		}
-		else {
+		} else {
 			try {
 				this.loadTimeWeaver = new ReflectiveLoadTimeWeaver(classLoader);
 				if (logger.isDebugEnabled()) {
 					logger.debug("Using reflective load-time weaver for class loader: " +
 							this.loadTimeWeaver.getInstrumentableClassLoader().getClass().getName());
 				}
-			}
-			catch (IllegalStateException ex) {
+			} catch (IllegalStateException ex) {
 				throw new IllegalStateException(ex.getMessage() + " Specify a custom LoadTimeWeaver or start your " +
 						"Java virtual machine with Spring's agent: -javaagent:org.springframework.instrument.jar");
 			}
@@ -112,21 +120,16 @@ public class DefaultContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassLo
 		try {
 			if (name.startsWith("org.apache.catalina")) {
 				return new TomcatLoadTimeWeaver(classLoader);
-			}
-			else if (name.startsWith("org.glassfish")) {
+			} else if (name.startsWith("org.glassfish")) {
 				return new GlassFishLoadTimeWeaver(classLoader);
-			}
-			else if (name.startsWith("org.jboss.modules")) {
+			} else if (name.startsWith("org.jboss.modules")) {
 				return new JBossLoadTimeWeaver(classLoader);
-			}
-			else if (name.startsWith("com.ibm.ws.classloader")) {
+			} else if (name.startsWith("com.ibm.ws.classloader")) {
 				return new WebSphereLoadTimeWeaver(classLoader);
-			}
-			else if (name.startsWith("weblogic")) {
+			} else if (name.startsWith("weblogic")) {
 				return new WebLogicLoadTimeWeaver(classLoader);
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			if (logger.isInfoEnabled()) {
 				logger.info("Could not obtain server-specific LoadTimeWeaver: " + ex.getMessage());
 			}

@@ -45,9 +45,15 @@ public interface AopProxyFactory {
 
 	/**
 	 * Create an {@link AopProxy} for the given AOP configuration.
+	 * <p>
+	 * 为给定的AOP配置创建一个{@link AopProxy}。
+	 * <p>
+	 * 在此方法内，决定是使用JDK动态代理还是CGLIB代理
+	 *
 	 * @param config the AOP configuration in the form of an
-	 * AdvisedSupport object
-	 * @return the corresponding AOP proxy
+	 *               AdvisedSupport object
+	 *               AdvisedSupport对象形式的AOP配置
+	 * @return the corresponding AOP proxy  相应的AOP代理
 	 * @throws AopConfigException if the configuration is invalid
 	 */
 	AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException;

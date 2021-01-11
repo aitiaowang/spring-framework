@@ -19,6 +19,10 @@ package org.aopalliance.aop;
 /**
  * Tag interface for Advice. Implementations can be any type
  * of advice, such as Interceptors.
+ * <p>
+ * 咨询的标签界面。实现可以是任何类型的建议，例如拦截器
+ * <p>
+ * 通知是切面的一种实现，可以完成简单的织入功能。通知定义了增强代码切入到目标代码的时间点，是目标方法执行之前执行，还是执行之后执行等。切入点定义切入的位置，通知定义切入的时间。
  *
  * @author Rod Johnson
  * @version $Id: Advice.java,v 1.1 2004/03/19 17:02:16 johnsonr Exp $

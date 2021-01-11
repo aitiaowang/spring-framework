@@ -27,6 +27,8 @@ import org.springframework.lang.Nullable;
 /**
  * Simple adapter for {@link PreparedStatementSetter} that applies
  * given arrays of arguments and JDBC argument types.
+ * <p>
+ * 适用于{@link PreparedStatementSetter}的简单适配器，该适配器适用给定的参数数组和JDBC参数类型。
  *
  * @author Juergen Hoeller
  * @since 3.2.3
@@ -42,8 +44,11 @@ public class ArgumentTypePreparedStatementSetter implements PreparedStatementSet
 
 	/**
 	 * Create a new ArgTypePreparedStatementSetter for the given arguments.
-	 * @param args the arguments to set
-	 * @param argTypes the corresponding SQL types of the arguments
+	 * <p>
+	 * 为给定参数创建一个新的ArgTypePreparedStatementSetter。
+	 *
+	 * @param args     the arguments to set  要设置的参数
+	 * @param argTypes the corresponding SQL types of the arguments   参数的相应SQL类型
 	 */
 	public ArgumentTypePreparedStatementSetter(@Nullable Object[] args, @Nullable int[] argTypes) {
 		if ((args != null && argTypes == null) || (args == null && argTypes != null) ||
@@ -59,8 +64,10 @@ public class ArgumentTypePreparedStatementSetter implements PreparedStatementSet
 	public void setValues(PreparedStatement ps) throws SQLException {
 		int parameterPosition = 1;
 		if (this.args != null && this.argTypes != null) {
+			// 遍历每个参数以作类型匹配及转换
 			for (int i = 0; i < this.args.length; i++) {
 				Object arg = this.args[i];
+				// 如果是集合类则需要进入集合类内部递归解析集合内部属性
 				if (arg instanceof Collection && this.argTypes[i] != Types.ARRAY) {
 					Collection<?> entries = (Collection<?>) arg;
 					for (Object entry : entries) {
@@ -70,14 +77,13 @@ public class ArgumentTypePreparedStatementSetter implements PreparedStatementSet
 								doSetValue(ps, parameterPosition, this.argTypes[i], argValue);
 								parameterPosition++;
 							}
-						}
-						else {
+						} else {
 							doSetValue(ps, parameterPosition, this.argTypes[i], entry);
 							parameterPosition++;
 						}
 					}
-				}
-				else {
+				} else {
+					// 解析当前属性
 					doSetValue(ps, parameterPosition, this.argTypes[i], arg);
 					parameterPosition++;
 				}
@@ -86,12 +92,17 @@ public class ArgumentTypePreparedStatementSetter implements PreparedStatementSet
 	}
 
 	/**
+	 * 对单个参数及类型的匹配处理
+	 * <p>
 	 * Set the value for the prepared statement's specified parameter position using the passed in
 	 * value and type. This method can be overridden by sub-classes if needed.
-	 * @param ps the PreparedStatement
+	 * <p>
+	 * 使用传入的值和类型为准备好的语句的指定参数位置设置值。如果需要，子类可以覆盖此方法。
+	 *
+	 * @param ps                the PreparedStatement
 	 * @param parameterPosition index of the parameter position
-	 * @param argType the argument type
-	 * @param argValue the argument value
+	 * @param argType           the argument type
+	 * @param argValue          the argument value
 	 * @throws SQLException if thrown by PreparedStatement methods
 	 */
 	protected void doSetValue(PreparedStatement ps, int parameterPosition, int argType, Object argValue)

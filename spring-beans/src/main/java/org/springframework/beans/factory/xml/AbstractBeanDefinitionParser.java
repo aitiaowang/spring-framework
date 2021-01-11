@@ -101,9 +101,15 @@ public abstract class AbstractBeanDefinitionParser implements BeanDefinitionPars
 
 	/**
 	 * Resolve the ID for the supplied {@link BeanDefinition}.
+	 * <p>
+	 * 解析提供的{@link BeanDefinition}的ID。
+	 *
 	 * <p>When using {@link #shouldGenerateId generation}, a name is generated automatically.
 	 * Otherwise, the ID is extracted from the "id" attribute, potentially with a
 	 * {@link #shouldGenerateIdAsFallback() fallback} to a generated id.
+	 * <p>
+	 * 使用{@link #shouldGenerateId generation}时，会自动生成一个名称。否则，从“id”属性中提取ID，
+	 * 并可能使用{@link #shouldGenerateIdAsFallback() fallback}到生成的ID。
 	 *
 	 * @param element       the element that the bean definition has been built from
 	 * @param definition    the bean definition to be registered

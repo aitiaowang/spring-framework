@@ -57,8 +57,10 @@ public interface BeanDefinitionParser {
 	 * 则实现必须返回从解析产生的主{@link BeanDefinition}。如果实现<strong>不</strong>以嵌套方式使用，则实现可能返回{@code null}。
 	 *
 	 * @param element       the element that is to be parsed into one or more {@link BeanDefinition BeanDefinitions}
+	 *                      将被解析为一个或多个{@link BeanDefinition BeanDefinitions}的元素
 	 * @param parserContext the object encapsulating the current state of the parsing process;
 	 *                      provides access to a {@link org.springframework.beans.factory.support.BeanDefinitionRegistry}
+	 *                      封装解析过程当前状态的对象；提供对{@link org.springframework.beans.factory.support.BeanDefinitionRegistry}的访问权限
 	 * @return the primary {@link BeanDefinition}
 	 */
 	@Nullable

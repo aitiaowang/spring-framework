@@ -53,19 +53,35 @@ public class DefaultAdvisorAdapterRegistry implements AdvisorAdapterRegistry, Se
 	}
 
 
+	/**
+	 * 通知（Advice）
+	 * 通知是切面的一种实现，可以完成简单的织入功能。通知定义了增强代码切入到目标代码的时间点，
+	 * 是目标方法执行之前执行，还是执行之后执行等。切入点定义切入的位置，通知定义切入的时间。
+	 * <p>
+	 * 顾问(Advisor)
+	 * 顾问是切面的另一种实现，能够将通知以更为复杂的方式织入到目标对象中，是将通知包装为更复杂切面的装配器。
+	 *
+	 * @param adviceObject
+	 * @return
+	 * @throws UnknownAdviceTypeException
+	 */
 	@Override
 	public Advisor wrap(Object adviceObject) throws UnknownAdviceTypeException {
+		// 如果要封装的对象本身就是Advisor类型的，那么无需在做过多处理，直接返回
 		if (adviceObject instanceof Advisor) {
 			return (Advisor) adviceObject;
 		}
+		// 因为此封装方法只对Advisor与Advice两种类型的数据有效，如果不是将不能封装
 		if (!(adviceObject instanceof Advice)) {
 			throw new UnknownAdviceTypeException(adviceObject);
 		}
 		Advice advice = (Advice) adviceObject;
 		if (advice instanceof MethodInterceptor) {
 			// So well-known it doesn't even need an adapter.
+			// 如果是MethodInterceptor类型则使用DefaultPointcutAdvisor
 			return new DefaultPointcutAdvisor(advice);
 		}
+		// 如果存在Advisor的适配器那么也同样需要进行封装
 		for (AdvisorAdapter adapter : this.adapters) {
 			// Check that it is supported.
 			if (adapter.supportsAdvice(advice)) {

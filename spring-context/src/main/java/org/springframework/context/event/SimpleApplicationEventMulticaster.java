@@ -30,16 +30,24 @@ import org.springframework.util.ErrorHandler;
 
 /**
  * Simple implementation of the {@link ApplicationEventMulticaster} interface.
+ * <p>
+ * {@link ApplicationEventMulticaster}接口的简单实现。
+ *
  *
  * <p>Multicasts all events to all registered listeners, leaving it up to
  * the listeners to ignore events that they are not interested in.
  * Listeners will usually perform corresponding {@code instanceof}
  * checks on the passed-in event object.
+ * <p>
+ * 将所有事件多播到所有已注册的侦听器，让侦听器忽略它们不感兴趣的事件。侦听器通常将对传入的事件对象执行相应的{@code instanceof} 检查。
  *
  * <p>By default, all listeners are invoked in the calling thread.
  * This allows the danger of a rogue listener blocking the entire application,
  * but adds minimal overhead. Specify an alternative task executor to have
  * listeners executed in different threads, for example from a thread pool.
+ * <p>
+ * 默认情况下，所有侦听器在调用线程中被调用。这会带来流氓侦听器阻塞整个应用程序的危险，但是却增加了最小的开销。
+ * 指定替代任务执行程序，以使侦听器在不同的线程中执行，例如从线程池中执行。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -78,6 +86,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 	 * caller until all listeners have been executed. However, note that asynchronous
 	 * execution will not participate in the caller's thread context (class loader,
 	 * transaction association) unless the TaskExecutor explicitly supports this.
+	 *
 	 * @see org.springframework.core.task.SyncTaskExecutor
 	 * @see org.springframework.core.task.SimpleAsyncTaskExecutor
 	 */
@@ -106,6 +115,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 	 * {@link org.springframework.scheduling.support.TaskUtils#LOG_AND_SUPPRESS_ERROR_HANDLER})
 	 * or an implementation that logs exceptions while nevertheless propagating them
 	 * (e.g. {@link org.springframework.scheduling.support.TaskUtils#LOG_AND_PROPAGATE_ERROR_HANDLER}).
+	 *
 	 * @since 4.1
 	 */
 	public void setErrorHandler(@Nullable ErrorHandler errorHandler) {
@@ -114,6 +124,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 
 	/**
 	 * Return the current error handler for this multicaster.
+	 *
 	 * @since 4.1
 	 */
 	@Nullable
@@ -131,11 +142,11 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 	public void multicastEvent(final ApplicationEvent event, @Nullable ResolvableType eventType) {
 		ResolvableType type = (eventType != null ? eventType : resolveDefaultEventType(event));
 		Executor executor = getTaskExecutor();
+		//通知对应观察者(广播)
 		for (ApplicationListener<?> listener : getApplicationListeners(event, type)) {
 			if (executor != null) {
 				executor.execute(() -> invokeListener(listener, event));
-			}
-			else {
+			} else {
 				invokeListener(listener, event);
 			}
 		}
@@ -147,8 +158,9 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 
 	/**
 	 * Invoke the given listener with the given event.
+	 *
 	 * @param listener the ApplicationListener to invoke
-	 * @param event the current event to propagate
+	 * @param event    the current event to propagate
 	 * @since 4.1
 	 */
 	protected void invokeListener(ApplicationListener<?> listener, ApplicationEvent event) {
@@ -156,12 +168,10 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 		if (errorHandler != null) {
 			try {
 				doInvokeListener(listener, event);
-			}
-			catch (Throwable err) {
+			} catch (Throwable err) {
 				errorHandler.handleError(err);
 			}
-		}
-		else {
+		} else {
 			doInvokeListener(listener, event);
 		}
 	}
@@ -170,8 +180,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 	private void doInvokeListener(ApplicationListener listener, ApplicationEvent event) {
 		try {
 			listener.onApplicationEvent(event);
-		}
-		catch (ClassCastException ex) {
+		} catch (ClassCastException ex) {
 			String msg = ex.getMessage();
 			if (msg == null || matchesClassCastMessage(msg, event.getClass())) {
 				// Possibly a lambda-defined listener which we could not resolve the generic event type for
@@ -180,8 +189,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 				if (logger.isTraceEnabled()) {
 					logger.trace("Non-matching event type for listener: " + listener, ex);
 				}
-			}
-			else {
+			} else {
 				throw ex;
 			}
 		}

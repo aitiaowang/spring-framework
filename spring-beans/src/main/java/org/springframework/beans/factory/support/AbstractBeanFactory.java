@@ -191,6 +191,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * Indicates whether any DestructionAwareBeanPostProcessors have been registered.
+	 * 指示是否已注册任何DestructionAwareBeanPostProcessors。
 	 */
 	private volatile boolean hasDestructionAwareBeanPostProcessors;
 
@@ -954,6 +955,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
 			this.hasInstantiationAwareBeanPostProcessors = true;
 		}
+		// 销毁感知bean后处理器
 		if (beanPostProcessor instanceof DestructionAwareBeanPostProcessor) {
 			this.hasDestructionAwareBeanPostProcessors = true;
 		}

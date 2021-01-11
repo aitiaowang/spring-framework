@@ -30,10 +30,15 @@ import org.springframework.lang.Nullable;
  * A factory providing convenient access to a ConversionService configured with
  * converters appropriate for most environments. Set the
  * {@link #setConverters "converters"} property to supplement the default converters.
+ * <p>
+ * 工厂可方便地访问配置有适用于大多数环境的转换器的ConversionService。设置{@link #setConverters "converters"}属性以补充默认转换器。
  *
  * <p>This implementation creates a {@link DefaultConversionService}.
  * Subclasses may override {@link #createConversionService()} in order to return
  * a {@link GenericConversionService} instance of their choosing.
+ * <p>
+ * 此实现创建一个{@link DefaultConversionService}。子类可以重写{@link #createConversionService()}，
+ * 以返回他们选择的{@link GenericConversionService}实例。
  *
  * <p>Like all {@code FactoryBean} implementations, this class is suitable for
  * use when configuring a Spring application context using Spring {@code <beans>}
@@ -42,6 +47,10 @@ import org.springframework.lang.Nullable;
  * classes, simply instantiate, configure and return the appropriate
  * {@code ConversionService} object from a {@link
  * org.springframework.context.annotation.Bean @Bean} method.
+ * <p>
+ * 像所有{@code FactoryBean}实现一样，这个类适合于使用Spring {@code <beans>}配置Spring应用程序上下文XML。当配置容器时
+ * {@link org.springframework.context.annotation.Configuration @Configuration}类，只需实例化、配置并返回适当的
+ * {@code ConversionService}对象从{@link org.springframework.context.annotation.Bean @Bean}方法。
  *
  * @author Keith Donald
  * @author Juergen Hoeller
