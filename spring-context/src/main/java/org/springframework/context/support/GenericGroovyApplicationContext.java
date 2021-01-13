@@ -34,11 +34,17 @@ import org.springframework.lang.Nullable;
  * An {@link org.springframework.context.ApplicationContext} implementation that extends
  * {@link GenericApplicationContext} and implements {@link GroovyObject} such that beans
  * can be retrieved with the dot de-reference syntax instead of using {@link #getBean}.
+ * <p>
+ * 一个{@link org.springframework.context.ApplicationContext}实现，
+ * 扩展了{@link GenericApplicationContext}并实现了{@link GroovyObject}，以便可以使用点取消引用语法而不是使用{@link #getBean} 来检索bean。
  *
  * <p>Consider this as the equivalent of {@link GenericXmlApplicationContext} for
  * Groovy bean definitions, or even an upgrade thereof since it seamlessly understands
  * XML bean definition files as well. The main difference is that, within a Groovy
  * script, the context can be used with an inline bean definition closure as follows:
+ * <p>
+ * 对于Groovy bean定义，可以将其视为{@link GenericXmlApplicationContext}的等效项，
+ * 甚至可以升级为它，因为它也可以无缝地理解XML XML定义文件。主要区别在于，在Groovy脚本中，上下文可以与内联bean定义闭包一起使用，如下所示：
  *
  * <pre class="code">
  * import org.hibernate.SessionFactory
@@ -113,8 +119,8 @@ import org.springframework.lang.Nullable;
  *
  * @author Juergen Hoeller
  * @author Jeff Brown
- * @since 4.0
  * @see org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader
+ * @since 4.0
  */
 public class GenericGroovyApplicationContext extends GenericApplicationContext implements GroovyObject {
 
@@ -135,6 +141,7 @@ public class GenericGroovyApplicationContext extends GenericApplicationContext i
 	/**
 	 * Create a new GenericGroovyApplicationContext, loading bean definitions
 	 * from the given resources and automatically refreshing the context.
+	 *
 	 * @param resources the resources to load from
 	 */
 	public GenericGroovyApplicationContext(Resource... resources) {
@@ -145,6 +152,7 @@ public class GenericGroovyApplicationContext extends GenericApplicationContext i
 	/**
 	 * Create a new GenericGroovyApplicationContext, loading bean definitions
 	 * from the given resource locations and automatically refreshing the context.
+	 *
 	 * @param resourceLocations the resources to load from
 	 */
 	public GenericGroovyApplicationContext(String... resourceLocations) {
@@ -155,8 +163,9 @@ public class GenericGroovyApplicationContext extends GenericApplicationContext i
 	/**
 	 * Create a new GenericGroovyApplicationContext, loading bean definitions
 	 * from the given resource locations and automatically refreshing the context.
+	 *
 	 * @param relativeClass class whose package will be used as a prefix when
-	 * loading each specified resource name
+	 *                      loading each specified resource name
 	 * @param resourceNames relatively-qualified names of resources to load
 	 */
 	public GenericGroovyApplicationContext(Class<?> relativeClass, String... resourceNames) {
@@ -169,6 +178,7 @@ public class GenericGroovyApplicationContext extends GenericApplicationContext i
 	 * Exposes the underlying {@link GroovyBeanDefinitionReader} for convenient access
 	 * to the {@code loadBeanDefinition} methods on it as well as the ability
 	 * to specify an inline Groovy bean definition closure.
+	 *
 	 * @see GroovyBeanDefinitionReader#loadBeanDefinitions(org.springframework.core.io.Resource...)
 	 * @see GroovyBeanDefinitionReader#loadBeanDefinitions(String...)
 	 */
@@ -190,6 +200,7 @@ public class GenericGroovyApplicationContext extends GenericApplicationContext i
 	 * Load bean definitions from the given Groovy scripts or XML files.
 	 * <p>Note that ".xml" files will be parsed as XML content; all other kinds
 	 * of resources will be parsed as Groovy scripts.
+	 *
 	 * @param resources one or more resources to load from
 	 */
 	public void load(Resource... resources) {
@@ -200,6 +211,7 @@ public class GenericGroovyApplicationContext extends GenericApplicationContext i
 	 * Load bean definitions from the given Groovy scripts or XML files.
 	 * <p>Note that ".xml" files will be parsed as XML content; all other kinds
 	 * of resources will be parsed as Groovy scripts.
+	 *
 	 * @param resourceLocations one or more resource locations to load from
 	 */
 	public void load(String... resourceLocations) {
@@ -210,8 +222,9 @@ public class GenericGroovyApplicationContext extends GenericApplicationContext i
 	 * Load bean definitions from the given Groovy scripts or XML files.
 	 * <p>Note that ".xml" files will be parsed as XML content; all other kinds
 	 * of resources will be parsed as Groovy scripts.
+	 *
 	 * @param relativeClass class whose package will be used as a prefix when
-	 * loading each specified resource name
+	 *                      loading each specified resource name
 	 * @param resourceNames relatively-qualified names of resources to load
 	 */
 	public void load(Class<?> relativeClass, String... resourceNames) {
@@ -244,8 +257,7 @@ public class GenericGroovyApplicationContext extends GenericApplicationContext i
 	public void setProperty(String property, Object newValue) {
 		if (newValue instanceof BeanDefinition) {
 			registerBeanDefinition(property, (BeanDefinition) newValue);
-		}
-		else {
+		} else {
 			this.metaClass.setProperty(this, property, newValue);
 		}
 	}
@@ -255,8 +267,7 @@ public class GenericGroovyApplicationContext extends GenericApplicationContext i
 	public Object getProperty(String property) {
 		if (containsBean(property)) {
 			return getBean(property);
-		}
-		else if (this.contextWrapper.isReadableProperty(property)) {
+		} else if (this.contextWrapper.isReadableProperty(property)) {
 			return this.contextWrapper.getPropertyValue(property);
 		}
 		throw new NoSuchBeanDefinitionException(property);

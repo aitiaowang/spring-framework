@@ -50,6 +50,11 @@ import org.springframework.util.StringValueResolver;
  * source search order through the container's {@code Environment}; however, exact preservation
  * of functionality may be maintained by continuing to use {@code PropertyPlaceholderConfigurer}.
  * </ul>
+ * <p>
+ * 注意：
+ * spring 5.2，该类不建议使用，采用 {@link org.springframework.context.support.PropertySourcesPlaceholderConfigurer}替代。
+ * 使用{@code org.springframework.context.support.PropertySourcesPlaceholderConfigurer}
+ * 可以通过利用{@link org.springframework.core.env.Environment}和{@link org.springframework.core.env.PropertySource}机制而变得更加灵活。
  *
  * @author Juergen Hoeller
  * @author Chris Beams

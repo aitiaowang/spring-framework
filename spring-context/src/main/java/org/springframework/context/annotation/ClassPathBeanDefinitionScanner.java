@@ -130,7 +130,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * using the given {@link Environment} when evaluating bean definition profile metadata.
 	 * <p>If the passed-in bean factory does not only implement the {@code
 	 * BeanDefinitionRegistry} interface but also the {@link ResourceLoader} interface, it
-	 * will be used as default {@code ResourceLoader} as well. This will usually be the
+	 * will be used as default {@code ResourceLoader} as well. This will usually be theF
 	 * case for {@link org.springframework.context.ApplicationContext} implementations.
 	 * <p>If given a plain {@code BeanDefinitionRegistry}, the default {@code ResourceLoader}
 	 * will be a {@link org.springframework.core.io.support.PathMatchingResourcePatternResolver}.
@@ -263,6 +263,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 	/**
 	 * Perform a scan within the specified base packages.
+	 * <p>
+	 * 在指定的基本程序包中执行扫描。
 	 *
 	 * @param basePackages the packages to check for annotated classes
 	 * @return number of beans registered
@@ -273,7 +275,9 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		doScan(basePackages);
 
 		// Register annotation config processors, if necessary.
+		// 如果配置了includeAnnotationConfig，则注册对应注解的处理器以保证注解功能的正常使用
 		if (this.includeAnnotationConfig) {
+			// 主要完成对注解处理器的简单注册，比如AutowiredAnnotationBeanPostProcessor,RequiredAnnotationBeanPostProcessor等
 			AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
 		}
 

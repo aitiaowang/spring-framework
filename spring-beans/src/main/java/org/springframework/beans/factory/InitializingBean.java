@@ -22,6 +22,12 @@ package org.springframework.beans.factory;
  * or merely to check that all mandatory properties have been set.
  * <p>
  * 由{@link BeanFactory}设置完所有属性后需要进行响应的bean所实现的接口：例如执行自定义初始化，或仅检查所有必需属性是否已设置。
+ * <p>
+ * 实现此接口的bean会在初始化时调用其{@link #afterPropertiesSet()}来进行bean的初始化逻辑
+ * <p>
+ * 实现{@link InitializingBean#afterPropertiesSet()}接口的bean会在初始化时调用其{@link #afterPropertiesSet()}来进行bean的初始化逻辑，
+ * {@link #afterPropertiesSet()}在调用完{@link org.springframework.beans.factory.config.BeanPostProcessor#postProcessBeforeInitialization(Object, String)}
+ * 方法后调用
  *
  * <p>An alternative to implementing {@code InitializingBean} is specifying a custom
  * init method, for example in an XML bean definition. For a list of all bean
@@ -38,8 +44,13 @@ public interface InitializingBean {
 	/**
 	 * Invoked by the containing {@code BeanFactory} after it has set all bean properties
 	 * and satisfied {@link BeanFactoryAware}, {@code ApplicationContextAware} etc.
+	 * <p>
+	 * 由包含的{@code BeanFactory}设置了所有bean属性并满足{@link BeanFactoryAware}，{@code ApplicationContextAware}等之后调用。
+	 *
 	 * <p>This method allows the bean instance to perform validation of its overall
 	 * configuration and final initialization when all bean properties have been set.
+	 * <p>
+	 * 设置所有bean属性后，此方法允许bean实例执行其整体*配置的验证和最终初始化。
 	 *
 	 * @throws Exception in the event of misconfiguration (such as failure to set an
 	 *                   essential property) or if initialization fails for any other reason

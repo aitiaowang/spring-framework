@@ -34,35 +34,50 @@ import org.springframework.util.ClassUtils;
 
 /**
  * Convenient proxy factory bean for scoped objects.
+ * <p>
+ * 方便的代理工厂bean，用于范围对象。
  *
  * <p>Proxies created using this factory bean are thread-safe singletons
  * and may be injected into shared objects, with transparent scoping behavior.
+ * <p>
+ * 使用此工厂bean创建的代理是线程安全的单例，并可以以透明的作用域行为注入到共享对象中。
  *
  * <p>Proxies returned by this class implement the {@link ScopedObject} interface.
  * This presently allows for removing the corresponding object from the scope,
  * seamlessly creating a new instance in the scope on next access.
+ * <p>
+ * 此类返回的代理实现{@link ScopedObject}接口。这目前允许从范围中删除相应的对象，在下次访问时在范围中无缝创建一个新实例。
  *
  * <p>Please note that the proxies created by this factory are
  * <i>class-based</i> proxies by default. This can be customized
  * through switching the "proxyTargetClass" property to "false".
+ * <p>
+ * 请注意，此工厂创建的代理默认为基于类的代理。可以通过将“proxyTargetClass”属性切换为“false”来自定义。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
- * @since 2.0
  * @see #setProxyTargetClass
+ * @since 2.0
  */
 @SuppressWarnings("serial")
+// 作用域代理工厂Bean
 public class ScopedProxyFactoryBean extends ProxyConfig
 		implements FactoryBean<Object>, BeanFactoryAware, AopInfrastructureBean {
 
-	/** The TargetSource that manages scoping. */
+	/**
+	 * The TargetSource that manages scoping.
+	 */
 	private final SimpleBeanTargetSource scopedTargetSource = new SimpleBeanTargetSource();
 
-	/** The name of the target bean. */
+	/**
+	 * The name of the target bean.
+	 */
 	@Nullable
 	private String targetBeanName;
 
-	/** The cached singleton proxy. */
+	/**
+	 * The cached singleton proxy.
+	 */
 	@Nullable
 	private Object proxy;
 
